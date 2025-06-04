@@ -1161,7 +1161,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                     null) {
                                                               CartCubit.get(context).checkProductQty(
                                                                   context:
-                                                                  context,
+                                                                  context,index: 0,
                                                                   productId: HomeCubit
                                                                       .get(
                                                                       context)
@@ -1189,7 +1189,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                 .quantity != 0 ){
                                                               CartCubit.get(context).checkProductQty(
                                                                   context:
-                                                                  context,
+                                                                  context,index: 0,
                                                                   productId: HomeCubit
                                                                       .get(
                                                                       context)

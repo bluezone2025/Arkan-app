@@ -30,6 +30,7 @@ class CartCubit extends Cubit<CartState> {
       required String productQty,
       required String sizeId,
       required String colorId,
+      required int index,
       required BuildContext context}) async {
     totalQuantity = 0;
     emit(CheckProductAddcartLoadingState());
@@ -54,7 +55,7 @@ class CartCubit extends Cubit<CartState> {
               productId: int.parse(productId),
               productQty:
                   DataBaseCubit.get(context).counter[int.parse(productId)]!);
-          emit(CheckProductAddcartSuccessState());
+          emit(CheckProductAddcartSuccessState(index));
         } else {
           Fluttertoast.showToast(
               msg: "${LocalKeys.AMOUNT.tr()} : ${data['data']}",

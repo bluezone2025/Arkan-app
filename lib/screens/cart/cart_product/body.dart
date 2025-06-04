@@ -20,6 +20,7 @@ import '../../../componnent/http_services.dart';
 import '../../../generated/local_keys.dart';
 import '../../address/add_address.dart';
 import '../../country/cubit/country_cubit.dart';
+import '../../loading.dart';
 import '../../tabone_screen/cubit/home_cubit.dart';
 import '../cubit/cart_cubit.dart';
 import '../model/copoun_model.dart';
@@ -115,7 +116,38 @@ class _RayanCartBodyState extends State<RayanCartBody> {
     var h = MediaQuery.of(context).size.height;
     return BlocConsumer<DataBaseCubit, DatabaseStates>(
       builder: (context, state) {
-        return SizedBox(
+        return BlocConsumer<CartCubit, CartState>(
+          listener: (context, state) {
+            if(state is CheckProductAddcartLoadingState){
+              LoadingScreen.show(context);
+            }
+            if (state is CheckProductAddcartSuccessState &&
+                DataBaseCubit.get(context).counter[
+                DataBaseCubit.get(context).cart[state.index]
+                ['productId']]! <=
+                    CartCubit.get(context).totalQuantity) {
+              LoadingScreen.pop(context);
+              print(1);
+              setState(() {
+                RayanCartBody.finalPrice += DataBaseCubit.get(context)
+                    .cart[state.index]['productPrice'];
+              });
+              print(2);
+            } else if (state is CheckProductAddcartSuccessState &&
+                DataBaseCubit.get(context).counter[
+                DataBaseCubit.get(context).cart[state.index]
+                ['productId']]! >
+                    CartCubit.get(context).totalQuantity) {
+              LoadingScreen.pop(context);
+              print(3);
+              setState(() {
+                RayanCartBody.finalPrice = RayanCartBody.finalPrice;
+              });
+              print(4);
+            }
+          },
+          builder: (context, state) {
+            return SizedBox(
           width: w,
           height: h,
           child: Column(
@@ -203,74 +235,29 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                                     .cart[index]['productPrice'];
                               });
                             },
-                            increaseqty: BlocConsumer<CartCubit, CartState>(
-                              builder: (context, state) {
-                                return InkWell(
-                                  onTap: () async {
-                                    CartCubit.get(context).checkProductQty(
-                                        context: context,
-                                        productId: DataBaseCubit.get(context)
-                                            .cart[index]['productId']
-                                            .toString(),
-                                        productQty: DataBaseCubit.get(context)
-                                            .cart[index]['productQty']
-                                            .toString(),
-                                        sizeId: DataBaseCubit.get(context)
-                                            .cart[index]['sizeId']
-                                            .toString(),
-                                        colorId: DataBaseCubit.get(context)
-                                            .cart[index]['colorId']
-                                            .toString());
-                                  },
-                                  child: Icon(
-                                    Icons.add,
-                                    size: w * 0.06,
-                                  ),
-                                );
+                            increaseqty: InkWell(
+                              onTap: () async {
+                                CartCubit.get(context).checkProductQty(
+                                    context: context,
+                                    index: index,
+                                    productId: DataBaseCubit.get(context)
+                                        .cart[index]['productId']
+                                        .toString(),
+                                    productQty: DataBaseCubit.get(context)
+                                        .cart[index]['productQty']
+                                        .toString(),
+                                    sizeId: DataBaseCubit.get(context)
+                                        .cart[index]['sizeId']
+                                        .toString(),
+                                    colorId: DataBaseCubit.get(context)
+                                        .cart[index]['colorId']
+                                        .toString());
                               },
-                              listener: (context, state) {
-                                if(!click){
-                                  if (state is CheckProductAddcartSuccessState &&
-                                      DataBaseCubit.get(context).counter[
-                                      DataBaseCubit.get(context).cart[index]
-                                      ['productId']]! <=
-                                          CartCubit.get(context).totalQuantity) {
-                                    setState(() {
-                                      click = true;
-                                    });
-                                    print(1);
-                                    setState(() {
-                                      RayanCartBody.finalPrice += DataBaseCubit.get(context)
-                                          .cart[index]['productPrice'];
-                                    });
-                                    print(2);
-                                    Future.delayed(const Duration(seconds: 1)).then((value) async {
-                                      setState(() {
-                                        click = false;
-                                      });
-                                    });
-                                  } else if (state is CheckProductAddcartSuccessState &&
-                                      DataBaseCubit.get(context).counter[
-                                      DataBaseCubit.get(context).cart[index]
-                                      ['productId']]! >
-                                          CartCubit.get(context).totalQuantity) {
-                                    setState(() {
-                                      click = true;
-                                    });
-                                    print(3);
-                                    setState(() {
-                                      RayanCartBody.finalPrice = RayanCartBody.finalPrice;
-                                    });
-                                    print(4);
-                                    Future.delayed(const Duration(seconds: 1)).then((value) async {
-                                      setState(() {
-                                        click = false;
-                                      });
-                                    });
-                                  }
-                                }
-                              },
-                            ),
+                              child: Icon(
+                                Icons.add,
+                                size: w * 0.06,
+                              ),
+                            )
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>  Padding(
@@ -676,6 +663,8 @@ class _RayanCartBodyState extends State<RayanCartBody> {
             ],
           ),
         );
+  },
+);
       },
       listener: (context, state) {},
     );

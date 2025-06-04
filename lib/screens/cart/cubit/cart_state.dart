@@ -7,7 +7,10 @@ class CartInitial extends CartState {}
 
 class CheckProductAddcartLoadingState extends CartState {}
 
-class CheckProductAddcartSuccessState extends CartState {}
+class CheckProductAddcartSuccessState extends CartState {
+  final int index;
+  CheckProductAddcartSuccessState(this.index);
+}
 
 class CheckProductAddcartErroState extends CartState {
   final String error;
