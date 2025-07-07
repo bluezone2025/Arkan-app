@@ -83,3 +83,31 @@ class TabbyStatusError extends AppCubitStates {
 
   TabbyStatusError(this.message);
 }
+class GetBrandsLoading extends AppCubitStates {}
+class GetBrandsSuccess extends AppCubitStates {}
+class GetBrandsError extends AppCubitStates {
+  final String message;
+
+  GetBrandsError(this.message);
+}
+class GetBrandProductsLoading extends AppCubitStates {}
+class GetBrandProductsSuccess extends AppCubitStates {}
+class GetBrandProductsError extends AppCubitStates {
+  final String message;
+
+  GetBrandProductsError(this.message);
+}
+class GetDiscountBrandProductsLoading extends AppCubitStates {}
+class GetDiscountBrandProductsSuccess extends AppCubitStates {}
+class GetDiscountBrandProductsError extends AppCubitStates {
+  final String message;
+
+  GetDiscountBrandProductsError(this.message);
+}
+class GetAdsLoading extends AppCubitStates {}
+class GetAdsSuccess extends AppCubitStates {}
+class GetAdsError extends AppCubitStates {
+  final String message;
+
+  GetAdsError(this.message);
+}

@@ -49,111 +49,41 @@ class _OffersState extends State<Offers> {
     String sale = (lang == 'en') ? 'OFF' : 'خصم';
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: w*0.02),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: w*0.005),
-          child: InkWell(
-            onTap: () {
-              HomeCubit.get(context).getProductdata(
-                  productId: widget.offersItem[index].id.toString());
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductDetail()));
-            },
-            child: Card(
-              color: Colors.white,
+      child: SizedBox(
+        height: h*0.3,
+        child: GridView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: w*0.005),
+            child: InkWell(
+              onTap: () {
+                HomeCubit.get(context).getProductdata(
+                    productId: widget.offersItem[index].id.toString());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProductDetail()));
+              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Container(
-                          width: w * 0.45,
-                          height: h * 0.25,
-                          color: Colors.white,
-                          child: customCachedNetworkImage(
-                              url: (EndPoints.IMAGEURL2 +
-                                  widget.offersItem[index].img.toString()),
-                              context: context,
-                              fit: BoxFit.cover)
-                        ),
-                      ),
-                      (widget.offersItem[index].hasOffer == 1)
-                          ? Positioned(
-                        //top: h*0.0,
-                        right: lang == 'en' ? w*0.02 :w*0.35,
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: mainColor,
-                                  shape: BoxShape.circle
-                              ),
-                              height: h*0.06,
-                              child: Center(
-                                child: Text(
-                                  " %${(((widget
-                                      .offersItem[index]
-                                      .beforePrice - widget
-                                      .offersItem[index].price) / widget
-                                      .offersItem[index]
-                                      .beforePrice ) * 100).toInt()} ",
-                                  textAlign:
-                                  TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily:
-                                      'Bahij',
-                                      fontSize: w * 0.028,
-                                      fontWeight:
-                                      FontWeight
-                                          .w500),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: h * 0.13,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.circle
-                              ),
-                              height: h*0.06,
-                              child:  Center(
-                                child: Icon(Icons.add,color: mainColor,),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                          : Positioned(
-                        bottom: 1,
-                        right: lang == 'en' ? w*0.02 :w*0.35,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle),
-                          height: h * 0.06,
-                          child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: mainColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      width: w * 0.43,
+                      height: h * 0.2,
+                      color: Colors.white,
+                      child: customCachedNetworkImage(
+                          url: EndPoints.IMAGEURL2 +
+                              widget.offersItem[index].img.toString(),
+                          context: context,
+                          fit: BoxFit.cover),
+                    ),
                   ),
                   SizedBox(
-                    width: w * 0.45,
+                    width: w * 0.4,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Column(
@@ -161,16 +91,14 @@ class _OffersState extends State<Offers> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            constraints: BoxConstraints(
-                                maxHeight: h * 0.07, maxWidth: w * 0.38),
+                            constraints: BoxConstraints(maxWidth: w * 0.38),
                             child: (lang == 'en')
                                 ? Text(widget.offersItem[index].titleEn,maxLines: 1,
                                 style: TextStyle(
                                   fontSize: w * 0.035,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Nunito',
-                                ),
-                                overflow: TextOverflow.fade)
+                                ),)
                                 : Text(
                               widget.offersItem[index].titleAr,maxLines: 1,
                               style: TextStyle(
@@ -178,38 +106,40 @@ class _OffersState extends State<Offers> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Almarai',
                               ),
-                              overflow: TextOverflow.fade,
                             ),
                           ),
+                          SizedBox(
+                            height: h * 0.01,
+                          ),
+                          if(widget.offersItem[index].hasOffer == 1)
+                            Text(
+                              getProductprice(
+                                  currency: currency,
+                                  productPrice: widget
+                                      .offersItem[index]
+                                      .beforePrice),
+                              style: TextStyle(
+                                  fontSize: w * 0.025,
+                                  fontFamily: (lang == 'en')
+                                      ? 'Nunito'
+                                      : 'Almarai',
+                                  decoration:
+                                  TextDecoration.lineThrough,
+                                  color: Colors.black,
+                                  decorationColor: Colors.black),
+                            ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
                             children: [
-                              if(widget.offersItem[index].hasOffer == 1)
-                                Text(
-                                  getProductprice(
-                                      currency: currency,
-                                      productPrice: widget
-                                          .offersItem[index]
-                                          .beforePrice),
-                                  style: TextStyle(
-                                      fontSize: w * 0.035,
-                                      fontFamily: (lang == 'en')
-                                          ? 'Nunito'
-                                          : 'Almarai',
-                                      decoration:
-                                      TextDecoration.lineThrough,
-                                      color: Colors.black87,
-                                      decorationColor: mainColor),
-                                ),
                               Text(
                                 getProductprice(
                                     currency: currency,
                                     productPrice:
                                     widget.offersItem[index].price),
                                 style: TextStyle(
-                                    fontSize: w * 0.04,
+                                    fontSize: w * 0.035,
                                     fontFamily: (lang == 'en')
                                         ? 'Nunito'
                                         : 'Almarai',
@@ -217,6 +147,25 @@ class _OffersState extends State<Offers> {
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
+                              if(widget.offersItem[index].hasOffer == 1)
+                                Text(
+                                  " %${(((widget
+                                      .offersItem[index]
+                                      .beforePrice - widget
+                                      .offersItem[index].price) / widget
+                                      .offersItem[index]
+                                      .beforePrice ) * 100).toInt()} ${translateString('off', 'خصم')}",
+                                  textAlign:
+                                  TextAlign.center,
+                                  style: TextStyle(
+                                      color: mainColor,
+                                      fontFamily:
+                                      'Bahij',
+                                      fontSize: w * 0.025,
+                                      fontWeight:
+                                      FontWeight
+                                          .w500),
+                                ),
                             ],
                           ),
                           if(widget.offersItem[index].availability == 0)
@@ -242,14 +191,14 @@ class _OffersState extends State<Offers> {
               ),
             ),
           ),
-        ),
-        itemCount: widget.offersItem.length >= 4 ? 4 :widget.offersItem.length, gridDelegate:
-      SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: h*0.38,
-        mainAxisSpacing: w * 0.03,
-        crossAxisSpacing: 1,
-        crossAxisCount: 2,
-      ),),
+          itemCount: widget.offersItem.length >= 4 ? 4 :widget.offersItem.length, gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisExtent: w*0.43,
+          mainAxisSpacing: w * 0.03,
+          crossAxisSpacing: 1,
+          crossAxisCount: 1,
+        ),),
+      ),
     );
   }
 }

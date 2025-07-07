@@ -52,16 +52,19 @@ Widget buildCartIem(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    maxLines: 3,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black,
-                      fontSize: w * 0.035,
-                      fontFamily: (RayanCartBody.lang == 'en')
-                          ? 'Nunito'
-                          : 'Almarai',
+                  SizedBox(
+                    width: w*0.4,
+                    child: Text(
+                      title,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                        fontSize: w * 0.035,
+                        fontFamily: (RayanCartBody.lang == 'en')
+                            ? 'Nunito'
+                            : 'Almarai',
+                      ),
                     ),
                   ),
                   IconButton(onPressed: delete, icon: Icon(Icons.delete_forever,color: mainColor,))

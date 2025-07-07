@@ -780,8 +780,10 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                             BlocProvider.of<AppCubit>(
                                                     context)
                                                 .notifyCount();
+                                            prefs.setString('paymentMethod', 'cash' );
                                           }
                                           if (_counter == 2) {
+                                            prefs.setString('paymentMethod', 'online' );
                                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -795,6 +797,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                             );
                                           }
                                           if (_counter == 3 && _status == 'created') {
+                                            prefs.setString('paymentMethod', 'tabby' );
                                             Navigator.pushNamed(
                                               context,
                                               '/checkout',

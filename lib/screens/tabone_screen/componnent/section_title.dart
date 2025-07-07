@@ -41,42 +41,31 @@ class _SectionTitleState extends State<SectionTitle> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            padding: const EdgeInsets.only(
-              bottom: 5, // Space between underline and text
-            ),
-            decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(
-                  color: mainColor,
-                  width: 1.0, // Underline thickness
-                ))
-            ),
-            child: Text(
-              widget.title,
-              style: TextStyle(
-                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                  fontSize: w * 0.045,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
+          Text(
+            widget.title,
+            style: TextStyle(
+                fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                fontSize: w * 0.045,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
           ),
           InkWell(
             onTap: widget.press,
             child: Container(
               height: w*0.08,
               width: w*0.2,
-              decoration: BoxDecoration(
-                color: mainColor,
-                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15),topRight: Radius.circular(15))
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),topRight: Radius.circular(15))
               ),
               child: Center(
                 child: Text(
-                  translateString('More', 'المزيد'),
+                  translateString('view all', 'عرض الكل'),
                   style: TextStyle(
                       fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                      fontSize: w * 0.04,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white),
+                      fontSize: w * 0.03,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
                 ),
               ),
             ),

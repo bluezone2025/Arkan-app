@@ -1278,7 +1278,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         listener: (context, state) {}),
                                     Row(
                                       children: [
-                                        SvgPicture.asset('assets/icons/cart.svg'),
+                                        SvgPicture.asset('assets/icons/cart.svg',color: Colors.white,),
                                         Center(
                                           child: (DataBaseCubit.get(
                                               context)

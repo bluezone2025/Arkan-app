@@ -129,10 +129,14 @@ class OrderItems {
 
 class Product {
   String? img;
+  String? titleAR;
+  String? titleEn;
 
-  Product({this.img});
+  Product({this.img,this.titleEn,this.titleAR});
 
   Product.fromJson(Map<String, dynamic> json) {
     img = json['img'];
+    titleEn = json['title_en'];
+    titleAR = json['title_ar'];
   }
 }

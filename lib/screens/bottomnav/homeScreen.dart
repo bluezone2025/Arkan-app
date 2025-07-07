@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unnecessary_null_comparison, file_names
 
+import 'package:arkan/screens/bottomnav/brands_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   List<Widget> screens = [
     TaboneScreen(),
-    FavouriteScreen(),
+    TaboneScreen(),
+    const BrandsScreen(),
     SearchScreen(),
     ProfileScreen(),
   ];
@@ -63,25 +65,25 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
         ),
         child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+          //floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
           backgroundColor: const Color(0xffF6F6F6),
-          floatingActionButton: InkWell(
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const Cart()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: SvgPicture.asset(
-                "assets/icons/cart_b.svg",
-              ),
-            ),
-          ),
+          // floatingActionButton: InkWell(
+          //   onTap: (){
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) => const Cart()));
+          //   },
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(top: 40.0),
+          //     child: SvgPicture.asset(
+          //       "assets/icons/cart_b.svg",
+          //     ),
+          //   ),
+          // ),
           bottomNavigationBar: FABBottomAppBar(
             onTabSelected: (index) {
-              index == 2 ? Navigator.push(
+              index == 3 ? Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SubCategoriesScreen(
@@ -89,7 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             .homeitemsModel!
                             .data!
                             .categories!,
-                      ))) :
+                      ))) : index == 1 ?
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Cart()))
+                  :
               setState(() {
                 currentIndex = index;
               });
@@ -99,11 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconData: 'assets/icons/home.svg',
                   text: LocalKeys.HOME.tr()),
               FABBottomAppBarItem(
-                  iconData: 'assets/icons/fav_r.svg',
-                  text: LocalKeys.FAV.tr()),
+                  iconData: 'assets/icons/cart.svg',
+                  text: LocalKeys.CART.tr()),
               // FABBottomAppBarItem(
               //     iconData: "assets/icons/Group 4.png",
               //     text: LocalKeys.HOME.tr()),
+              FABBottomAppBarItem(
+                  iconData: 'assets/icons/brand.svg',
+                  text: translateString('Brands', 'الماركات'),),
               FABBottomAppBarItem(
                   iconData: 'assets/icons/cat.svg',
                   text: LocalKeys.CAT.tr()),
@@ -112,10 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: LocalKeys.PROFILE.tr(),),
             ],
             backgroundColor: Colors.white,
-            centerItemText: translateString('Cart', 'عربة التسوق'),
-            color: Colors.black87,
+            //centerItemText: translateString('Cart', 'عربة التسوق'),
+            color: mainColor,
             selectedColor: Colors.black,
-            height: 50,
+            height: 50, centerItemText: '',
           ),
           body: screens[currentIndex],
         ),

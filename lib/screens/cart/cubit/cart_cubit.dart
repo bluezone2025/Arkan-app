@@ -240,6 +240,7 @@ print('ciiiiittyyyy $city');
       var data = jsonDecode(response.body);
       print(4);
       print(data);
+      print(data['order']['order_items']);
       if (data['status'] == 1) {
         fatorrahModel = FatorrahModel.fromJson(data);
         controller.success();

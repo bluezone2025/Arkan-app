@@ -27,7 +27,7 @@ class FABBottomAppBar extends StatefulWidget {
     // required this.notchedShape,
     required this.onTabSelected,
   }) {
-    assert(this.items.length == 2 || this.items.length == 4);
+    assert(this.items.length == 2 || this.items.length == 5);
   }
   final List<FABBottomAppBarItem> items;
   final String centerItemText;
@@ -75,7 +75,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
         onPressed: _updateIndex,
       );
     });
-    items.insert(items.length >> 1, _buildMiddleTabItem());
+    //items.insert(items.length >> 1, _buildMiddleTabItem());
 
     return BottomAppBar(
         shape: const AutomaticNotchedShape(
@@ -98,42 +98,42 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
     );
   }
 
-  Widget _buildMiddleTabItem() {
-    var w = MediaQuery.of(context).size.width;
-    return Expanded(
-      child: InkWell(
-        onTap: (){
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const Cart()));
-        },
-        child: SizedBox(
-          height: widget.height,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset(
-                "assets/icons/cart_b.svg",
-                color: Colors.grey,
-                height: 11,width: 25,
-              ),
-              const SizedBox(height: 10,),
-              Text(
-                widget.centerItemText,
-                style: TextStyle(
-                  color: widget.color,
-                  fontSize: w*0.03,
-                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildMiddleTabItem() {
+  //   var w = MediaQuery.of(context).size.width;
+  //   return Expanded(
+  //     child: InkWell(
+  //       onTap: (){
+  //         Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //                 builder: (context) => const Cart()));
+  //       },
+  //       child: SizedBox(
+  //         height: widget.height,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //             SvgPicture.asset(
+  //               "assets/icons/cart_b.svg",
+  //               color: Colors.grey,
+  //               height: 11,width: 25,
+  //             ),
+  //             const SizedBox(height: 10,),
+  //             Text(
+  //               widget.centerItemText,
+  //               style: TextStyle(
+  //                 color: widget.color,
+  //                 fontSize: w*0.03,
+  //                 fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildTabItem({
     required FABBottomAppBarItem item,
@@ -154,8 +154,8 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 //Icon(item.iconData,color: color,size: widget.iconSize,),
-                SvgPicture.asset(item.iconData),
-                const SizedBox(height: 10,),
+                SvgPicture.asset(item.iconData,color: color,),
+                const SizedBox(height: 9,),
                 // Image.asset(item.iconData,
                 //     fit: BoxFit.scaleDown,
                 //     color: color,
@@ -164,7 +164,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                   item.text,
                   style: TextStyle(
                     color: color,
-                    fontSize: w*0.035,
+                    fontSize: w*0.03,
                     fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
                   ),
                 )

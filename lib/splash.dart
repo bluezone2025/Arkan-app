@@ -120,6 +120,8 @@ class _SplashScreenState extends State<SplashScreen> {
     CountryCubit.get(context).getCountry();
     UserprofileCubit.get(context).getAllinfo();
     BlocProvider.of<AppCubit>(context).notifyCount();
+    BlocProvider.of<AppCubit>(context).getBrands();
+    BlocProvider.of<AppCubit>(context).getAds();
     print(prefs.getString('token'));
     DioHelper.getData(url: 'settings').then((value) async {
       final response = value.data;

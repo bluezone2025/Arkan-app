@@ -134,11 +134,11 @@ flutter:
   fonts:
     - family: Nunito
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/Bahij TheSansArabic/Bahij_TheSansArabic-Plain.ttf
 
     - family: Almarai
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/Bahij TheSansArabic/Bahij_TheSansArabic-Plain.ttf
 
   #
   # For details regarding fonts from package dependencies,

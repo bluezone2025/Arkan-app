@@ -38,12 +38,12 @@ class _CategorySectionState extends State<CategorySection> {
     var h = MediaQuery.of(context).size.height;
     return SizedBox(
       width: w,
-      height: h * 0.13,
+      height: h * 0.2,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            SizedBox(width: h*0.03,),
+            SizedBox(width: h*0.02,),
             ListView.separated(
               primary: false,
               shrinkWrap: true,
@@ -52,52 +52,40 @@ class _CategorySectionState extends State<CategorySection> {
               itemBuilder: (context, index) {
                 return InkWell(
                   child: SizedBox(
-                    width: w*0.23,
-                    height: h * 0.13,
-                    child: Stack(
+                    width: w*0.33,
+                    height: h * 0.35,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(height: h*0.01,),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: SizedBox(
-                            width: w*0.27,
-                            height: h * 0.15,
-                            child: customCachedNetworkImage(
-                                url: EndPoints.IMAGEURL2 +
-                                    widget.catItem[index].imageUrl,
-                                context: context,
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(color: Colors.black.withOpacity(0.5),),
+                        CircleAvatar(
+                          radius: 0.07*h, // Image radius
+                          backgroundImage: NetworkImage(EndPoints.IMAGEURL2 +
+                              widget.catItem[index].imageUrl,),
                         ),
                         SizedBox(height: h*0.02,),
-                        Align(
-                          alignment:  (lang == 'en') ? Alignment.bottomCenter : Alignment.bottomCenter,
-                          child: (lang == 'en')
-                              ? Text(
-                                widget.catItem[index].nameEn,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Nunito',
-                                    color: Colors.white,
-                                    fontSize: w * 0.04),
-                                overflow: TextOverflow.clip,
-                              )
-                              : Text(
-                                widget.catItem[index].nameAr,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Almarai',
-                                    color: Colors.white,
-                                    fontSize: w * 0.04),
-                                overflow: TextOverflow.clip,
-                              ),
+                        (lang == 'en')
+                            ? Text(
+                          widget.catItem[index].nameEn,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Nunito',
+                              color: Colors.black,
+                              fontSize: w * 0.033),
+                          overflow: TextOverflow.clip,textAlign: TextAlign.center,
                         )
+                            : Text(
+                          widget.catItem[index].nameAr,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Almarai',
+                              color: Colors.black,
+                              fontSize: w * 0.033),textAlign: TextAlign.center,
+                          overflow: TextOverflow.clip,
+                        ),
                       ],
                     ),
                   ),

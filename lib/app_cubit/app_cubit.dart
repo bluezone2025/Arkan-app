@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:arkan/screens/bottomnav/models/get_ads_model.dart';
+import 'package:arkan/screens/bottomnav/models/get_brands_model.dart';
 import 'package:arkan/screens/cart/model/available_times_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/dio_helper.dart';
+import '../screens/bottomnav/models/get_brand_products_model.dart';
 import '../screens/notifications/noti_model.dart';
 import 'appstate.dart';
 
@@ -106,6 +109,85 @@ class AppCubit extends Cubit<AppCubitStates> {
     }).catchError((e){
       print(e.toString());
       emit(AvailableTimesError(e.toString()));
+    });
+  }
+
+  GetBrandsModel? getBrandsModel;
+
+  void getBrands(){
+    emit(GetBrandsLoading());
+    DioHelper.getData(url: 'get-brands').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getBrandsModel = GetBrandsModel.fromJson(result);
+        emit(GetBrandsSuccess());
+      } else {
+        print(2);
+        emit(GetBrandsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetBrandsError(e.toString()));
+    });
+  }
+
+  GetBrandProductsModel? getBrandProductsModel;
+
+  void getBrandProducts(String id){
+    emit(GetBrandProductsLoading());
+    DioHelper.getData(url: 'get-products-in-brand/$id').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getBrandProductsModel = GetBrandProductsModel.fromJson(result);
+        emit(GetBrandProductsSuccess());
+      } else {
+        print(2);
+        emit(GetBrandProductsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetBrandProductsError(e.toString()));
+    });
+  }
+  GetBrandProductsModel? getDiscountBrandProductsModel;
+
+  void getDiscountBrandProducts(String id){
+    emit(GetDiscountBrandProductsLoading());
+    DioHelper.getData(url: 'get-products-in-discount-brand/$id').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getDiscountBrandProductsModel = GetBrandProductsModel.fromJson(result);
+        emit(GetDiscountBrandProductsSuccess());
+      } else {
+        print(2);
+        emit(GetDiscountBrandProductsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetDiscountBrandProductsError(e.toString()));
+    });
+  }
+
+GetAdsModel? getAdsModel;
+
+  void getAds(){
+    emit(GetAdsLoading());
+    DioHelper.getData(url: 'get-ads').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getAdsModel = GetAdsModel.fromJson(result);
+        emit(GetAdsSuccess());
+      } else {
+        print(2);
+        emit(GetAdsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetAdsError(e.toString()));
     });
   }
 
