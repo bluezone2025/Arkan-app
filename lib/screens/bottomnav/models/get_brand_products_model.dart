@@ -136,23 +136,23 @@ class Product {
   String? titleAr;
   String? descriptionEn;
   String? descriptionAr;
-  int? appearance;
-  int? featured;
-  int? productNew;
-  int? hasReception;
-  int? price;
-  int? hasOffer;
-  int? beforePrice;
+  dynamic appearance;
+  dynamic featured;
+  dynamic productNew;
+  dynamic hasReception;
+  dynamic price;
+  dynamic hasOffer;
+  dynamic beforePrice;
   dynamic deliveryPeriod;
   String? img;
-  int? bestSelling;
-  int? basicCategoryId;
-  int? categoryId;
+  dynamic bestSelling;
+  dynamic basicCategoryId;
+  dynamic categoryId;
   dynamic sizeGuideId;
   DateTime? createdAt;
   DateTime? updatedAt;
-  int? brandId;
-  int? quantityAttribute;
+  dynamic brandId;
+  dynamic quantityAttribute;
   List<ProductHight>? productHights;
 
   Product({

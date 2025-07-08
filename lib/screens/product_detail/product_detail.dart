@@ -1060,16 +1060,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                             .data!.hasReception == 1 ? _getValueText(
                                           config.calendarType,
                                           _multiDatePickerValueWithDefaultValue,
-                                        ) : HomeCubit.get(context)
-                                            .singleProductModel!
-                                            .data!
-                                            .descriptionEn!,
+                                        ) : '',
                                         productDescAr: HomeCubit.get(context)
                                             .singleProductModel!
-                                            .data!.hasReception == 1 ? 'daza': HomeCubit.get(context)
-                                            .singleProductModel!
-                                            .data!
-                                            .descriptionAr!,
+                                            .data!.hasReception == 1 ? 'daza': '',
                                         productQty: count,
                                         productPrice: HomeCubit.get(context)
                                             .singleProductModel!
