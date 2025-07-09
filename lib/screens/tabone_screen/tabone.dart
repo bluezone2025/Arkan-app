@@ -31,6 +31,7 @@ import '../allproducts/new_product/new_product.dart';
 import '../cart/cart.dart';
 import '../category/category.dart';
 import '../notifications/noti.dart';
+import '../product_detail/product_detail.dart';
 import 'componnent/appbar.dart';
 import 'componnent/category.dart';
 import 'componnent/newproducts.dart';
@@ -397,7 +398,28 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                               splashColor: Colors.transparent,
                                               highlightColor: Colors.transparent,
                                               // overlayColor: ,
-                                              onTap: () async {},
+                                              onTap: () async {
+                                                if(ads[index].type == 'brand'){
+                                                  BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
+                                                }else if (ads[index].type == 'category'){
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => CategoriesSection(
+                                                            mainCat: '',
+                                                            mainCatId:
+                                                            ads[index].categoryId.toString(),
+                                                            subCategory: [],
+                                                          )));
+                                                }else if (ads[index].type == 'product'){
+                                                  HomeCubit.get(context).getProductdata(
+                                                      productId: ads[index].productId.toString());
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => const ProductDetail()));
+                                                }
+                                              },
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(5),
                                                 child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
@@ -635,7 +657,28 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
                                                 // overlayColor: ,
-                                                onTap: () async {},
+                                                onTap: () async {
+                                                  if(ads[index].type == 'brand'){
+                                                    BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
+                                                  }else if (ads[index].type == 'category'){
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => CategoriesSection(
+                                                              mainCat: '',
+                                                              mainCatId:
+                                                              ads[index].categoryId.toString(),
+                                                              subCategory: [],
+                                                            )));
+                                                  }else if (ads[index].type == 'product'){
+                                                    HomeCubit.get(context).getProductdata(
+                                                        productId: ads[index].productId.toString());
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => const ProductDetail()));
+                                                  }
+                                                },
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(5),
                                                   child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +

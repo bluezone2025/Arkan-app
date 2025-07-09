@@ -31,6 +31,22 @@ class _BrandsScreenState extends State<BrandsScreen> {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+    return BlocConsumer<AppCubit, AppCubitStates>(
+  listener: (context, state) {
+    if(state is GetBrandProductsSuccess){
+      LoadingScreen.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (_)=> const BrandProductsScreen(discount: false,)));
+    }if(state is GetBrandProductsError){
+      LoadingScreen.pop(context);
+    }if(state is GetDiscountBrandProductsSuccess){
+      LoadingScreen.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (_)=> const BrandProductsScreen(discount: true,)));
+    }if(state is GetDiscountBrandProductsError){
+      LoadingScreen.pop(context);
+    }
+  },
+  builder: (context, state) {
+    var discountBrands = BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!;
     return Scaffold(
       appBar: AppBar(
         title: Text(translateString('Brands', 'الماركات'),style: TextStyle(
@@ -89,82 +105,67 @@ class _BrandsScreenState extends State<BrandsScreen> {
                   fontFamily: 'Almarai',
                   color: Colors.black,
                   fontSize: w * 0.045)),
-              BlocConsumer<AppCubit, AppCubitStates>(
-                listener: (context, state) {
-                  // if(state is GetBrandProductsLoading){
-                  //   LoadingScreen.show(context);
-                  // }if(state is GetBrandProductsSuccess){
-                  //   LoadingScreen.pop(context);
-                  //   Navigator.push(context, MaterialPageRoute(builder: (_)=> const BrandProductsScreen()));
-                  // }if(state is GetBrandProductsError){
-                  //   LoadingScreen.pop(context);
-                  // }
-                },
-                builder: (context, state) {
-                  var discountBrands = BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!;
-                  return SizedBox(
-                    width: w,
-                    height: h*0.26,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          SizedBox(width: w*0.05,),
-                          ListView.separated(
-                            primary: false,
-                            shrinkWrap: true,
-                            itemCount: discountBrands.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                child: SizedBox(
-                                  width: w*0.38,
-                                  height: h * 0.35,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(height: h*0.01,),
-                                      SizedBox(
-                                        width: w*0.4,
-                                        height: h * 0.18,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
-                                          child: customCachedNetworkImage(
-                                            url: EndPoints.IMAGEURL2 +
-                                                discountBrands[index].logo!,
-                                            context: context,
-                                            fit: BoxFit.fill,),
-                                        ),
-                                      ),
-                                      SizedBox(height: h*0.02,),
-                                      Text(
-                                        translateString('${discountBrands[index].nameEn!} - ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}', '${discountBrands[index].nameAr!} - ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}'),
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Almarai',
-                                            color: Colors.black,
-                                            fontSize: w * 0.035),textAlign: TextAlign.center,
-                                        overflow: TextOverflow.clip,
-                                      ),
-                                    ],
+              SizedBox(
+                width: w,
+                height: h*0.26,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(width: w*0.05,),
+                      ListView.separated(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: discountBrands.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            child: SizedBox(
+                              width: w*0.38,
+                              height: h * 0.35,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: h*0.01,),
+                                  SizedBox(
+                                    width: w*0.4,
+                                    height: h * 0.18,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: customCachedNetworkImage(
+                                        url: EndPoints.IMAGEURL2 +
+                                            discountBrands[index].logo!,
+                                        context: context,
+                                        fit: BoxFit.fill,),
+                                    ),
                                   ),
-                                ),
-                                onTap: (){
-                                  BlocProvider.of<AppCubit>(context).getDiscountBrandProducts(discountBrands[index].id.toString());
-                                },
-                              );
-                            },
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: w * 0.025,
+                                  SizedBox(height: h*0.02,),
+                                  Text(
+                                    translateString('${discountBrands[index].nameEn!} - ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}', '${discountBrands[index].nameAr!} - ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}'),
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Almarai',
+                                        color: Colors.black,
+                                        fontSize: w * 0.035),textAlign: TextAlign.center,
+                                    overflow: TextOverflow.clip,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            onTap: (){
+                              BlocProvider.of<AppCubit>(context).getDiscountBrandProducts(discountBrands[index].id.toString());
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: w * 0.025,
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    ],
+                  ),
+                ),
               ),
               SizedBox(
                 height: h * 0.02,
@@ -215,5 +216,7 @@ class _BrandsScreenState extends State<BrandsScreen> {
         ),
       ),
     );
+  },
+);
   }
 }
