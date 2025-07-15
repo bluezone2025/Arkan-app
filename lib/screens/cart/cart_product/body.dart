@@ -22,6 +22,7 @@ import '../../address/add_address.dart';
 import '../../country/cubit/country_cubit.dart';
 import '../../loading.dart';
 import '../../tabone_screen/cubit/home_cubit.dart';
+import '../cart.dart';
 import '../cubit/cart_cubit.dart';
 import '../model/copoun_model.dart';
 import 'conponent.dart';
@@ -666,7 +667,13 @@ class _RayanCartBodyState extends State<RayanCartBody> {
   },
 );
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is DeletedatabaseState){
+          print(1111);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => const Cart()));
+        }
+      },
     );
   }
 

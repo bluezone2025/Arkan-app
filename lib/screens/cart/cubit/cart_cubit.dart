@@ -57,6 +57,7 @@ class CartCubit extends Cubit<CartState> {
                   DataBaseCubit.get(context).counter[int.parse(productId)]!);
           emit(CheckProductAddcartSuccessState(index));
         } else {
+          LoadingScreen.pop(context);
           Fluttertoast.showToast(
               msg: "${LocalKeys.AMOUNT.tr()} : ${data['data']}",
               textColor: Colors.white,

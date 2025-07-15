@@ -1248,75 +1248,164 @@ class _AddressInfoState extends State<AddressInfo> with SingleTickerProviderStat
                             fallback: (context) =>
                                 Container()),
                         SizedBox(
-                          height: h * 0.02,
-                        ),
-                        Text(
-                          translateString("Select City", 'اختر المحافظة'),
-                          style: TextStyle(
-                              color: mainColor,
-                              fontFamily:
-                              (lang == 'en') ? 'Nunito' : 'Almarai',
-                              fontSize: w * 0.03,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(
                           height: h * 0.01,
                         ),
-                        SizedBox(
-                          width: w * 0.95,
-                          child:  GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                mainAxisExtent: 0.08*h,
-                                crossAxisCount:2),
+                        BlocConsumer<CountryCubit,
+                            CountryState>(
+                            builder: (context, state) {
+                              return ConditionalBuilder(
+                                  condition: state
+                                  is! GetCityLoadingState,
+                                  builder:
+                                      (context) => InkWell(
+                                    onTap: () => showModalBottomSheet(
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(15.0),
+                                          ),
+                                        ),
+                                        isScrollControlled: true,
+                                        constraints: BoxConstraints(
+                                            minHeight: 0.45*h
+                                        ),
+                                        builder: (BuildContext bc){
+                                          return SizedBox(
+                                            height: 0.5*h,
+                                            child: SingleChildScrollView(
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 0.04*w),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    SizedBox(height: h*0.01,),
+                                                    Center(child: Container(width: 0.15*w,height: 0.005*h,color: Colors.grey[300],)),
+                                                    SizedBox(height: h*0.01,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: ()=> Navigator.pop(context),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                            child: Container(
+                                                              height: h*0.05,
+                                                              decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: mainColor)),
+                                                              child: Icon(Icons.close_rounded,color: mainColor,),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Center(child: Text(translateString('Select City', 'اختر المحافظة'),style: TextStyle(color: mainColor,fontSize: w*0.04,fontWeight: FontWeight.bold,),)),
+                                                    SizedBox(height: h*0.01,),
+                                                    Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 0.03*w),
+                                                      child: GridView.builder(
+                                                        shrinkWrap: true,
+                                                        physics: const NeverScrollableScrollPhysics(),
+                                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                            mainAxisExtent: 0.08*h,
+                                                            crossAxisCount:2),
 
-                            itemBuilder: ( context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 0.02*w,vertical: 0.01*h),
-                                child: InkWell(
-                                  onTap: () async {
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {
-                                      selected2 =index;
-                                    });
-                                    setState(
-                                            () {
-                                          areaName = (lang == 'en')
-                                              ? CountryCubit.get(context).cityModel!.data![index].nameEn
-                                              : CountryCubit.get(context).cityModel!.data![index].nameAr;
-                                          areaId =
-                                          CountryCubit.get(context).cityModel!.data![index].id!;
-                                        });
-                                    SharedPreferences
-                                    prefs =
-                                    await SharedPreferences.getInstance();
-                                    prefs.setString(
-                                        "delivery_value",
-                                        CountryCubit.get(context).cityModel!.data![index].delivery!);
-                                    prefs
-                                        .setString('city_id', CountryCubit.get(context).cityModel!.data![index].id!.toString())
-                                        .then((value) {
-                                      CartCubit.get(context).getDelivery(context: context);
-                                    });
-                                    prefs.setString('city', translateString(CountryCubit.get(context).cityModel!.data![index].nameEn.toString(), CountryCubit.get(context).cityModel!.data![index].nameAr.toString()));
-                                  },
-                                  child: Container(
-                                    width: 0.42*w,
-                                    height: 0.07*h,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xffE9E9E9),
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: selected2 == index ? mainColor: Colors.transparent)
+                                                        itemBuilder: ( context, index) {
+                                                          return Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: 0.02*w,vertical: 0.01*h),
+                                                            child: InkWell(
+                                                              onTap: () async {
+                                                                FocusScope.of(context).unfocus();
+                                                                setState(() {
+                                                                  selected2 =index;
+                                                                });
+                                                                setState(
+                                                                        () {
+                                                                      areaName = (lang == 'en')
+                                                                          ? CountryCubit.get(context).cityModel!.data![index].nameEn
+                                                                          : CountryCubit.get(context).cityModel!.data![index].nameAr;
+                                                                      areaId =
+                                                                      CountryCubit.get(context).cityModel!.data![index].id!;
+                                                                    });
+                                                                SharedPreferences
+                                                                prefs =
+                                                                await SharedPreferences.getInstance();
+                                                                prefs.setString(
+                                                                    "delivery_value",
+                                                                    CountryCubit.get(context).cityModel!.data![index].delivery!);
+                                                                prefs
+                                                                    .setString('city_id', CountryCubit.get(context).cityModel!.data![index].id!.toString())
+                                                                    .then((value) {
+                                                                  CartCubit.get(context).getDelivery(context: context);
+                                                                });
+                                                                prefs.setString('city', translateString(CountryCubit.get(context).cityModel!.data![index].nameEn.toString(), CountryCubit.get(context).cityModel!.data![index].nameAr.toString()));
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Container(
+                                                                width: 0.42*w,
+                                                                height: 0.07*h,
+                                                                decoration: BoxDecoration(
+                                                                    color: const Color(0xffE9E9E9),
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    border: Border.all(color: selected2 == index ? mainColor: Colors.transparent)
+                                                                ),
+                                                                child: Center(child: Text(translateString(CountryCubit.get(context).cityModel!.data![index].nameEn!, CountryCubit.get(context).cityModel!.data![index].nameAr!),style: selected2 == index ? TextStyle(color: mainColor,fontSize: w*0.04,fontWeight: FontWeight.w100,) : TextStyle(color: Colors.black,fontSize: w*0.04,fontWeight: FontWeight.w100,),)),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        itemCount: CountryCubit.get(context).cityModel!.data!.length,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
                                     ),
-                                    child: Center(child: Text(translateString(CountryCubit.get(context).cityModel!.data![index].nameEn!, CountryCubit.get(context).cityModel!.data![index].nameAr!),style: selected2 == index ? TextStyle(color: mainColor,fontSize: w*0.04,fontWeight: FontWeight.w100,) : TextStyle(color: Colors.black,fontSize: w*0.04,fontWeight: FontWeight.w100,),)),
-                                  ),
-                                ),
-                              );
+                                    child: Container(
+                                      width: w * 0.95,
+                                      height: h * 0.076,
+                                      decoration:
+                                      BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors
+                                              .grey[400]!,),
+                                        borderRadius:
+                                        BorderRadius
+                                            .circular(
+                                            15),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets
+                                              .symmetric(
+                                              horizontal:
+                                              w * 0.02),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                selected2 == null ? translateString(LocalKeys
+                                                    .CITY.tr(), 'المحافظة') : translateString(CountryCubit.get(context).cityModel!.data![selected2!].nameEn!, CountryCubit.get(context).cityModel!.data![selected2!].nameAr!),
+                                                style: TextStyle(
+                                                  fontFamily: (lang == 'en')
+                                                      ? 'Nunito'
+                                                      : 'Almarai',
+                                                  color:
+                                                  Colors.black45,fontSize: w * 0.035,),
+                                              ),
+                                              Icon(Icons.arrow_drop_down,color: mainColor,)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ), // your widget
+
+                                  fallback: (context) =>
+                                      Container());
                             },
-                            itemCount: CountryCubit.get(context).cityModel!.data!.length,
-                          ),
-                        ),
+                            listener: (context, state) {}),
                         SizedBox(
                           height: h * 0.02,
                         ),

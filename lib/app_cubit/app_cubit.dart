@@ -171,15 +171,35 @@ class AppCubit extends Cubit<AppCubitStates> {
     });
   }
 
-GetAdsModel? getAdsModel;
+GetAdsModel? getAdsModel1;
 
-  void getAds(){
+  void getAds1(){
     emit(GetAdsLoading());
-    DioHelper.getData(url: 'get-ads').then((value) {
+    DioHelper.getData(url: 'get-ads-in-position/1').then((value) {
       final result = value.data;
       print(result);
       if (result['status'] == 1) {
-        getAdsModel = GetAdsModel.fromJson(result);
+        getAdsModel1 = GetAdsModel.fromJson(result);
+        emit(GetAdsSuccess());
+      } else {
+        print(2);
+        emit(GetAdsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetAdsError(e.toString()));
+    });
+  }
+
+  GetAdsModel? getAdsModel2;
+
+  void getAds2(){
+    emit(GetAdsLoading());
+    DioHelper.getData(url: 'get-ads-in-position/2').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getAdsModel2 = GetAdsModel.fromJson(result);
         emit(GetAdsSuccess());
       } else {
         print(2);

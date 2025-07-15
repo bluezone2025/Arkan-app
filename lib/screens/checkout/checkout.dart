@@ -755,6 +755,8 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                   }
                                   if(state is CashOrdersLoadingState){
                                     LoadingScreen.show(context);
+                                  }if(state is CashOrdersErrorState){
+                                    LoadingScreen.pop(context);
                                   }
                                 },
                                 builder: (context, state) {

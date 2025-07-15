@@ -384,7 +384,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {},
                                     builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel!.ads;
+                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel1!.ads;
                                       return ads!.isNotEmpty ? SizedBox(
                                     height: 0.35*h,
                                     child: ListView.builder(
@@ -643,7 +643,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {},
                                     builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel!.ads;
+                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel2!.ads;
                                       return ads!.isNotEmpty ? SizedBox(
                                         height: 0.35*h,
                                         child: ListView.builder(
