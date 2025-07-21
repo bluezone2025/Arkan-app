@@ -145,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen> {
               context, MaterialPageRoute(builder: (context) => OnBoarding()));*/
           } else {
             Timer(
-                const Duration(seconds: 5),
+                const Duration(seconds: 1),
                     () => Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) => screen)));
           }
@@ -159,7 +159,7 @@ class _SplashScreenState extends State<SplashScreen> {
             print("ios") ;
             if (mounted) {
               Timer(
-                  const Duration(seconds: 5),
+                  const Duration(seconds: 1),
                       () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) => screen)));
             }
@@ -168,7 +168,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }else{
         if (mounted) {
           Timer(
-              const Duration(seconds: 5),
+              const Duration(seconds: 1),
                   () => Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) => screen)));
         }
@@ -177,7 +177,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print('seetttiiinggg'+e.toString());
     });
     Timer(
-        const Duration(seconds: 5),
+        const Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) => screen)));
     WidgetsBinding.instance.addPostFrameCallback((_) async {

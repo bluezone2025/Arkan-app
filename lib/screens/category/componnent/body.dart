@@ -231,6 +231,28 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                               ),
                                             ),
                                           ),
+                                          if(products[index].availability == 0)
+                                            Positioned(
+                                              top: 0.1*h,
+                                              child: Container(
+                                                width: w * 0.42,
+                                                height: h * 0.05,
+                                                color: Colors.black38,
+                                                child: Center(
+                                                  child: Text(
+                                                    translateString('sold out', 'نفذت الكمية'),
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: w * 0.04,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: 'Almarai',color: Colors.white
+                                                    ),
+                                                    overflow: TextOverflow.fade,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                         ],
                                       ),
                                       SizedBox(
@@ -243,15 +265,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                             children: [
                                               Container(
                                                 constraints: BoxConstraints(
-                                                    maxHeight: h * 0.07, maxWidth: w * 0.38),
+                                                    maxHeight: h * 0.09, maxWidth: w * 0.38,),
                                                 child: (lang == 'en')
                                                     ? Text(products[index].titleEn,maxLines: 1,
                                                     style: TextStyle(
                                                       fontSize: w * 0.035,
                                                       fontWeight: FontWeight.bold,
                                                       fontFamily: 'Nunito',
-                                                    ),
-                                                    overflow: TextOverflow.fade)
+                                                    ),)
                                                     : Text(
                                                   products[index].titleAr,maxLines: 1,
                                                   style: TextStyle(
@@ -259,7 +280,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Almarai',
                                                   ),
-                                                  overflow: TextOverflow.fade,
                                                 ),
                                               ),
                                               Row(
@@ -299,18 +319,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                                   ),
                                                 ],
                                               ),
-                                              if(products[index].availability == 0)
-                                                Center(
-                                                  child: Text(
-                                                    translateString('sold out', 'نفذت الكمية'),maxLines: 1,textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: w * 0.03,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Almarai',color: mainColor
-                                                    ),
-                                                    overflow: TextOverflow.fade,
-                                                  ),
-                                                ),
                                               SizedBox(
                                                 height: h * 0.01,
                                               ),

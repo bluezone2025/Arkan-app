@@ -59,12 +59,14 @@ class Currency {
   String? name;
   String? rate;
   String? code;
+  String? codeAr;
 
   Currency({
     this.id,
     this.name,
     this.rate,
     this.code,
+    this.codeAr,
   });
 
   Currency.fromJson(Map<String, dynamic> json) {
@@ -72,5 +74,6 @@ class Currency {
     name = json['name'];
     rate = json['rate'];
     code = json['code'];
+    codeAr = json['code_ar'];
   }
 }

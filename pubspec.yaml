@@ -79,6 +79,7 @@ dependencies:
   dots_indicator: any
   flutter_svg: any
   calendar_date_picker2: any
+  flutter_native_splash: ^2.4.0
 
 dependency_overrides:
   intl: ^0.18.0
@@ -87,8 +88,15 @@ dependency_overrides:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  remove_alpha_ios: true
-  image_path: "assets/icons/logo.png"
+  image_path: "assets/icons/icon.png"
+
+flutter_native_splash:
+  image: assets/icons/splash.png
+  color: "#ffffff"
+  android: true
+  ios: true
+  fullscreen: true
+
 
 dev_dependencies:
   flutter_test:
@@ -118,6 +126,7 @@ flutter:
     - assets/
     - assets/translation/
     - assets/icon rayan/
+    - assets/icons/splash.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

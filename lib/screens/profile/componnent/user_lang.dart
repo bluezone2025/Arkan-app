@@ -22,12 +22,12 @@ class _UserLanguageSelectionState extends State<UserLanguageSelection> {
       preferredSize: Size(w, h),
       child: Container(
         decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/icons/lang.png"),fit: BoxFit.fill)
+            image: DecorationImage(image: AssetImage("assets/icons/splash.png"),fit: BoxFit.fill)
         ),
         child: Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             centerTitle: true,
             leading: const BackButton(color: Colors.black,),
             title: Text('يرجي اختيار اللغة',style: TextStyle(
@@ -40,8 +40,15 @@ class _UserLanguageSelectionState extends State<UserLanguageSelection> {
           body: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: h * 0.1,
+                ),
+                Image.asset("assets/icons/logo.png",height: 0.2*h,),
+                SizedBox(
+                  height: h * 0.1,
+                ),
                 Center(
                   child: Text(
                     'اختيار اللغة',

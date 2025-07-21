@@ -60,18 +60,44 @@ class _NewProductsState extends State<NewProducts> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Container(
-                        width: w * 0.42,
-                        height: h * 0.2,
-                        color: Colors.white,
-                        child: customCachedNetworkImage(
-                            url: EndPoints.IMAGEURL2 +
-                                widget.newItem[index].img.toString(),
-                            context: context,
-                            fit: BoxFit.cover),
-                      ),
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            width: w * 0.42,
+                            height: h * 0.2,
+                            color: Colors.white,
+                            child: customCachedNetworkImage(
+                                url: EndPoints.IMAGEURL2 +
+                                    widget.newItem[index].img.toString(),
+                                context: context,
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                        if(widget.newItem[index].availability == 0)
+                          Positioned(
+                            top: 0.08*h,
+                            child: Container(
+                              width: w * 0.42,
+                              height: h * 0.05,
+                              color: Colors.black38,
+                              child: Center(
+                                child: Text(
+                                  translateString('sold out', 'نفذت الكمية'),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: w * 0.04,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Almarai',color: Colors.white
+                                  ),
+                                  overflow: TextOverflow.fade,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                     SizedBox(
                       width: w * 0.42,
@@ -158,18 +184,6 @@ class _NewProductsState extends State<NewProducts> {
                                             .w500),
                                   ),
                               ],
-                            ),
-                            if(widget.newItem[index].availability == 0)
-                            Center(
-                              child: Text(
-                                translateString('sold out', 'نفذت الكمية'),maxLines: 1,textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: w * 0.03,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Almarai',color: mainColor
-                                ),
-                                overflow: TextOverflow.fade,
-                              ),
                             ),
                             SizedBox(
                               height: h * 0.01,

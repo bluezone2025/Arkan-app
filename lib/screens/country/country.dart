@@ -200,12 +200,17 @@ class _CountryState extends State<Country> {
                                                             true);
                                                         prefs.setString(
                                                             'currency',
-                                                            CountryCubit.get(
-                                                                    context)
-                                                                .countryModel!
-                                                                .data![index]
-                                                                .currency!
-                                                                .code!);
+                                                           translateString( CountryCubit.get(
+                                                               context)
+                                                               .countryModel!
+                                                               .data![index]
+                                                               .currency!
+                                                               .code!,  CountryCubit.get(
+                                                               context)
+                                                               .countryModel!
+                                                               .data![index]
+                                                               .currency!
+                                                               .codeAr!));
                                                         prefs.setString(
                                                             'country_code',
                                                             CountryCubit.get(

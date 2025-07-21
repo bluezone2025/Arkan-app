@@ -32,6 +32,7 @@ import '../cart/cart.dart';
 import '../category/category.dart';
 import '../notifications/noti.dart';
 import '../product_detail/product_detail.dart';
+import '../profile/cubit/userprofile_cubit.dart';
 import 'componnent/appbar.dart';
 import 'componnent/category.dart';
 import 'componnent/newproducts.dart';
@@ -129,7 +130,19 @@ class _TaboneScreenState extends State<TaboneScreen> {
               SizedBox(
                 width: w * 0.02,
               ),
-              Text(translateString('good after noon', 'مساء الخير'),style: TextStyle(
+              if(UserprofileCubit.get(context)
+                  .userModel != null)
+              Text(
+                (islogin)
+                    ? UserprofileCubit.get(context)
+                    .userModel!
+                    .name!
+                    : '',style: TextStyle(
+              fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+        fontSize: w * 0.03,
+        color: const Color(0xff400000)),
+              ),
+              Text(translateString('  good after noon', '  مساء الخير'),style: TextStyle(
                   fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
                   fontSize: w * 0.03,
                   color: const Color(0xff400000)),),
