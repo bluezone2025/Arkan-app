@@ -64,7 +64,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: mainColor,
           title: Text(
             LocalKeys.UPDATE_PROFILE.tr(),
             style: TextStyle(
@@ -150,7 +150,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             height: h * 0.08,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.black,
+                              color: mainColor,
                             ),
                             child: Center(
                               child: Text(

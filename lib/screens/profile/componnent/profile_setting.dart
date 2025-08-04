@@ -1,3 +1,4 @@
+import 'package:arkan/componnent/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -41,14 +42,14 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: mainColor,
         automaticallyImplyLeading: false,
         elevation: 0.0,
         title: Text(
           LocalKeys.UPDATE.tr(),
           style: TextStyle(
               fontSize: w * 0.05,
-              fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+              fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',color: Colors.white,
               fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

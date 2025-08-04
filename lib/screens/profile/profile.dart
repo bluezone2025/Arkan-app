@@ -15,6 +15,7 @@ import '../auth/login.dart';
 import '../bottomnav/homeScreen.dart';
 import '../contact us/contact_us.dart';
 import '../country/country.dart';
+import '../favourite_screen/favourite_screen.dart';
 import 'componnent/profileimage.dart';
 import 'componnent/profileitem.dart';
 import 'componnent/user_lang.dart';
@@ -169,12 +170,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     ProfileItem(
                                         press: () => (isLogin)
-                                            ? Navigator.pushAndRemoveUntil(
+                                            ? Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HomeScreen(index: 1)),
-                                                (route) => false)
+                                                    FavouriteScreen()))
                                             : Fluttertoast.showToast(
                                             msg: LocalKeys.MUST_LOGIN.tr(),
                                             textColor: Colors.white,

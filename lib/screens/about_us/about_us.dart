@@ -39,7 +39,7 @@ class _AboutUsState extends State<AboutUs> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: mainColor,
           title: Text(
             widget.title,
             style: TextStyle(

@@ -53,14 +53,7 @@ class _OrdersState extends State<Orders> {
           ),
           leading: BackButton(
             color: Colors.black,
-            onPressed: () => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    // ignore: prefer_const_constructors
-                    builder: (context) => HomeScreen(
-                          index: 3,
-                        )),
-                (route) => false),
+            onPressed: () => Navigator.pop(context),
           ),
           centerTitle: true,
           elevation: 0,
@@ -95,6 +88,11 @@ class _OrdersState extends State<Orders> {
                                                   height: h * 0.11,
                                                   child: Row(
                                                     children: [
+                                                      if(OrderCubit.get(
+                                                          context)
+                                                          .allOrdersModel!
+                                                          .orders![i]
+                                                          .products!.isNotEmpty)
                                                       Container(
                                                         width: w * 0.17,
                                                         height: h * 0.09,

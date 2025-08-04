@@ -50,7 +50,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
-          toolbarHeight: h*0.06,
+          centerTitle: true,
+          leading: BackButton(
+            color: Colors.black,
+            onPressed: () => Navigator.pop(context),
+          ),
           title: Text(
             LocalKeys.FAV.tr(),
             style: TextStyle(
@@ -61,7 +65,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           ),
           //centerTitle: true,
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
           actions: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: w * 0.01),

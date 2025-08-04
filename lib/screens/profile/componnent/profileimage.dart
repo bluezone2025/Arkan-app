@@ -13,6 +13,7 @@ import '../../../app_cubit/appstate.dart';
 import '../../../generated/local_keys.dart';
 import '../../auth/login.dart';
 import '../../bottomnav/homeScreen.dart';
+import '../../orders/cubit/order_cubit.dart';
 
 class ProfileImage extends StatefulWidget {
   final String userName;
@@ -59,18 +60,23 @@ class _ProfileImageState extends State<ProfileImage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ProfileHeaderComponnent(
-                          press: () => (widget.isLogin)
-                              ? Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Orders()),
-                                )
-                              :  Navigator.pushAndRemoveUntil(
+                          press: () {
+                            (widget.isLogin)
+                                ? Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const Login()),
-                                  (route) => false),
+                                  builder: (context) => Orders()),
+                            )
+                                :  Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                    const Login()),
+                                    (route) => false);
+                            if(widget.isLogin){
+                              OrderCubit.get(context).getAllorders();
+                            }
+                          },
                           title: (widget.isLogin) ? LocalKeys.MY_ORDERS.tr() : LocalKeys.LOG_IN.tr(),
                           image: (widget.isLogin) ? "assets/icon rayan/Group 928.png" : null, color: mainColor,),
                       ProfileHeaderComponnent(

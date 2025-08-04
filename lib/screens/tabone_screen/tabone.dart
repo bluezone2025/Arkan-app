@@ -190,6 +190,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                 SizedBox(
                   height: h * 0.01,
                 ),
+                if(HomeCubit.get(context)
+                    .homeitemsModel != null)
                 CarouselSlider.builder(
                     carouselController: _controller,
                     itemCount: HomeCubit.get(context)
@@ -289,6 +291,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.015,
                                   ),
+                                  if(HomeCubit.get(context)
+                                      .homeitemsModel != null)
                                   CategorySection(
                                     catItem: HomeCubit.get(context)
                                         .homeitemsModel!
@@ -298,6 +302,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.04,
                                   ),
+                                  if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!.isNotEmpty)
                                   SectionTitle(
                                       title: translateString('Brands', 'الماركات'),
@@ -305,6 +310,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => const BrandsScreen()))),
+                                  if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!.isNotEmpty)
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {
@@ -394,10 +400,11 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   );
   },
 ),
+                                  if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null)
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {},
                                     builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel1!.ads;
+                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel1?.ads;
                                       return ads!.isNotEmpty ? SizedBox(
                                     height: 0.35*h,
                                     child: ListView.builder(
@@ -460,11 +467,13 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.03,
                                   ),
+                                  if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!.isNotEmpty)
                                   SectionTitle(
                                       title: translateString('Brand Discounts', 'خصومات الماركات'),
                                       press: () =>  Navigator.push(context,
                                           MaterialPageRoute(builder: (context) => const BrandsScreen()))),
+                                  if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!.isNotEmpty)
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {
@@ -590,6 +599,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.02,
                                   ),
+                                  if(HomeCubit.get(context)
+                                      .homeitemsModel != null)
                                   NewProducts(
                                     newItem: HomeCubit.get(context)
                                         .homeitemsModel!
@@ -644,6 +655,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.02,
                                   ),
+                                  if(HomeCubit.get(context)
+                                      .homeitemsModel != null)
                                   Offers(
                                     offersItem: HomeCubit.get(context)
                                         .homeitemsModel!
@@ -653,10 +666,11 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.02,
                                   ),
+                                  if(BlocProvider.of<AppCubit>(context).getAdsModel2 != null)
                                   BlocConsumer<AppCubit, AppCubitStates>(
                                     listener: (context, state) {},
                                     builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel2!.ads;
+                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel2?.ads;
                                       return ads!.isNotEmpty ? SizedBox(
                                         height: 0.35*h,
                                         child: ListView.builder(

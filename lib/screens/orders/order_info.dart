@@ -73,6 +73,10 @@ class _OrderInfoState extends State<OrderInfo> {
                           Expanded(
                             child: ListView(
                               children: [
+                                if(OrderCubit.get(context)
+                                    .singleOrderModel!
+                                    .order!
+                                    .street != null)
                                 SizedBox(
                                   width: w,
                                   child: Padding(
@@ -97,7 +101,7 @@ class _OrderInfoState extends State<OrderInfo> {
                                                 OrderCubit.get(context)
                                                     .singleOrderModel!
                                                     .order!
-                                                    .street!,
+                                                    .street ?? '',
                                                 style: TextStyle(
                                                     fontFamily: (lang == 'en')
                                                         ? 'Nunito'
@@ -134,7 +138,9 @@ class _OrderInfoState extends State<OrderInfo> {
                                   width: w,
                                   color: Colors.grey[200],
                                 ),
-                                Padding(
+                                if(OrderCubit.get(context)
+                                    .singleOrderModel != null)
+                                    Padding(
                                   padding: EdgeInsets.all(w * 0.05),
                                   child: Column(
                                     crossAxisAlignment:
@@ -145,7 +151,12 @@ class _OrderInfoState extends State<OrderInfo> {
                                             .order!
                                             .orderItems!
                                             .length, (i) {
-                                      return Padding(
+                                      return OrderCubit.get(
+                                          context)
+                                          .singleOrderModel!
+                                          .order!
+                                          .orderItems![i]
+                                          .product != null ? Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: w * 0.00,
                                             vertical: h * 0.01),
@@ -312,7 +323,7 @@ class _OrderInfoState extends State<OrderInfo> {
                                             ),
                                           ],
                                         ),
-                                      );
+                                      ) : Container();
                                     }),
                                   ),
                                 ),
