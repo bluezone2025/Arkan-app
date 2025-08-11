@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import '../../tabone_screen/model/home_model.dart';
+
 class OffersModel {
   int? status;
   Data? data;
@@ -75,6 +77,7 @@ class DataOffers {
   String? createdAt;
   String? updatedAt;
   int? availability;
+  List<Country>? countries;
 
   DataOffers({
     this.id,
@@ -90,6 +93,7 @@ class DataOffers {
     this.beforePrice,
     this.deliveryPeriod,
     this.img,
+    this.countries,
     this.bestSelling,
     this.basicCategoryId,
     this.categoryId,
@@ -113,6 +117,7 @@ class DataOffers {
     beforePrice = json['before_price'];
     deliveryPeriod = json['delivery_period'];
     img = json['img'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
     bestSelling = json['best_selling'];
     basicCategoryId = json['basic_category_id'];
     categoryId = json['category_id'];

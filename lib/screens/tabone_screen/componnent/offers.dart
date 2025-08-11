@@ -20,6 +20,7 @@ class Offers extends StatefulWidget {
 class _OffersState extends State<Offers> {
   String lang = '';
   String currency = '';
+  String code = '';
 
   List<String> d = [
     'assets/d1.jpg',
@@ -33,6 +34,7 @@ class _OffersState extends State<Offers> {
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -54,7 +56,7 @@ class _OffersState extends State<Offers> {
         child: GridView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) => Padding(
+          itemBuilder: (context, index) =>  widget.offersItem[index].countries!.any((v) => v.code == code) ?Padding(
             padding: EdgeInsets.symmetric(horizontal: w*0.005),
             child: InkWell(
               onTap: () {
@@ -204,7 +206,7 @@ class _OffersState extends State<Offers> {
                 ],
               ),
             ),
-          ),
+          ): Container(),
           itemCount: widget.offersItem.length >= 4 ? 4 :widget.offersItem.length, gridDelegate:
         SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisExtent: w*0.43,

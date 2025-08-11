@@ -36,11 +36,12 @@ import '../profile/cubit/userprofile_cubit.dart';
 import 'componnent/appbar.dart';
 import 'componnent/category.dart';
 import 'componnent/newproducts.dart';
-import 'model//home_model.dart' as home;
-import 'componnent/offers.dart';
+import 'componnent/offers.dart' as offer;
 import 'componnent/section_title.dart';
 import 'cubit/home_cubit.dart';
 import 'package:badges/badges.dart' as badges;
+
+import 'model/home_model.dart';
 
 class TaboneScreen extends StatefulWidget {
   @override
@@ -50,12 +51,16 @@ class TaboneScreen extends StatefulWidget {
 class _TaboneScreenState extends State<TaboneScreen> {
   String lang = '';
   bool islogin = false;
+  bool finish = false;
+  String code = '';
+  int deleteSlider = 0;
+  List<Sliders> sliders =[];
 
-  List<home.Daza> daza = [
-    home.Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
-    home.Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
-    home.Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
-    home.Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
+  List<Daza> daza = [
+    Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
+    Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
+    Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
+    Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
   ];
 
   getLang() async {
@@ -63,7 +68,25 @@ class _TaboneScreenState extends State<TaboneScreen> {
     setState(() {
       lang = preferences.getString('language').toString();
       islogin = preferences.getBool('login') ?? false;
+      code = preferences.getString('country_code').toString();
     });
+    if(HomeCubit.get(context).homeitemsModel != null){
+      for(int i=0; i< HomeCubit.get(context).homeitemsModel!.data!.sliders!.length;i++){
+        print(i);
+        for(int x=0; x< HomeCubit.get(context).homeitemsModel!.data!.sliders![i].countries!.length;x++){
+          print(x);
+          print(code);
+          if(HomeCubit.get(context).homeitemsModel!.data!.sliders![i].countries![x].code == code){
+            setState(() {
+              sliders.add(HomeCubit.get(context).homeitemsModel!.data!.sliders![i]);
+            });
+          }
+        }
+      }
+      setState(() {
+        finish = true;
+      });
+    }
   }
 
   final Geolocator geolocator = Geolocator();
@@ -103,6 +126,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
     getCurrentLocation();
     DataBaseCubit.get(context).cart.length;
     BlocProvider.of<AppCubit>(context).notifyCount();
+
     super.initState();
   }
 
@@ -110,6 +134,9 @@ class _TaboneScreenState extends State<TaboneScreen> {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+    if(!finish){
+      getLang();
+    }
     return Scaffold(
         backgroundColor: const Color(0xffF8F8F8),
         // appBar: AppBarHome.app_bar_home(
@@ -190,27 +217,19 @@ class _TaboneScreenState extends State<TaboneScreen> {
                 SizedBox(
                   height: h * 0.01,
                 ),
-                if(HomeCubit.get(context)
-                    .homeitemsModel != null)
+                if(HomeCubit.get(context).homeitemsModel != null)
                 CarouselSlider.builder(
                     carouselController: _controller,
-                    itemCount: HomeCubit.get(context)
-                        .homeitemsModel!
-                        .data!
-                        .sliders!
-                        .length,
+                    itemCount: sliders.length,
                     itemBuilder: (context, index, realIndex) {
-                      return InkWell(
+                      return sliders[index].countries!.any((v) => v.code == code) ? InkWell(
                         focusColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         // overlayColor: ,
                         onTap: () async {},
-                        child: CachedNetworkImage(imageUrl: HomeCubit.get(context)
-                            .homeitemsModel!
-                            .data!
-                            .sliders![index].imgFullPath!,width: w,height: h*0.4,fit: BoxFit.fill,),
-                      );
+                        child: CachedNetworkImage(imageUrl: sliders[index].imgFullPath!,width: w,height: h*0.4,fit: BoxFit.fill,),
+                       ): Container();
                     },
                     options: CarouselOptions(
                         onPageChanged: (index, reason) {
@@ -339,7 +358,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                             itemCount: normalBrands.length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
-                                              return  InkWell(
+                                              return normalBrands[index].countries!.any((v) => v.code == code) ? InkWell(
                                                 child: SizedBox(
                                                   width: w*0.38,
                                                   height: h * 0.35,
@@ -388,7 +407,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                 onTap: (){
                                                   BlocProvider.of<AppCubit>(context).getBrandProducts(normalBrands[index].id.toString());
                                                 },
-                                              );
+                                              ) : Container();
                                             },
                                             separatorBuilder: (context, index) => SizedBox(
                                               width: w * 0.025,
@@ -411,7 +430,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                         itemCount: ads.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
-                                          return Padding(
+                                          return ads[index].countries!.any((v) => v.code == code) ? Padding(
                                             padding: const EdgeInsets.all(2.0),
                                             child: InkWell(
                                               focusColor: Colors.transparent,
@@ -446,7 +465,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                     ads[index].image!,width: w*0.5,height: h*0.4,fit: BoxFit.fill,),
                                               ),
                                             ),
-                                          );
+                                          ) : Container();
                                         },),
                                   ) : Container();
   },
@@ -502,7 +521,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                             itemCount: discountBrands.length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
-                                              return InkWell(
+                                              return discountBrands[index].countries!.any((v) => v.code == code) ? InkWell(
                                                 child: SizedBox(
                                                   width: w*0.38,
                                                   height: h * 0.35,
@@ -577,7 +596,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                 onTap: (){
                                                   BlocProvider.of<AppCubit>(context).getDiscountBrandProducts(discountBrands[index].id.toString());
                                                 },
-                                              );
+                                              ) : Container();
                                             },
                                             separatorBuilder: (context, index) => SizedBox(
                                               width: w * 0.025,
@@ -657,7 +676,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   ),
                                   if(HomeCubit.get(context)
                                       .homeitemsModel != null)
-                                  Offers(
+                                  offer.Offers(
                                     offersItem: HomeCubit.get(context)
                                         .homeitemsModel!
                                         .data!
@@ -677,7 +696,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                           itemCount: ads.length,
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
-                                            return Padding(
+                                            return ads[index].countries!.any((v) => v.code == code) ? Padding(
                                               padding: const EdgeInsets.all(2.0),
                                               child: InkWell(
                                                 focusColor: Colors.transparent,
@@ -712,7 +731,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                       ads[index].image!,width: w*0.5,height: h*0.4,fit: BoxFit.fill,),
                                                 ),
                                               ),
-                                            );
+                                            ) : Container();
                                           },),
                                       ) : Container();
                                     },

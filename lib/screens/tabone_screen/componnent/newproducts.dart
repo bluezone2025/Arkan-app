@@ -19,12 +19,14 @@ class NewProducts extends StatefulWidget {
 class _NewProductsState extends State<NewProducts> {
   String lang = '';
   String currency = '';
+  String code = '';
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -45,7 +47,8 @@ class _NewProductsState extends State<NewProducts> {
         child: GridView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Padding(
+            itemBuilder: (context, index) =>
+            widget.newItem[index].countries!.any((v) => v.code == code) ? Padding(
               padding: EdgeInsets.symmetric(horizontal: w*0.005),
               child: InkWell(
                 onTap: () {
@@ -195,7 +198,7 @@ class _NewProductsState extends State<NewProducts> {
                   ],
                 ),
               ),
-            ),
+            ):Container(),
             itemCount: widget.newItem.length >= 4 ? 4 :widget.newItem.length, gridDelegate:
         SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisExtent: w*0.43,

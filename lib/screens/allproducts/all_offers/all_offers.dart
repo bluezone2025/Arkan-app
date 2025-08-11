@@ -34,12 +34,14 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
 
   String lang = '';
   String currency = '';
+  String code = '';
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -53,9 +55,16 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
       var data = jsonDecode(response.body);
       if (data['status'] == 1) {
         OffersModel offersModel = OffersModel.fromJson(data);
-        setState(() {
-          products = offersModel.data!.offers!.dataOffers!;
-        });
+        for(int i=0; i< offersModel.data!.offers!.dataOffers!.length;i++){
+          for(int x=0; x< offersModel.data!.offers!.dataOffers![i].countries!.length;x++){
+            if(offersModel.data!.offers!.dataOffers![i].countries![x].code == code){
+              print(code);
+              setState(() {
+                products.add(offersModel.data!.offers!.dataOffers![i]);
+              });
+            }
+          }
+        }
       }
     } catch (error) {
       print("product error ----------------------" + error.toString());
@@ -86,9 +95,15 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
           });
         }
         if (fetchedPosts.isNotEmpty) {
-          setState(() {
-            products.addAll(fetchedPosts);
-          });
+          for(int i=0; i< fetchedPosts.length;i++){
+            for(int x=0; x< fetchedPosts[i].countries!.length;x++){
+              if(fetchedPosts[i].countries![x].code == code){
+                setState(() {
+                  products.add(fetchedPosts[i]);
+                });
+              }
+            }
+          }
         } else {
           setState(() {
             hasNextPage = false;
@@ -203,7 +218,7 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
                                 crossAxisSpacing: 5,
                                 crossAxisCount: 2,
                               ),
-                              itemBuilder: (context, index) => InkWell(
+                              itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? InkWell(
                                     onTap: () {
                                       HomeCubit.get(context).getProductdata(
                                           productId:
@@ -387,7 +402,7 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
                                         ],
                                       ),
                                     ),
-                                  )),
+                                  ) : Container()),
                         )
                       : Padding(
                           padding: EdgeInsets.only(top: h * 0.3),

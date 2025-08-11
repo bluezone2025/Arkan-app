@@ -76,12 +76,69 @@ class Data {
   }
 }
 
+class Country {
+  int? id;
+  String? nameAr;
+  String? nameEn;
+  String? code;
+  String? countryCode;
+  dynamic delivery;
+  String? imageUrl;
+  int? currencyId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? countryCodeAr;
+
+  Country({
+    this.id,
+    this.nameAr,
+    this.nameEn,
+    this.code,
+    this.countryCode,
+    this.delivery,
+    this.imageUrl,
+    this.currencyId,
+    this.createdAt,
+    this.updatedAt,
+    this.countryCodeAr,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
+    id: json["id"],
+    nameAr: json["name_ar"],
+    nameEn: json["name_en"],
+    code: json["code"],
+    countryCode: json["country_code"],
+    delivery: json["delivery"],
+    imageUrl: json["image_url"],
+    currencyId: json["currency_id"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    countryCodeAr: json["country_code_ar"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name_ar": nameAr,
+    "name_en": nameEn,
+    "code": code,
+    "country_code": countryCode,
+    "delivery": delivery,
+    "image_url": imageUrl,
+    "currency_id": currencyId,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "country_code_ar": countryCodeAr,
+  };
+}
+
 class Categories {
   int? id;
   String? nameAr;
   String? nameEn;
   String? imageUrl;
   int? type;
+  List<Country>? countries;
   List<CategoriesSub>? categoriesSub;
 
   Categories(
@@ -90,6 +147,7 @@ class Categories {
       this.nameEn,
       this.imageUrl,
       this.type,
+        this.countries,
       this.categoriesSub});
 
   Categories.fromJson(Map<String, dynamic> json) {
@@ -98,7 +156,7 @@ class Categories {
     nameEn = json['name_en'];
     imageUrl = json['image_url'];
     type = json['type'];
-
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
     if (json['categories'] != null) {
       categoriesSub = <CategoriesSub>[];
       json['categories'].forEach((v) {
@@ -137,6 +195,7 @@ class Sliders {
   String? descriptionEn;
   String? img;
   String? imgFullPath;
+  List<Country>? countries;
 
   Sliders(
       {this.id,
@@ -145,6 +204,7 @@ class Sliders {
       this.descriptionAr,
       this.descriptionEn,
       this.img,
+      this.countries,
       this.imgFullPath});
 
   Sliders.fromJson(Map<String, dynamic> json) {
@@ -155,6 +215,7 @@ class Sliders {
     descriptionEn = json['description_en'];
     img = json['img'];
     imgFullPath = json['app_img_full_path'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
   }
 }
 
@@ -177,6 +238,7 @@ class NewArrive {
   int? categoryId;
   int? sizeGuideId;
   int? availability;
+  List<Country>? countries;
 
   NewArrive(
       {this.id,
@@ -186,6 +248,7 @@ class NewArrive {
       this.descriptionAr,
       this.appearance,
       this.featured,
+      this.countries,
       this.newarrive,
       this.price,
       this.hasOffer,
@@ -217,6 +280,7 @@ class NewArrive {
     categoryId = json['category_id'];
     sizeGuideId = json['size_guide_id'];
     availability = json['quantity_attribute'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
   }
 }
 
@@ -294,11 +358,13 @@ class Offers {
   int? categoryId;
   int? sizeGuideId;
   int? availability;
+  List<Country>? countries;
 
   Offers(
       {this.id,
       this.titleEn,
       this.titleAr,
+      this.countries,
       this.descriptionEn,
       this.descriptionAr,
       this.appearance,
@@ -330,6 +396,7 @@ class Offers {
     deliveryPeriod = json['delivery_period'];
     img = json['img'];
     bestSelling = json['best_selling'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
     basicCategoryId = json['basic_category_id'];
     categoryId = json['category_id'];
     sizeGuideId = json['size_guide_id'];
@@ -420,11 +487,13 @@ class BestSell {
   int? categoryId;
   int? sizeGuideId;
   int? availability;
+  List<Country>? countries;
 
   BestSell({
     this.id,
     this.titleEn,
     this.titleAr,
+    this.countries,
     this.descriptionEn,
     this.descriptionAr,
     this.appearance,
@@ -461,5 +530,6 @@ class BestSell {
     categoryId = json['category_id'];
     sizeGuideId = json['size_guide_id'];
     availability = json['quantity_attribute'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
   }
 }

@@ -31,12 +31,14 @@ class _CategoryProductsState extends State<CategoryProducts> {
   List products = [];
   String lang = '';
   String currency = '';
+  String code = '';
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -51,9 +53,15 @@ class _CategoryProductsState extends State<CategoryProducts> {
       if (data['status'] == 1) {
         CategoryProductModel categoryProductModel =
             CategoryProductModel.fromJson(data);
-        setState(() {
-          products = categoryProductModel.data!.products!;
-        });
+        for(int i=0; i< categoryProductModel.data!.products!.length;i++){
+          for(int x=0; x< categoryProductModel.data!.products![i].countries!.length;x++){
+            if(categoryProductModel.data!.products![i].countries![x].code == code){
+              setState(() {
+                products.add(categoryProductModel.data!.products![i]);
+              });
+            }
+          }
+        }
       }
     } catch (error) {
       print("product error ----------------------" + error.toString());
@@ -85,9 +93,15 @@ class _CategoryProductsState extends State<CategoryProducts> {
           });
         }
         if (fetchedPosts.isNotEmpty) {
-          setState(() {
-            products.addAll(fetchedPosts);
-          });
+          for(int i=0; i< fetchedPosts.length;i++){
+            for(int x=0; x< fetchedPosts[i].countries!.length;x++){
+              if(fetchedPosts[i].countries![x].code == code){
+                setState(() {
+                  products.add(fetchedPosts[i]);
+                });
+              }
+            }
+          }
         } else {
           setState(() {
             hasNextPage = false;
@@ -139,7 +153,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             crossAxisSpacing: 5,
                             crossAxisCount: 2,
                           ),
-                          itemBuilder: (context, index) => InkWell(
+                          itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? InkWell(
                                 onTap: () {
                                   HomeCubit.get(context).getProductdata(
                                       productId: products[index].id.toString());
@@ -329,7 +343,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                                     ],
                                   ),
                                 ),
-                              )),
+                              ) : Container()),
                     ),
                   )
                 : Padding(

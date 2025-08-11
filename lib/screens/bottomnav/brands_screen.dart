@@ -1,6 +1,7 @@
 import 'package:arkan/componnent/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_cubit/app_cubit.dart';
 import '../../app_cubit/appstate.dart';
@@ -20,10 +21,32 @@ class BrandsScreen extends StatefulWidget {
 class _BrandsScreenState extends State<BrandsScreen> {
 
   List<Brand>? allBrands= [];
+  String lang = '';
+  String currency = '';
+  String code = '';
+
+  getLang() async {
+    SharedPreferences preferences = await SharedPreferences
+        .getInstance();
+    setState(() {
+      lang = preferences.getString('language').toString();
+      currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
+    });
+    for(int i=0; i< BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!.length;i++){
+      for(int x=0; x< BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands![i].countries!.length;x++){
+        if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands![i].countries![x].code == code){
+          setState(() {
+            allBrands!.add(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands![i]);
+          });
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
-    allBrands =  BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!;
+    getLang();
     super.initState();
   }
 
@@ -119,7 +142,7 @@ class _BrandsScreenState extends State<BrandsScreen> {
                         itemCount: discountBrands.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return InkWell(
+                          return discountBrands[index].countries!.any((v) => v.code == code) ? InkWell(
                             child: SizedBox(
                               width: w*0.38,
                               height: h * 0.35,
@@ -157,7 +180,7 @@ class _BrandsScreenState extends State<BrandsScreen> {
                             onTap: (){
                               BlocProvider.of<AppCubit>(context).getDiscountBrandProducts(discountBrands[index].id.toString());
                             },
-                          );
+                          ) :Container();
                         },
                         separatorBuilder: (context, index) => SizedBox(
                           width: w * 0.025,
@@ -175,7 +198,7 @@ class _BrandsScreenState extends State<BrandsScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: h*0.1), itemBuilder: (context,index) {
-                return InkWell(
+                return allBrands![index].countries!.any((v) => v.code == code) ? InkWell(
                   onTap: (){
                     BlocProvider.of<AppCubit>(context).getBrandProducts(allBrands![index].id.toString());
                   },
@@ -209,7 +232,7 @@ class _BrandsScreenState extends State<BrandsScreen> {
                       ],
                     ),
                   ),
-                );
+                ) :Container();
               })
             ],
           ),

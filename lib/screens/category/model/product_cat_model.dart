@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import '../../tabone_screen/model/home_model.dart';
+
 class CategoryProductModel {
   int? status;
   int? countItems;
@@ -62,6 +64,7 @@ class Products {
   int? appearance;
   int? featured;
   int? newarrive;
+  List<Country>? countries;
   var price;
   int? hasOffer;
   var beforePrice;
@@ -77,6 +80,7 @@ class Products {
     this.id,
     this.titleEn,
     this.titleAr,
+    this.countries,
     this.descriptionEn,
     this.descriptionAr,
     this.appearance,
@@ -108,6 +112,7 @@ class Products {
     beforePrice = json['before_price'];
     deliveryPeriod = json['delivery_period'];
     img = json['img'];
+    countries = json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x)));
     bestSelling = json['best_selling'];
     basicCategoryId = json['basic_category_id'];
     categoryId = json['category_id'];

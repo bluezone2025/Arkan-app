@@ -30,6 +30,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
   bool isLoadMoreRunning = false;
   List products = [];
   String lang = '';
+  String code = '';
   String currency = '';
 
   getLang() async {
@@ -37,6 +38,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -50,9 +52,18 @@ class _NewProductScreenState extends State<NewProductScreen> {
       var data = jsonDecode(response.body);
       if (data['status'] == 1) {
         NewproductModel newproductModel = NewproductModel.fromJson(data);
-        setState(() {
-          products = newproductModel.data!.newArrivals!.dataItems!;
-        });
+        print(response.body);
+        print(products);
+        for(int i=0; i< newproductModel.data!.newArrivals!.dataItems!.length;i++){
+          for(int x=0; x< newproductModel.data!.newArrivals!.dataItems![i].countries!.length;x++){
+            if(newproductModel.data!.newArrivals!.dataItems![i].countries![x].code == code){
+              setState(() {
+                products.add(newproductModel.data!.newArrivals!.dataItems![i]);
+              });
+            }
+          }
+        }
+        print(products);
       }
     } catch (error) {
       print("product error ----------------------$error");
@@ -83,9 +94,15 @@ class _NewProductScreenState extends State<NewProductScreen> {
           });
         }
         if (fetchedPosts.isNotEmpty) {
-          setState(() {
-            products.addAll(fetchedPosts);
-          });
+          for(int i=0; i< fetchedPosts.length;i++){
+            for(int x=0; x< fetchedPosts[i].countries!.length;x++){
+              if(fetchedPosts[i].countries![x].code == code){
+                setState(() {
+                  products.add(fetchedPosts[i]);
+                });
+              }
+            }
+          }
         } else {
           setState(() {
             hasNextPage = false;
@@ -200,7 +217,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                                 crossAxisSpacing: 2,
                                 crossAxisCount: 2,
                               ),
-                              itemBuilder: (context, index) => InkWell(
+                              itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? InkWell(
                                     onTap: () {
                                       HomeCubit.get(context).getProductdata(
                                           productId:
@@ -384,7 +401,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                                         ],
                                       ),
                                     ),
-                                  )),
+                                  ): Container()),
                         )
                       : Padding(
                           padding: EdgeInsets.only(top: h * 0.3),

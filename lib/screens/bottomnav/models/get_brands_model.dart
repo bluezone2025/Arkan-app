@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../../tabone_screen/model/home_model.dart';
+
 GetBrandsModel getBrandsModelFromJson(String str) => GetBrandsModel.fromJson(json.decode(str));
 
 String getBrandsModelToJson(GetBrandsModel data) => json.encode(data.toJson());
@@ -53,6 +55,7 @@ class Brand {
   String? nameAr;
   String? nameEn;
   String? logo;
+  List<Country>? countries;
   String? arkanPercentage;
   String? brandPercentage;
   int? productsCount;
@@ -70,6 +73,7 @@ class Brand {
     this.nameAr,
     this.nameEn,
     this.logo,
+    this.countries,
     this.arkanPercentage,
     this.brandPercentage,
     this.productsCount,
@@ -93,6 +97,7 @@ class Brand {
     productsCount: json["products_count"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    countries: json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x))),
     email: json["email"],
     phone: json["phone"],
     hasDiscount: json["has_discount"],

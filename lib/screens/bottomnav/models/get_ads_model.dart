@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../../tabone_screen/model/home_model.dart';
+
 GetAdsModel getAdsModelFromJson(String str) => GetAdsModel.fromJson(json.decode(str));
 
 String getAdsModelToJson(GetAdsModel data) => json.encode(data.toJson());
@@ -33,6 +35,7 @@ class Ad {
   int? productId;
   int? categoryId;
   int? brandId;
+  List<Country>? countries;
   dynamic link;
   String? type;
   String? image;
@@ -46,6 +49,7 @@ class Ad {
     this.brandId,
     this.link,
     this.type,
+    this.countries,
     this.image,
     this.createdAt,
     this.updatedAt,
@@ -61,6 +65,7 @@ class Ad {
     image: json["image"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    countries: json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

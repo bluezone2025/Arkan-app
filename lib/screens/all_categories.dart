@@ -25,12 +25,24 @@ class SubCategoriesScreen extends StatefulWidget {
 
 class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   String lang = '';
+  String code = '';
+  List products = [];
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
+      code = preferences.getString('country_code').toString();
     });
+    for(int i=0; i< widget.catItem.length;i++){
+      for(int x=0; x< widget.catItem[i].countries!.length;x++){
+        if(widget.catItem[i].countries![x].code == code){
+          setState(() {
+            products.add(widget.catItem[i]);
+          });
+        }
+      }
+    }
   }
 
   @override
@@ -120,7 +132,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: w*0.02),
                 child: GridView.builder(
-                    itemCount: widget.catItem.length,
+                    itemCount: products.length,
                     shrinkWrap: true,
                     primary: false,
                     physics: const NeverScrollableScrollPhysics(),
@@ -132,16 +144,16 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                       crossAxisCount: 2,
                     ),
                     itemBuilder: (ctx, index) {
-                      return InkWell(
+                      return products[index].countries!.any((v) => v.code == code) ?InkWell(
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CategoriesSection(
-                                  mainCat: (lang == 'en') ? widget.catItem[index].nameEn : widget.catItem[index].nameAr,
+                                  mainCat: (lang == 'en') ? products[index].nameEn : products[index].nameAr,
                                       mainCatId:
-                                          widget.catItem[index].id.toString(),
+                                      products[index].id.toString(),
                                       subCategory:
-                                          widget.catItem[index].categoriesSub,
+                                      products[index].categoriesSub,
                                     ))),
                         child: SizedBox(
                             width: w,
@@ -152,8 +164,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                     height: h * 0.25,
                                     child: customCachedNetworkImage(
                                         url: EndPoints.IMAGEURL2 +
-                                            widget
-                                                .catItem[index].imageUrl,
+                                            products[index].imageUrl,
                                         context: context,
                                         fit: BoxFit.cover)),
                                 SizedBox(
@@ -162,7 +173,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                   child: Center(
                                     child: (lang == 'en')
                                         ? Text(
-                                            widget.catItem[index].nameEn,
+                                            products[index].nameEn,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontFamily: 'Nunito',
@@ -171,7 +182,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                                     FontWeight.w600),
                                           )
                                         : Text(
-                                            widget.catItem[index].nameAr,
+                                      products[index].nameAr,
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontFamily: 'Almarai',
@@ -183,7 +194,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                 ),
                               ],
                             )),
-                      );
+                      ) : Container();
                     }),
               ),
               Padding(

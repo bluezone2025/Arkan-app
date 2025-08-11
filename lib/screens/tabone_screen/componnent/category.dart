@@ -8,9 +8,10 @@ import '../../../componnent/http_services.dart';
 import '../../../generated/local_keys.dart';
 import '../../allproducts/all_offers/all_offers.dart';
 import '../../category/category.dart';
+import '../model/home_model.dart';
 
 class CategorySection extends StatefulWidget {
-  final List catItem;
+  final List<Categories> catItem;
 
   const CategorySection({Key? key, required this.catItem}) : super(key: key);
   @override
@@ -19,10 +20,12 @@ class CategorySection extends StatefulWidget {
 
 class _CategorySectionState extends State<CategorySection> {
   String lang = '';
+  String code = '';
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -50,7 +53,7 @@ class _CategorySectionState extends State<CategorySection> {
               itemCount: widget.catItem.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return InkWell(
+                return widget.catItem[index].countries!.any((v) => v.code == code) ? InkWell(
                   child: SizedBox(
                     width: w*0.33,
                     height: h * 0.35,
@@ -62,12 +65,12 @@ class _CategorySectionState extends State<CategorySection> {
                         CircleAvatar(
                           radius: 0.07*h, // Image radius
                           backgroundImage: NetworkImage(EndPoints.IMAGEURL2 +
-                              widget.catItem[index].imageUrl,),
+                              widget.catItem[index].imageUrl!,),
                         ),
                         SizedBox(height: h*0.02,),
                         (lang == 'en')
                             ? Text(
-                          widget.catItem[index].nameEn,
+                          widget.catItem[index].nameEn!,
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -77,7 +80,7 @@ class _CategorySectionState extends State<CategorySection> {
                           overflow: TextOverflow.clip,textAlign: TextAlign.center,
                         )
                             : Text(
-                          widget.catItem[index].nameAr,
+                          widget.catItem[index].nameAr!,
                           maxLines: 1,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -94,14 +97,14 @@ class _CategorySectionState extends State<CategorySection> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CategoriesSection(
-                              mainCat: (lang == 'en') ? widget.catItem[index].nameEn : widget.catItem[index].nameAr,
-                                  mainCatId:
-                                      widget.catItem[index].id.toString(),
-                                  subCategory:
-                                      widget.catItem[index].categoriesSub,
-                                )));
+                              mainCat: (lang == 'en') ? widget.catItem[index].nameEn! : widget.catItem[index].nameAr!,
+                              mainCatId:
+                              widget.catItem[index].id.toString(),
+                              subCategory:
+                              widget.catItem[index].categoriesSub!,
+                            )));
                   },
-                );
+                ) : Container();
               },
               separatorBuilder: (context, index) => SizedBox(
                 width: w * 0.025,

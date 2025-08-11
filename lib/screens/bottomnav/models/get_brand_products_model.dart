@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../../tabone_screen/model/home_model.dart';
+
 GetBrandProductsModel getBrandProductsModelFromJson(String str) => GetBrandProductsModel.fromJson(json.decode(str));
 
 String getBrandProductsModelToJson(GetBrandProductsModel data) => json.encode(data.toJson());
@@ -136,6 +138,7 @@ class Product {
   String? titleAr;
   String? descriptionEn;
   String? descriptionAr;
+  List<Country>? countries;
   dynamic appearance;
   dynamic featured;
   dynamic productNew;
@@ -179,6 +182,7 @@ class Product {
     this.createdAt,
     this.updatedAt,
     this.brandId,
+    this.countries,
     this.quantityAttribute,
     this.productHights,
   });
@@ -194,6 +198,7 @@ class Product {
     appearance: json["appearance"],
     featured: json["featured"],
     productNew: json["new"],
+    countries: json["countries"] == null ? [] : List<Country>.from(json["countries"]!.map((x) => Country.fromJson(x))),
     hasReception: json["has_reception"],
     price: json["price"],
     hasOffer: json["has_offer"],
