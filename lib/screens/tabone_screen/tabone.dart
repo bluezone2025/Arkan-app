@@ -21,15 +21,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../DBhelper/appState.dart';
 import '../../DBhelper/cubit.dart';
 import '../../app_cubit/app_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../app_cubit/appstate.dart';
 import '../../componnent/constants.dart';
 import '../../componnent/http_services.dart';
 import '../../generated/local_keys.dart';
+import '../../splash.dart';
 import '../all_categories.dart';
 import '../allproducts/all_offers/all_offers.dart';
 import '../allproducts/new_product/new_product.dart';
+import '../auth/login.dart';
 import '../cart/cart.dart';
 import '../category/category.dart';
+import '../country/cubit/country_cubit.dart';
 import '../notifications/noti.dart';
 import '../product_detail/product_detail.dart';
 import '../profile/cubit/userprofile_cubit.dart';
@@ -53,6 +57,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
   bool islogin = false;
   bool finish = false;
   String code = '';
+  String country = '';
   int deleteSlider = 0;
   List<Sliders> sliders =[];
 
@@ -63,12 +68,33 @@ class _TaboneScreenState extends State<TaboneScreen> {
     Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
   ];
 
+  Widget _buildShimmer() {
+    return ListView.builder(
+      itemCount: 6,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Shimmer.fromColors(
+          baseColor: Colors.black12,
+          highlightColor: Colors.black26,
+          child: Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
       islogin = preferences.getBool('login') ?? false;
       code = preferences.getString('country_code').toString();
+      country = translateString(preferences.getString('country_en').toString(), preferences.getString('country_ar').toString());
     });
     if(HomeCubit.get(context).homeitemsModel != null){
       for(int i=0; i< HomeCubit.get(context).homeitemsModel!.data!.sliders!.length;i++){
@@ -137,6 +163,9 @@ class _TaboneScreenState extends State<TaboneScreen> {
     if(!finish){
       getLang();
     }
+    if(HomeCubit.get(context).homeitemsModel == null){
+      return _buildShimmer();
+    }
     return Scaffold(
         backgroundColor: const Color(0xffF8F8F8),
         // appBar: AppBarHome.app_bar_home(
@@ -146,34 +175,288 @@ class _TaboneScreenState extends State<TaboneScreen> {
         // ),
         appBar: AppBar(
           backgroundColor: const Color(0xffFCF7F7),
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(translateString('HELLO', 'اهلا'),style: TextStyle(
-                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                  fontSize: w * 0.045,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xff400000)),),
-              SizedBox(
-                width: w * 0.02,
+          title: InkWell(
+            onTap: (){
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true, // Enable full-screen resizing for the keyboard
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(15.0),
+                  ),
+                ),
+                builder: (BuildContext bc) {
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                        left: 0.04 * w,
+                        right: 0.04 * w,
+                        top: 0.02 * h,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: h * 0.02,
+                          ),
+                          Center(
+                            child: Container(
+                              width: w*0.15,
+                              height: 0.005*h,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(
+                            height: h * 0.02,
+                          ),
+                          Column(
+                            children: List.generate(
+                                CountryCubit.get(context)
+                                    .countryModel!
+                                    .data!
+                                    .length, (index) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                      width: w * 0.9,
+                                      height: h * 0.07,
+                                      child: BlocConsumer<AppCubit,
+                                          AppCubitStates>(
+                                          builder: (context, state) {
+                                            return InkWell(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: (AppCubit.get(context).addressselected == index) ? mainColor : Colors.transparent,width: 1)
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: w * 0.03,
+                                                    ),
+                                                    Container(
+                                                      width: w * 0.07,
+                                                      height: w * 0.04,
+                                                      decoration:
+                                                      BoxDecoration(
+                                                          color: Colors
+                                                              .grey[
+                                                          200],
+                                                          shape: BoxShape.rectangle,
+                                                          image:
+                                                          DecorationImage(
+                                                            image: NetworkImage(EndPoints
+                                                                .IMAGEURL2 +
+                                                                CountryCubit.get(context)
+                                                                    .countryModel!
+                                                                    .data![index]
+                                                                    .imageUrl!),
+                                                            fit: BoxFit
+                                                                .fill,
+                                                          )),
+                                                    ),
+                                                    SizedBox(
+                                                      width: w * 0.03,
+                                                    ),
+                                                    Text(
+                                                        translateString(CountryCubit.get(
+                                                            context)
+                                                            .countryModel!
+                                                            .data![
+                                                        index]
+                                                            .nameEn!, CountryCubit.get(
+                                                            context)
+                                                            .countryModel!
+                                                            .data![
+                                                        index]
+                                                            .nameAr!),
+                                                        style:
+                                                        TextStyle(
+                                                          fontSize:
+                                                          w * 0.035,
+                                                          fontFamily:
+                                                          'Almarai',
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .bold,
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                              onTap: () async {
+                                                AppCubit.get(context)
+                                                    .addressselected =
+                                                    index;
+                                                AppCubit.get(context)
+                                                    .addressSelection(
+                                                    selected: index);
+                                                CountryCubit.get(context)
+                                                    .getCity();
+                                                SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                                setState(() {
+                                                  prefs.setString(
+                                                      "country_en",
+                                                      CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .nameEn
+                                                          .toString());
+                                                  prefs.setString(
+                                                      "country_ar",
+                                                      CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .nameAr
+                                                          .toString());
+                                                  prefs.setString(
+                                                      "ratio",
+                                                      CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .currency!
+                                                          .rate!);
+                                                  prefs.setString(
+                                                      'country_id',
+                                                      CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .id!
+                                                          .toString());
+
+                                                  prefs.setBool(
+                                                      'select_country',
+                                                      true);
+                                                  prefs.setString(
+                                                      'currency',
+                                                      translateString( CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .currency!
+                                                          .code!,  CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .currency!
+                                                          .codeAr!));
+                                                  prefs.setString(
+                                                      'country_code',
+                                                      CountryCubit.get(
+                                                          context)
+                                                          .countryModel!
+                                                          .data![index]
+                                                          .code!);
+                                                });
+                                              },
+                                            );
+                                          },
+                                          listener: (context, state) {})),
+                                  SizedBox(
+                                    height: h * 0.01,
+                                  ),
+                                  Divider(
+                                    height: h * 0.005,
+                                    color: Colors.grey[400],
+                                  ),
+                                  SizedBox(
+                                    height: h * 0.01,
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                          SizedBox(
+                            height: h * 0.1,
+                          ),
+                            InkWell(
+                              child: Container(
+                                height: h * 0.06,
+                                width: w*0.7,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: mainColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    translateString('Save', 'حفظ'),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: (lang == 'en')
+                                            ? 'Nunito'
+                                            : 'Almarai',
+                                        fontSize: w * 0.045,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              onTap: () async {
+                                Navigator.pop(context);
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> SplashScreen()));
+                              },
+                            ),
+                          SizedBox(
+                            height: h * 0.1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(country,style: TextStyle(
+                      fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                      fontSize: w * 0.04,
+                      color: const Color(0xff400000)),),
+                  SizedBox(
+                    width: w * 0.02,
+                  ),
+                  const Icon(Icons.arrow_drop_down,color: Colors.black,size: 30,)
+                ],
               ),
-              if(UserprofileCubit.get(context)
-                  .userModel != null)
-              Text(
-                (islogin)
-                    ? UserprofileCubit.get(context)
-                    .userModel!
-                    .name!
-                    : '',style: TextStyle(
-              fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-        fontSize: w * 0.03,
-        color: const Color(0xff400000)),
-              ),
-              Text(translateString('  good after noon', '  مساء الخير'),style: TextStyle(
-                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                  fontSize: w * 0.03,
-                  color: const Color(0xff400000)),),
-            ],
+            ),
+          ),
+          centerTitle: true,
+          leadingWidth: w * 0.25,
+          leading: SizedBox(
+            width: w * 0.2,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(translateString('HELLO', 'اهلا'),style: TextStyle(
+                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                    fontSize: w * 0.045,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff400000)),),
+                SizedBox(
+                  width: w * 0.02,
+                ),
+                if(UserprofileCubit.get(context)
+                    .userModel != null)
+                  Text(
+                    (islogin)
+                        ? UserprofileCubit.get(context)
+                        .userModel!
+                        .name!
+                        : '',style: TextStyle(
+                      fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                      fontSize: w * 0.03,
+                      color: const Color(0xff400000)),
+                  ),
+              ],
+            ),
           ),
           actions: [
             InkWell(
@@ -611,13 +894,6 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.02,
                                   ),
-                                  SectionTitle(
-                                      title: translateString('New Products', 'أحدث المنتجات'),
-                                      press: () =>  Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => NewProductScreen()))),
-                                  SizedBox(
-                                    height: h * 0.02,
-                                  ),
                                   if(HomeCubit.get(context)
                                       .homeitemsModel != null)
                                   NewProducts(
@@ -667,13 +943,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   // SizedBox(
                                   //   height: h * 0.05,
                                   // ),
-                                  SectionTitle(
-                                    title: translateString('Best Offers', 'أفضل العروض'),
-                                    press: () =>  Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => AllOffersScreen())),),
-                                  SizedBox(
-                                    height: h * 0.02,
-                                  ),
+
                                   if(HomeCubit.get(context)
                                       .homeitemsModel != null)
                                   offer.Offers(

@@ -56,6 +56,7 @@ class HomeCubit extends Cubit<AppCubitStates> {
       var response = await http
           .get(Uri.parse("${EndPoints.BASE_URL}get-product/$productId"));
       var data = jsonDecode(response.body);
+      print(data);
       if (data['status'] == 1) {
         singleProductModel = SingleProductModel.fromJson(data);
       }

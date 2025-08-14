@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:screenshot/screenshot.dart';
@@ -350,7 +350,7 @@ class _FatorahScreenState extends State<FatorahScreen> {
                               await [Permission.storage].request();
                               final time = DateTime.now().toIso8601String().replaceAll('.', '_').replaceAll(':', '_');
                               final name = 'screenshot_$time';
-                              final result = ImageGallerySaver.saveImage(image!,name: name);
+                              //final result = GallerySaver.saveImage(image);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(translateString('saved in gallery', 'تم الحفظ فى الصور')),

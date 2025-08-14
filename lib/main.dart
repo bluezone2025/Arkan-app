@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'DBhelper/cubit.dart';
 import 'app_cubit/app_cubit.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'screens/auth/cubit/authcubit_cubit.dart';
 import 'screens/cart/cubit/cart_cubit.dart';
 import 'screens/checkout/tabby_checkout.dart';
@@ -163,18 +164,29 @@ class _MyAppState extends State<MyApp> {
                 ..getHomeitems()
                 ..getSetting()),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          theme: ThemeData(
-            fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+        child: AnnotatedRegion(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.white,systemNavigationBarDividerColor: Colors.white,
           ),
-          home: SplashScreen(),
-          routes: {
-            '/checkout': (context) => const CheckoutPage(),
-          },
+          child: OverlaySupport(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              checkerboardOffscreenLayers: true,
+              theme: ThemeData(
+                fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+              ),
+              home: SplashScreen(),
+              routes: {
+                '/checkout': (context) => const CheckoutPage(),
+              },
+            ),
+          ),
         ));
   }
 }

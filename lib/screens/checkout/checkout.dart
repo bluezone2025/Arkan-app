@@ -542,17 +542,15 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                                   .isFreeShop ==
                                                   0)
                                                   ? Text(
-                                                getShippingprice(
+                                                getProductprice(
                                                   currency: currency,
-                                                  shippingPrice:
+                                                  productPrice:
                                                   num.parse(
                                                     prefs
                                                         .getString(
                                                         "delivery_value")
                                                         .toString(),
                                                   ),
-                                                  cartLength:
-                                                  widget.cartLength,
                                                 ),
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -786,7 +784,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                           }
                                           if (_counter == 2) {
                                             prefs.setString('paymentMethod', 'online' );
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>

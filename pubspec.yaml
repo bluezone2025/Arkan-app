@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.2 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,10 +35,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: any
+  shimmer: ^3.0.0
   shared_preferences: any
   rounded_loading_button: any
   package_info_plus: any
   badges: any
+  myfatoorah_flutter: ^3.2.3
   geolocator: any
   url_launcher: any
   sqflite: any
@@ -62,7 +64,7 @@ dependencies:
   conditional_builder_null_safety: any
   cr_calendar: any
   widget_and_text_animator: any
-  image_gallery_saver: any
+  gallery_saver_plus: ^3.2.8
   permission_handler: any
   screenshot: any
   # video_player: any
@@ -80,6 +82,7 @@ dependencies:
   flutter_svg: any
   calendar_date_picker2: any
   flutter_native_splash: ^2.4.0
+  overlay_support: ^2.1.0
 
 dependency_overrides:
   intl: ^0.18.0
