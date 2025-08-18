@@ -72,7 +72,7 @@ dependencies:
   pin_code_fields: any
   flutter_local_notifications: any
   change_app_package_name: ^1.0.0
-  tabby_flutter_inapp_sdk: any
+  tabby_flutter_inapp_sdk: ^1.9.0
   loading_indicator: any
   package_rename_plus: ^1.0.1
   carousel_slider: any
@@ -81,7 +81,6 @@ dependencies:
   dots_indicator: any
   flutter_svg: any
   calendar_date_picker2: any
-  flutter_native_splash: ^2.4.0
   overlay_support: ^2.1.0
 
 dependency_overrides:
@@ -92,13 +91,6 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icons/icon.png"
-
-flutter_native_splash:
-  image: assets/icons/splash.png
-  color: "#ffffff"
-  android: true
-  ios: true
-  fullscreen: true
 
 
 dev_dependencies:

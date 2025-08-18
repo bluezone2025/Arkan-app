@@ -1,4 +1,4 @@
-# arkan
+# arkan_bluezone
 
 A new Flutter project.
 

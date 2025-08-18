@@ -1,6 +1,6 @@
 {
-    "name": "arkan",
-    "short_name": "arkan",
+    "name": "arkan_bluezone",
+    "short_name": "arkan_bluezone",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
