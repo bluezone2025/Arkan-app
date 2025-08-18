@@ -2,10 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>want to access your photo to upload prrofile picture</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Need location access for updating nearby friends</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required to get product relateed to your location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>want to access your camerea</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need microphone access for uploading audio</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is required to get product relateed to your location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Arkan Bluezone</string>
+	<string>Arkan</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,15 +27,15 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>arkan_bluezone</string>
+	<string>arkan</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>1.7.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -45,5 +59,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
