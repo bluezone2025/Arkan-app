@@ -410,21 +410,15 @@ class _TaboneScreenState extends State<TaboneScreen> {
                 },
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(country,style: TextStyle(
-                      fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                      fontSize: w * 0.04,
-                      color: const Color(0xff400000)),),
-                  SizedBox(
-                    width: w * 0.02,
-                  ),
-                  const Icon(Icons.arrow_drop_down,color: Colors.black,size: 30,)
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(country,style: TextStyle(
+                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                    fontSize: w * 0.04,
+                    color: Colors.black),),
+                const Icon(Icons.arrow_drop_down,color: Color(0xffAE0000),size: 25,)
+              ],
             ),
           ),
           centerTitle: true,
@@ -433,18 +427,19 @@ class _TaboneScreenState extends State<TaboneScreen> {
             width: w * 0.2,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(translateString('HELLO', 'اهلا'),style: TextStyle(
-                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                    fontSize: w * 0.045,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xff400000)),),
                 SizedBox(
                   width: w * 0.02,
                 ),
-                if(UserprofileCubit.get(context)
-                    .userModel != null)
+                Text(translateString('HELLO', 'مرحبا'),style: TextStyle(
+                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                    fontSize: w * 0.035,
+                    color: const Color(0xffAE0000)),),
+                SizedBox(
+                  width: w * 0.02,
+                ),
+                if(UserprofileCubit.get(context).userModel != null)
                   Text(
                     (islogin)
                         ? UserprofileCubit.get(context)
@@ -452,8 +447,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                         .name!
                         : '',style: TextStyle(
                       fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                      fontSize: w * 0.03,
-                      color: const Color(0xff400000)),
+                      fontSize: w * 0.035,
+                      color: Colors.black),
                   ),
               ],
             ),
@@ -461,14 +456,11 @@ class _TaboneScreenState extends State<TaboneScreen> {
           actions: [
             InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Cart()));
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchScreen()));
               },
-                child: SvgPicture.asset('assets/icons/cart.svg')),
+                child: SvgPicture.asset('assets/icons/search.svg')),
             SizedBox(
-              width: w * 0.05,
+              width: w * 0.02,
             ),
             InkWell(
               onTap: (){
@@ -534,41 +526,38 @@ class _TaboneScreenState extends State<TaboneScreen> {
                         height: 0.3*h,
                         autoPlayInterval: const Duration(seconds: 5)
                     )),
-                SizedBox(
-                  height: h * 0.01,
-                ),
-                Center(
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchScreen()));
-                    },
-                    child: Container(
-                      height:0.055*h,
-                      width: 0.95*w,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffF2E8E8),
-                          borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 0.45*w,
-                              //height: 7.h,
-                              child: Text(translateString('Search for products or brands', 'ابحث عن المنتجات أو الماركات'),
-                                style: TextStyle(color: mainColor,fontSize: w*0.028,fontWeight: FontWeight.bold,fontFamily: 'Bahij',),
-                              ),
-                            ),
-                            Icon(Icons.search,color: mainColor,),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: InkWell(
+                //     onTap: (){
+                //       Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchScreen()));
+                //     },
+                //     child: Container(
+                //       height:0.055*h,
+                //       width: 0.95*w,
+                //       decoration: BoxDecoration(
+                //           color: const Color(0xffF2E8E8),
+                //           borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       child: Padding(
+                //         padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           crossAxisAlignment: CrossAxisAlignment.center,
+                //           children: [
+                //             SizedBox(
+                //               width: 0.45*w,
+                //               //height: 7.h,
+                //               child: Text(translateString('Search for products or brands', 'ابحث عن المنتجات أو الماركات'),
+                //                 style: TextStyle(color: mainColor,fontSize: w*0.028,fontWeight: FontWeight.bold,fontFamily: 'Bahij',),
+                //               ),
+                //             ),
+                //             Icon(Icons.search,color: mainColor,),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 BlocConsumer<HomeCubit, AppCubitStates>(
                     builder: (context, state) {
                       return ConditionalBuilder(
@@ -604,14 +593,96 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.04,
                                   ),
+                                  if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null)
+                                    BlocConsumer<AppCubit, AppCubitStates>(
+                                      listener: (context, state) {},
+                                      builder: (context, state) {
+                                        var ads = BlocProvider.of<AppCubit>(context).getAdsModel1?.ads;
+                                        return  CarouselSlider.builder(
+                                            carouselController: _controller,
+                                            itemCount: ads!.length,
+                                            itemBuilder: (context, index, realIndex) {
+                                              return ads[index].countries!.any((v) => v.code == code) ? InkWell(
+                                                focusColor: Colors.transparent,
+                                                splashColor: Colors.transparent,
+                                                highlightColor: Colors.transparent,
+                                                // overlayColor: ,
+                                                onTap: () async {
+                                                  if(ads[index].type == 'brand'){
+                                                    BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
+                                                  }else if (ads[index].type == 'category'){
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => CategoriesSection(
+                                                              mainCat: '',
+                                                              mainCatId:
+                                                              ads[index].categoryId.toString(),
+                                                              subCategory: [],
+                                                            )));
+                                                  }else if (ads[index].type == 'product'){
+                                                    HomeCubit.get(context).getProductdata(
+                                                        productId: ads[index].productId.toString());
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => const ProductDetail()));
+                                                  }
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
+                                                      ads[index].image!,width: w,height: h*0.5,fit: BoxFit.fill,),
+                                                ),
+                                              ): Container();
+                                            },
+                                            options: CarouselOptions(
+                                                onPageChanged: (index, reason) {
+                                                  setState(() {
+                                                    _current = index;
+                                                  });
+                                                },
+                                                autoPlay: true,
+                                                autoPlayAnimationDuration: const Duration(seconds: 1),
+                                                autoPlayCurve: Curves.easeIn,
+                                                //   enlargeCenterPage: true,
+                                                aspectRatio: 3.0,
+                                                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                                initialPage: 0,
+
+                                                //  pageSnapping: false,
+
+                                                viewportFraction: 1,
+                                                height: 0.35*h,
+                                                autoPlayInterval: const Duration(seconds: 5)
+                                            ));
+                                      },
+                                    ),
+                                  SizedBox(
+                                    height: h * 0.04,
+                                  ),
+                                  if(HomeCubit.get(context)
+                                      .homeitemsModel != null)
+                                    NewProducts(
+                                      newItem: HomeCubit.get(context)
+                                          .homeitemsModel!
+                                          .data!
+                                          .newArrive!,
+                                    ),
+                                  SizedBox(
+                                    height: h * 0.02,
+                                  ),
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!.isNotEmpty)
                                   SectionTitle(
-                                      title: translateString('Brands', 'الماركات'),
+                                      title: translateString('Top brands', 'أبرز الماركات'),
                                       press: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => const BrandsScreen()))),
+                                  SizedBox(
+                                    height: h * 0.02,
+                                  ),
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!.isNotEmpty)
                                   BlocConsumer<AppCubit, AppCubitStates>(
@@ -628,131 +699,31 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                     builder: (context, state) {
                                       var normalBrands = BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.normalBrands!;
                                       return SizedBox(
-                                    width: w,
-                                    height: h*0.26,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: w*0.05,),
-                                          ListView.separated(
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            itemCount: normalBrands.length,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) {
-                                              return normalBrands[index].countries!.any((v) => v.code == code) ? InkWell(
-                                                child: SizedBox(
-                                                  width: w*0.38,
-                                                  height: h * 0.35,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      SizedBox(height: h*0.01,),
-                                                      SizedBox(
-                                                        width: w*0.4,
-                                                        height: h * 0.18,
-                                                        child: ClipRRect(
-                                                          borderRadius: BorderRadius.circular(15),
-                                                          child: customCachedNetworkImage(
-                                                          url: EndPoints.IMAGEURL2 +
-                                                              normalBrands[index].logo!,
-                                                          context: context,
-                                                          fit: BoxFit.fill,),
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: h*0.02,),
-                                                      (lang == 'en')
-                                                          ? Text(
-                                                        normalBrands[index].nameEn!,
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: 'Nunito',
-                                                            color: Colors.black,
-                                                            fontSize: w * 0.035),
-                                                        overflow: TextOverflow.clip,textAlign: TextAlign.center,
-                                                      )
-                                                          : Text(
-                                                        normalBrands[index].nameAr!,
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: 'Almarai',
-                                                            color: Colors.black,
-                                                            fontSize: w * 0.035),textAlign: TextAlign.center,
-                                                        overflow: TextOverflow.clip,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                onTap: (){
-                                                  BlocProvider.of<AppCubit>(context).getBrandProducts(normalBrands[index].id.toString());
-                                                },
-                                              ) : Container();
-                                            },
-                                            separatorBuilder: (context, index) => SizedBox(
-                                              width: w * 0.025,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-  },
-),
-                                  if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null)
-                                  BlocConsumer<AppCubit, AppCubitStates>(
-                                    listener: (context, state) {},
-                                    builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel1?.ads;
-                                      return ads!.isNotEmpty ? SizedBox(
-                                    height: 0.35*h,
-                                    child: ListView.builder(
-                                        itemCount: ads.length,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) {
-                                          return ads[index].countries!.any((v) => v.code == code) ? Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: InkWell(
-                                              focusColor: Colors.transparent,
-                                              splashColor: Colors.transparent,
-                                              highlightColor: Colors.transparent,
-                                              // overlayColor: ,
-                                              onTap: () async {
-                                                if(ads[index].type == 'brand'){
-                                                  BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
-                                                }else if (ads[index].type == 'category'){
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => CategoriesSection(
-                                                            mainCat: '',
-                                                            mainCatId:
-                                                            ads[index].categoryId.toString(),
-                                                            subCategory: [],
-                                                          )));
-                                                }else if (ads[index].type == 'product'){
-                                                  HomeCubit.get(context).getProductdata(
-                                                      productId: ads[index].productId.toString());
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => const ProductDetail()));
-                                                }
+                                        width: w,
+                                        height: h * 0.5,
+                                        child: GridView.builder(
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          itemCount: normalBrands.length < 4 ? normalBrands.length : 4,
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder: (context, index) {
+                                            return normalBrands[index].countries!.any((v) => v.code == code) ? InkWell(
+                                              child: Image.network(EndPoints.IMAGEURL2 +
+                                                  normalBrands[index].logo!,height: 0.25*h,fit: BoxFit.fill,width: w*0.45,),
+                                              onTap: (){
+                                                BlocProvider.of<AppCubit>(context).getBrandProducts(normalBrands[index].id.toString());
                                               },
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(5),
-                                                child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
-                                                    ads[index].image!,width: w*0.5,height: h*0.4,fit: BoxFit.fill,),
-                                              ),
-                                            ),
-                                          ) : Container();
-                                        },),
-                                  ) : Container();
-  },
-),
+                                            ) : Container();
+                                          },gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                          mainAxisExtent: 0.25*h,
+                                          mainAxisSpacing: h*0.01,
+                                          crossAxisSpacing: w*0.02,
+                                          crossAxisCount: 2,
+                                        ),
+                                        ),
+                                      );},),
                                   // DotsIndicator(
                                   //   dotsCount: HomeCubit.get(context)
                                   //       .homeitemsModel!
@@ -767,14 +738,83 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   //   ),
                                   // ),
                                   SizedBox(
+                                    height: h * 0.02,
+                                  ),
+                                  if(HomeCubit.get(context)
+                                      .homeitemsModel != null)
+                                    offer.Offers(
+                                      offersItem: HomeCubit.get(context)
+                                          .homeitemsModel!
+                                          .data!
+                                          .offers!,
+                                    ),
+                                  SizedBox(
+                                    height: h * 0.03,
+                                  ),
+                                  if(BlocProvider.of<AppCubit>(context).getAdsModel2 != null)
+                                    BlocConsumer<AppCubit, AppCubitStates>(
+                                      listener: (context, state) {},
+                                      builder: (context, state) {
+                                        var ads = BlocProvider.of<AppCubit>(context).getAdsModel2?.ads;
+                                        return ads!.isNotEmpty ? SizedBox(
+                                          height: 0.35*h,
+                                          child: ListView.builder(
+                                            itemCount: ads.length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return ads[index].countries!.any((v) => v.code == code) ? Padding(
+                                                padding: const EdgeInsets.all(2.0),
+                                                child: InkWell(
+                                                  focusColor: Colors.transparent,
+                                                  splashColor: Colors.transparent,
+                                                  highlightColor: Colors.transparent,
+                                                  // overlayColor: ,
+                                                  onTap: () async {
+                                                    if(ads[index].type == 'brand'){
+                                                      BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
+                                                    }else if (ads[index].type == 'category'){
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) => CategoriesSection(
+                                                                mainCat: '',
+                                                                mainCatId:
+                                                                ads[index].categoryId.toString(),
+                                                                subCategory: [],
+                                                              )));
+                                                    }else if (ads[index].type == 'product'){
+                                                      HomeCubit.get(context).getProductdata(
+                                                          productId: ads[index].productId.toString());
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) => const ProductDetail()));
+                                                    }
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(5),
+                                                    child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
+                                                        ads[index].image!,width: w*0.5,height: h*0.4,fit: BoxFit.fill,),
+                                                  ),
+                                                ),
+                                              ) : Container();
+                                            },),
+                                        ) : Container();
+                                      },
+                                    ),
+                                  SizedBox(
                                     height: h * 0.03,
                                   ),
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!.isNotEmpty)
-                                  SectionTitle(
-                                      title: translateString('Brand Discounts', 'خصومات الماركات'),
-                                      press: () =>  Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => const BrandsScreen()))),
+                                    Text(
+                                      translateString('Brand Discounts', 'خصومات الماركات'),
+                                      style: TextStyle(
+                                          fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                          fontSize: w * 0.04,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black),
+                                    ),
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel != null)
                                   if(BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!.isNotEmpty)
                                   BlocConsumer<AppCubit, AppCubitStates>(
@@ -792,12 +832,12 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                       var discountBrands = BlocProvider.of<AppCubit>(context).getBrandsModel!.brands!.discountsBrands!;
                                       return SizedBox(
                                     width: w,
-                                    height: h*0.26,
+                                    height: h*0.23,
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Row(
                                         children: [
-                                          SizedBox(width: w*0.05,),
+                                          SizedBox(width: w*0.01,),
                                           ListView.separated(
                                             primary: false,
                                             shrinkWrap: true,
@@ -806,7 +846,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                             itemBuilder: (context, index) {
                                               return discountBrands[index].countries!.any((v) => v.code == code) ? InkWell(
                                                 child: SizedBox(
-                                                  width: w*0.38,
+                                                  width: w*0.46,
                                                   height: h * 0.35,
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -814,40 +854,40 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                     children: [
                                                       SizedBox(height: h*0.01,),
                                                       SizedBox(
-                                                        width: w*0.4,
-                                                        height: h * 0.18,
+                                                        width: w*0.46,
+                                                        height: h * 0.15,
                                                         child: ClipRRect(
-                                                          borderRadius: BorderRadius.circular(15),
+                                                          borderRadius: BorderRadius.circular(5),
                                                           child: customCachedNetworkImage(
                                                             url: EndPoints.IMAGEURL2 +
                                                                 discountBrands[index].logo!,
                                                             context: context,
-                                                            fit: BoxFit.fill,),
+                                                            fit: BoxFit.fitWidth,),
                                                         ),
                                                       ),
-                                                      SizedBox(height: h*0.02,),
-                                                      Row(
+                                                      SizedBox(height: h*0.01,),
+                                                      Column(
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           (lang == 'en')
                                                               ? Text(
-                                                            '${discountBrands[index].nameEn!} -',
+                                                            discountBrands[index].nameEn!,
                                                             maxLines: 1,
                                                             style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight: FontWeight.normal,
                                                                 fontFamily: 'Nunito',
                                                                 color: Colors.black,
-                                                                fontSize: w * 0.035),
+                                                                fontSize: w * 0.04),
                                                             overflow: TextOverflow.clip,textAlign: TextAlign.center,
                                                           )
                                                               : Text(
-                                                            '${discountBrands[index].nameAr!} -',
+                                                            discountBrands[index].nameAr!,
                                                             maxLines: 1,
                                                             style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight: FontWeight.normal,
                                                                 fontFamily: 'Almarai',
                                                                 color: Colors.black,
-                                                                fontSize: w * 0.035),textAlign: TextAlign.center,
+                                                                fontSize: w * 0.04),textAlign: TextAlign.center,
                                                             overflow: TextOverflow.clip,
                                                           ),
                                                           (lang == 'en')
@@ -855,20 +895,20 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                             ' ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}',
                                                             maxLines: 1,
                                                             style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight: FontWeight.normal,
                                                                 fontFamily: 'Nunito',
                                                                 color: mainColor,
-                                                                fontSize: w * 0.03),
+                                                                fontSize: w * 0.035),
                                                             overflow: TextOverflow.clip,textAlign: TextAlign.center,
                                                           )
                                                               : Text(
                                                             ' ${discountBrands[index].discountPercentage == 0 ? discountBrands[index].startDiscountRange : discountBrands[index].discountPercentage}% ${translateString('off', 'خصم')}',
                                                             maxLines: 1,
                                                             style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight: FontWeight.normal,
                                                                 fontFamily: 'Almarai',
                                                                 color: mainColor,
-                                                                fontSize: w * 0.03),textAlign: TextAlign.center,
+                                                                fontSize: w * 0.035),textAlign: TextAlign.center,
                                                             overflow: TextOverflow.clip,
                                                           ),
                                                         ],
@@ -888,20 +928,8 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                         ],
                                       ),
                                     ),
-                                  );
-  },
-),
-                                  SizedBox(
-                                    height: h * 0.02,
-                                  ),
-                                  if(HomeCubit.get(context)
-                                      .homeitemsModel != null)
-                                  NewProducts(
-                                    newItem: HomeCubit.get(context)
-                                        .homeitemsModel!
-                                        .data!
-                                        .newArrive!,
-                                  ),
+                                  );},),
+
                                   // SizedBox(
                                   //   height: h * 0.02,
                                   // ),
@@ -943,72 +971,6 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   // SizedBox(
                                   //   height: h * 0.05,
                                   // ),
-
-                                  if(HomeCubit.get(context)
-                                      .homeitemsModel != null)
-                                  offer.Offers(
-                                    offersItem: HomeCubit.get(context)
-                                        .homeitemsModel!
-                                        .data!
-                                        .offers!,
-                                  ),
-                                  SizedBox(
-                                    height: h * 0.02,
-                                  ),
-                                  if(BlocProvider.of<AppCubit>(context).getAdsModel2 != null)
-                                  BlocConsumer<AppCubit, AppCubitStates>(
-                                    listener: (context, state) {},
-                                    builder: (context, state) {
-                                      var ads = BlocProvider.of<AppCubit>(context).getAdsModel2?.ads;
-                                      return ads!.isNotEmpty ? SizedBox(
-                                        height: 0.35*h,
-                                        child: ListView.builder(
-                                          itemCount: ads.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return ads[index].countries!.any((v) => v.code == code) ? Padding(
-                                              padding: const EdgeInsets.all(2.0),
-                                              child: InkWell(
-                                                focusColor: Colors.transparent,
-                                                splashColor: Colors.transparent,
-                                                highlightColor: Colors.transparent,
-                                                // overlayColor: ,
-                                                onTap: () async {
-                                                  if(ads[index].type == 'brand'){
-                                                    BlocProvider.of<AppCubit>(context).getBrandProducts(ads[index].brandId.toString());
-                                                  }else if (ads[index].type == 'category'){
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) => CategoriesSection(
-                                                              mainCat: '',
-                                                              mainCatId:
-                                                              ads[index].categoryId.toString(),
-                                                              subCategory: [],
-                                                            )));
-                                                  }else if (ads[index].type == 'product'){
-                                                    HomeCubit.get(context).getProductdata(
-                                                        productId: ads[index].productId.toString());
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) => const ProductDetail()));
-                                                  }
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(5),
-                                                  child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
-                                                      ads[index].image!,width: w*0.5,height: h*0.4,fit: BoxFit.fill,),
-                                                ),
-                                              ),
-                                            ) : Container();
-                                          },),
-                                      ) : Container();
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: h * 0.05,
-                                  ),
                                 ],
                               ),
                           // ),

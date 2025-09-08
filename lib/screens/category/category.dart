@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../DBhelper/appState.dart';
 import '../../DBhelper/cubit.dart';
@@ -58,7 +59,7 @@ class _CategoriesSectionState extends State<CategoriesSection>
           toolbarHeight: h*0.07,
           title: Text(
               widget.mainCat,
-              style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)
+              style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.black)
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -98,10 +99,7 @@ class _CategoriesSectionState extends State<CategoriesSection>
                           ),
                     position: badges.BadgePosition.topStart(start: w * 0.007),
                     child: IconButton(
-                      icon: const Icon(
-                        Icons.shopping_bag_outlined,
-                        color: Colors.black,
-                      ),
+                      icon: SvgPicture.asset('assets/icons/cart.svg',),
                       padding: EdgeInsets.zero,
                       focusColor: Colors.white,
                       onPressed: () {

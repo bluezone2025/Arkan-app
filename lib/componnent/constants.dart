@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Color mainColor = const Color(0xff7F1703);
+Color mainColor = const Color(0xffAE0000);
 Color mainColor2 = const Color(0xff7F1703);
 
 ///////////////////////////////////////////////////////////////////////

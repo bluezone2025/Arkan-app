@@ -1,6 +1,7 @@
 import 'package:arkan/componnent/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../DBhelper/appState.dart';
@@ -76,28 +77,28 @@ class _CartState extends State<Cart> {
                         height: h * 0.05,
                       ),
                       Center(
-                        child: Image.asset("assets/icons/Group 1.png",color: mainColor,),
+                        child: SvgPicture.asset('assets/icons/cart.svg',height: h*0.1,),
                       ),
                       SizedBox(
                         height: h * 0.03,
                       ),
                       Text(
-                        LocalKeys.SHOP_NOW.tr(),
+                       translateString('Your shopping bag is empty', 'حقيبة التسوق الخاصة بك فارغة'),
                         style: TextStyle(
-                            fontSize: w * 0.05,
+                            fontSize: w * 0.035,
                             fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.normal),
                       ),
                       SizedBox(
-                        height: h * 0.03,
+                        height: h * 0.02,
                       ),
                       Center(
-                        child: Text(LocalKeys.CART_EMPTY_TITLE.tr(),
+                        child: Text(translateString('Add a new product', 'قم بإضافة منتج جديد'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: w * 0.05,
+                                fontSize: w * 0.035,
                                 fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                                fontWeight: FontWeight.bold)),
+                                fontWeight: FontWeight.normal)),
                       ),
                       SizedBox(
                         height: h * 0.05,
@@ -113,20 +114,20 @@ class _CartState extends State<Cart> {
                               (route) => false);
                         },
                         child: Container(
-                          width: w * 0.9,
-                          height: h * 0.08,
+                          width: w * 0.75,
+                          height: h * 0.06,
                           decoration: BoxDecoration(
                             color: mainColor,
-                            borderRadius: BorderRadius.circular(w * 0.09),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           child: Center(
                             child: Text(
-                              LocalKeys.SHOP_NOW.tr(),
+                             translateString( LocalKeys.SHOP_NOW.tr(), 'متابعة التسوق'),
                               style: TextStyle(
                                   fontSize: w * 0.04,
                                   fontFamily:
                                       (lang == 'en') ? 'Nunito' : 'Almarai',
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),

@@ -49,14 +49,40 @@ class _BrandProductsScreenState extends State<BrandProductsScreen> {
       appBar: AppBar(
         title: Text(translateString(model.brandProducts!.brand!.nameEn!, model.brandProducts!.brand!.nameAr!),style: TextStyle(
             fontFamily: 'Almarai',
-            fontSize: w * 0.045,
-            fontWeight: FontWeight.bold,
+            fontSize: w * 0.04,
+            fontWeight: FontWeight.normal,
             color: const Color(0xff400000)),),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
+          Image.network(EndPoints.IMAGEURL2 +
+              model.brandProducts!.brand!.logo!,height: 0.25*h,fit: BoxFit.fill,width: w*0.95,),
+          SizedBox(
+            height: h * 0.03,
+          ),
+          Row(
+            children: [
+              Column(
+                children: [
+                  Text(translateString('All Products', 'كل المنتجات'),style: TextStyle(
+                      fontFamily: 'Almarai',
+                      fontSize: w * 0.04,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black),),
+                  Container(
+                    color: mainColor,
+                    height: h*0.003,
+                    width: w*0.25,
+                  )
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: h * 0.03,
+          ),
           Expanded(
             child: GridView.builder(
                 itemCount: model.brandProducts!.products!.length,

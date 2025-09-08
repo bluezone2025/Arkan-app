@@ -65,7 +65,7 @@ class _OffersState extends State<Offers> {
       children: [
         if(products.isNotEmpty)
         SectionTitle(
-          title: translateString('Best Offers', 'أفضل العروض'),
+          title: translateString('Special offers', 'عروض مميزة'),
           press: () =>  Navigator.push(context,
               MaterialPageRoute(builder: (context) => AllOffersScreen())),),
         if(products.isNotEmpty)
@@ -75,7 +75,7 @@ class _OffersState extends State<Offers> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: w*0.02),
           child: SizedBox(
-            height: products.isEmpty ? 0 : h*0.3,
+            height: products.isEmpty ? 0 : h*0.38,
             child: GridView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -97,16 +97,16 @@ class _OffersState extends State<Offers> {
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(5),
                             child: Container(
-                              width: w * 0.42,
-                              height: h * 0.2,
+                              width: w * 0.5,
+                              height: h * 0.24,
                               color: Colors.white,
                               child: customCachedNetworkImage(
                                   url: EndPoints.IMAGEURL2 +
                                       widget.offersItem[index].img.toString(),
                                   context: context,
-                                  fit: BoxFit.cover),
+                                  fit: BoxFit.fill),
                             ),
                           ),
                           if(widget.offersItem[index].availability == 0)
@@ -134,7 +134,7 @@ class _OffersState extends State<Offers> {
                         ],
                       ),
                       SizedBox(
-                        width: w * 0.4,
+                        width: w * 0.45,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
@@ -142,22 +142,25 @@ class _OffersState extends State<Offers> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                constraints: BoxConstraints(maxWidth: w * 0.38),
-                                child: (lang == 'en')
-                                    ? Text(widget.offersItem[index].titleEn,maxLines: 1,
+                                constraints: BoxConstraints(maxWidth: w * 0.4),
+                                child: Text(translateString(widget.offersItem[index].titleEn, widget.offersItem[index].titleAr),maxLines: 1,
                                     style: TextStyle(
-                                      fontSize: w * 0.035,
+                                      fontSize: w * 0.032,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Nunito',
                                     ),)
-                                    : Text(
-                                  widget.offersItem[index].titleAr,maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: w * 0.035,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Almarai',
-                                  ),
-                                ),
+                              ),
+                              SizedBox(
+                                height: h * 0.01,
+                              ),
+                              Container(
+                                constraints: BoxConstraints(maxWidth: w * 0.4),
+                                child: Text(translateString(widget.offersItem[index].descriptionEn, widget.offersItem[index].descriptionAr),maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: w * 0.03,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Nunito',
+                                    ),)
                               ),
                               SizedBox(
                                 height: h * 0.01,
@@ -176,7 +179,7 @@ class _OffersState extends State<Offers> {
                                           : 'Almarai',
                                       decoration:
                                       TextDecoration.lineThrough,
-                                      color: Colors.black,
+                                      color: Colors.red,
                                       decorationColor: Colors.black),
                                 ),
                               Row(
@@ -190,32 +193,37 @@ class _OffersState extends State<Offers> {
                                         productPrice:
                                         widget.offersItem[index].price),
                                     style: TextStyle(
-                                        fontSize: w * 0.035,
+                                        fontSize: w * 0.04,
                                         fontFamily: (lang == 'en')
                                             ? 'Nunito'
                                             : 'Almarai',
-                                        color: mainColor,
-                                        fontWeight: FontWeight.bold
+                                        color: Colors.black,
                                     ),
                                   ),
                                   if(widget.offersItem[index].hasOffer == 1)
-                                    Text(
-                                      " %${(((widget
-                                          .offersItem[index]
-                                          .beforePrice - widget
-                                          .offersItem[index].price) / widget
-                                          .offersItem[index]
-                                          .beforePrice ) * 100).toInt()} ${translateString('off', 'خصم')}",
-                                      textAlign:
-                                      TextAlign.center,
-                                      style: TextStyle(
-                                          color: mainColor,
-                                          fontFamily:
-                                          'Bahij',
-                                          fontSize: w * 0.025,
-                                          fontWeight:
-                                          FontWeight
-                                              .w500),
+                                    Container(
+                                      color: mainColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
+                                        child: Text(
+                                          " %${(((widget
+                                              .offersItem[index]
+                                              .beforePrice - widget
+                                              .offersItem[index].price) / widget
+                                              .offersItem[index]
+                                              .beforePrice ) * 100).toInt()}",
+                                          textAlign:
+                                          TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily:
+                                              'Bahij',
+                                              fontSize: w * 0.025,
+                                              fontWeight:
+                                              FontWeight
+                                                  .w500),
+                                        ),
+                                      ),
                                     ),
                                 ],
                               ),
@@ -232,7 +240,7 @@ class _OffersState extends State<Offers> {
               ): Container(),
               itemCount: widget.offersItem.length >= 4 ? 4 :widget.offersItem.length, gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: w*0.43,
+              mainAxisExtent: w*0.47,
               mainAxisSpacing: w * 0.03,
               crossAxisSpacing: 1,
               crossAxisCount: 1,

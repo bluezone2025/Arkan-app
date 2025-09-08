@@ -18,6 +18,7 @@ import '../../app_cubit/appstate.dart';
 import '../../componnent/constants.dart';
 import '../../generated/local_keys.dart';
 import '../cart/cart_product/body.dart';
+import '../cart/cart_product/conponent.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../fatorah/fatorah.dart';
 import '../loading.dart';
@@ -63,6 +64,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
   String _status = 'idle';
   bool islogin = false;
   bool rejected = false;
+  bool show = false;
   TabbySession? session;
   TransactionStatusResponse? tabbyStatus;
 
@@ -248,9 +250,9 @@ class _ConfirmCartState extends State<ConfirmCart> {
                 LocalKeys.CHECKOUT.tr(),
                 style: TextStyle(
                     fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     color: Colors.black,
-                    fontSize: w * 0.05),
+                    fontSize: w * 0.04),
               ),
               leading: const BackButton(color: Colors.black,),
               elevation: 0,
@@ -262,7 +264,29 @@ class _ConfirmCartState extends State<ConfirmCart> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: h * 0.03,
+                      height: h * 0.02,
+                    ),
+                    Image.asset('assets/payment_p.png',width: w*0.8,height: h*0.06,),
+                    SizedBox(
+                      height: h * 0.04,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                      child: Row(
+                        children: [
+                          Text(
+                           translateString('Payment options', 'خيارات الدفع'),
+                            style: TextStyle(
+                                fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                fontSize: w * 0.034),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: h * 0.04,
                     ),
                     InkWell(
                       onTap: () {
@@ -270,46 +294,57 @@ class _ConfirmCartState extends State<ConfirmCart> {
                           _counter = 2;
                         });
                       },
-                      child: Container(
-                        height: h * 0.08,
-                        width: w * 0.9,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                LocalKeys.VISA.tr(),
-                                style: TextStyle(
-                                  fontSize: w * 0.035,
-                                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                                ),
-                              ),
-                              Container(
-                                width: w * 0.06,
-                                height: w * 0.06,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(
-                                      color: mainColor, width: w * 0.005),
-                                  color: _counter == 2 ? mainColor : Colors.white,
-                                ),
-                                child: Center(
-                                  child: IconButton(
-                                    icon: const Icon(Icons.done),
-                                    onPressed: () {},
-                                    iconSize: w * 0.04,
-                                    color: Colors.white,
-                                    padding: const EdgeInsets.all(0),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: w * 0.06,
+                                  height: w * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border.all(
+                                        color: mainColor, width: w * 0.005),
+                                    color: _counter == 2 ? mainColor : Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(Icons.done),
+                                      onPressed: () {},
+                                      iconSize: w * 0.04,
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.all(0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(
+                                  width: h * 0.02,
+                                ),
+                                Text(
+                                  LocalKeys.VISA.tr(),
+                                  style: TextStyle(
+                                    fontSize: w * 0.035,
+                                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/visa.png'
+                                  ,height: h*0.04,
+                                ),
+                                SizedBox(
+                                  width: h * 0.01,
+                                ),
+                                Image.asset('assets/icons/knet.png',height: h*0.04,),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -326,50 +361,49 @@ class _ConfirmCartState extends State<ConfirmCart> {
                               });
                               createSession();
                             },
-                            child: Container(
-                              height: h * 0.08,
-                              width: w * 0.9,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[200],
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(
-                                      'assets/tabby.png',
-                                      width: w * 0.15,
-                                    ),
-                                    Text(
-                                      translateString('Pay in 4. No interest, no fees.', 'قسّمها على 4. بدون أي فوائد، أو رسوم.'),
-                                      style: TextStyle(
-                                        fontSize: w * 0.03,
-                                        fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                                      ),
-                                    ),
-                                    Container(
-                                      width: w * 0.06,
-                                      height: w * 0.06,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        border: Border.all(
-                                            color: mainColor, width: w * 0.005),
-                                        color: _counter == 3 ? mainColor : Colors.white,
-                                      ),
-                                      child: Center(
-                                        child: IconButton(
-                                          icon: const Icon(Icons.done),
-                                          onPressed: () {},
-                                          iconSize: w * 0.04,
-                                          color: Colors.white,
-                                          padding: const EdgeInsets.all(0),
+                            child: Padding(
+                              padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: w * 0.06,
+                                        height: w * 0.06,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(50),
+                                          border: Border.all(
+                                              color: mainColor, width: w * 0.005),
+                                          color: _counter == 3 ? mainColor : Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: IconButton(
+                                            icon: const Icon(Icons.done),
+                                            onPressed: () {},
+                                            iconSize: w * 0.04,
+                                            color: Colors.white,
+                                            padding: const EdgeInsets.all(0),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                      SizedBox(
+                                        width: h * 0.02,
+                                      ),
+                                      Text(
+                                        translateString('Pay in 4. No interest, no fees.', 'قسّمها على 4. بدون أي فوائد، أو رسوم.'),
+                                        style: TextStyle(
+                                          fontSize: w * 0.03,
+                                          fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Image.asset(
+                                    'assets/tabby.png'
+                                    ,height: h*0.04,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -418,52 +452,66 @@ class _ConfirmCartState extends State<ConfirmCart> {
                           _counter = 1;
                         });
                       },
-                      child: Container(
-                        height: h * 0.08,
-                        width: w * 0.9,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                translateString(
-                                    'cash on delivery', 'الدفع عند الاستلام'),
-                                style: TextStyle(
-                                  fontSize: w * 0.035,
-                                  fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                                ),
-                              ),
-                              Container(
-                                width: w * 0.06,
-                                height: w * 0.06,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(
-                                      color: mainColor, width: w * 0.005),
-                                  color: _counter == 1 ? mainColor : Colors.white,
-                                ),
-                                child: Center(
-                                  child: IconButton(
-                                    icon: const Icon(Icons.done),
-                                    onPressed: () {},
-                                    iconSize: w * 0.04,
-                                    color: Colors.white,
-                                    padding: const EdgeInsets.all(0),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: w * 0.06,
+                                  height: w * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border.all(
+                                        color: mainColor, width: w * 0.005),
+                                    color: _counter == 1 ? mainColor : Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(Icons.done),
+                                      onPressed: () {},
+                                      iconSize: w * 0.04,
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.all(0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(
+                                  width: h * 0.02,
+                                ),
+                                Text(
+                                  translateString(
+                                      'cash on delivery', 'الدفع عند الاستلام'),
+                                  style: TextStyle(
+                                    fontSize: w * 0.035,
+                                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Image.asset(
+                              'assets/cash.png'
+                              ,height: h*0.04,
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     SizedBox(
                       height: h * 0.04,
+                    ),
+                    Text(
+                      translateString('Application Summary', 'ملخص الطلب'),
+                      style: TextStyle(
+                          fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                          fontWeight: FontWeight.normal,
+                          color: mainColor,
+                          fontSize: w * 0.034),
+                    ),
+                    SizedBox(
+                      height: h * 0.02,
                     ),
                     BlocConsumer<CartCubit, CartState>(
                         builder: (context, state) {
@@ -484,14 +532,14 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                       MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          LocalKeys.PRICE.tr(),
+                                          translateString(LocalKeys.PRICE.tr(), 'الإجمالي'),
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontFamily: (lang == 'en')
                                                   ? 'Nunito'
                                                   : 'Almarai',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: w * 0.04),
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: w * 0.034),
                                         ),
                                         Text(
                                           getProductprice(
@@ -503,13 +551,13 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                               fontFamily: (lang == 'en')
                                                   ? 'Nunito'
                                                   : 'Almarai',
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.normal,
                                               fontSize: w * 0.04),
                                         ),
                                       ],
                                     ),
                                     SizedBox(
-                                      height: h * 0.03,
+                                      height: h * 0.01,
                                     ),
                                     BlocConsumer<HomeCubit, AppCubitStates>(
                                         builder: (context, state) {
@@ -520,7 +568,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                             MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                LocalKeys.SHIPPING.tr(),
+                                                translateString(LocalKeys.SHIPPING.tr(), 'التوصيل'),
                                                 style: TextStyle(
                                                     color: (HomeCubit.get(
                                                         context)
@@ -533,8 +581,8 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                                     fontFamily: (lang == 'en')
                                                         ? 'Nunito'
                                                         : 'Almarai',
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: w * 0.04),
+                                                    fontWeight: FontWeight.normal,
+                                                    fontSize: w * 0.034),
                                               ),
                                               (HomeCubit.get(context)
                                                   .settingModel!
@@ -559,7 +607,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                                         ? 'Nunito'
                                                         : 'Almarai',
                                                     fontWeight:
-                                                    FontWeight.bold,
+                                                    FontWeight.normal,
                                                     fontSize: w * 0.04),
                                               )
                                                   : Text(
@@ -572,7 +620,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                                       ? 'Nunito'
                                                       : 'Almarai',
                                                   fontWeight:
-                                                  FontWeight.bold,
+                                                  FontWeight.normal,
                                                   fontSize: w * 0.04,
                                                 ),
                                               ),
@@ -581,7 +629,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                         },
                                         listener: (context, state) {}),
                                     SizedBox(
-                                      height: h * 0.03,
+                                      height: h * 0.01,
                                     ),
                                     (widget.discount != null)
                                         ? Row(
@@ -597,8 +645,8 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                               fontFamily: (lang == 'en')
                                                   ? 'Nunito'
                                                   : 'Almarai',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: w * 0.04),
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: w * 0.034),
                                         ),
                                         Text(
                                           getProductprice(
@@ -622,7 +670,7 @@ class _ConfirmCartState extends State<ConfirmCart> {
                                     )
                                         : const SizedBox(),
                                     SizedBox(
-                                      height: h * 0.04,
+                                      height: h * 0.01,
                                     )
                                   ],
                                 ),
@@ -630,230 +678,419 @@ class _ConfirmCartState extends State<ConfirmCart> {
                               fallback: (context) => Container());
                         },
                         listener: (context, state) {}),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.04, vertical: h * 0.03),
-              decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(w * 0.07),
-                    topRight: Radius.circular(w * 0.07),
-                  )),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: h * 0.03,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
+                    Padding(
+                      padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                      child: Row(
                         children: [
                           Text(
-                            LocalKeys.TOTAL_PRICE.tr(),
+                            translateString('Review the order', 'مراجعة الطلب'),
                             style: TextStyle(
-                                color: Colors.white,
-                                fontFamily:
-                                    (lang == 'en') ? 'Nunito' : 'Almarai',
-                                fontWeight: FontWeight.bold,
-                                fontSize: w * 0.05),
+                                fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                fontSize: w * 0.034),
                           ),
-                          if(prefs.getInt('is_tabby_active') == 1 && _counter == 3)
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: h * 0.01,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Text(
-                            translateString('7% will be added for using Tabby service', 'سيتم اضافة 7% لاستخدامك خدمة تابى'),
+                            '${translateString('Review the order', 'شحنة 1 من ( ')} ${DataBaseCubit.get(context).cart.length} ${translateString('Review the order', 'منتج ) ')}',
                             style: TextStyle(
-                              fontSize: w * 0.03,color: Colors.white,
-                              fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                            ),
+                                fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                fontSize: w * 0.034),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: h * 0.02),
-                            child: Text(
-                              getProductprice(
-                                  currency: currency,
-                                  productPrice:
-                                      num.parse(widget.subTotal) + num.parse(
-                                        prefs
-                                            .getString(
-                                            "delivery_value")
-                                            .toString(),
-                                      ) + (_counter == 3 ? num.parse(widget.tabbyAmount) : 0)),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: (lang == 'en')
-                                      ? 'Nunito'
-                                      : 'Almarai',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: w * 0.05),
+                          InkWell(
+                            onTap: (){
+                              setState(() {
+                                show = true;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  translateString('more', 'المزيد'),
+                                  style: TextStyle(
+                                      fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black,
+                                      fontSize: w * 0.034),
+                                ),
+                                const Icon(Icons.arrow_drop_down,color: Colors.grey,)
+                              ],
                             ),
                           ),
                         ],
                       ),
-                      BlocConsumer<DataBaseCubit, DatabaseStates>(
-                          builder: (context, state) =>
-                              BlocConsumer<OrderCubit, OrderState>(
-                                listener: (context, state) {
-                                  if (state is CashOrdersSuccessState) {
-                                    LoadingScreen.pop(context);
+                    ),
+                    Divider(
+                      color: Colors.grey[350],
+                      height: 3,
+                    ),
+                    if(show)
+                    ListView.separated(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: DataBaseCubit.get(context).cart.length,
+                      itemBuilder: (context, index) {
+                        return buildCartIem(
+                            days: DataBaseCubit.get(context).cart[index]['productDescAr'] == 'daza' ? DataBaseCubit.get(context).cart[index]['productDescEn'] : '',
+                            title: (RayanCartBody.lang == 'en')
+                                ? DataBaseCubit.get(context).cart[index]['productNameEn']
+                                : DataBaseCubit.get(context).cart[index]['productNameAr'],
+                            price: DataBaseCubit.get(context).cart[index]
+                            ['productPrice'] *
+                                DataBaseCubit.get(context).counter[
+                                DataBaseCubit.get(context).cart[index]['productId']],
+                            description: DataBaseCubit.get(context).cart[index]['productDescAr'] == 'daza' ? 'daza' :(RayanCartBody.lang == 'en')
+                                ? DataBaseCubit.get(context).cart[index]['productDescEn']
+                                : DataBaseCubit.get(context).cart[index]['productDescAr'],
+                            image: DataBaseCubit.get(context).cart[index]['productImg'],
+                            qty: (DataBaseCubit.get(context).counter[
+                            DataBaseCubit.get(context).cart[index]
+                            ['productId']] ==
+                                null)
+                                ? DataBaseCubit.get(context).cart[index]['productQty']
+                                : DataBaseCubit.get(context).counter[
+                            DataBaseCubit.get(context).cart[index]['productId']],
+                            context: context,
+                            decreaseqty: () {
+                              if (DataBaseCubit.get(context).cart.isEmpty) {
+                                setState(() {
+                                  RayanCartBody.finalPrice = 0;
+                                });
+                              }
+                              if (DataBaseCubit.get(context).counter[
+                              DataBaseCubit.get(context).cart[index]
+                              ['productId']] ==
+                                  1) {
+                                DataBaseCubit.get(context).deletaFromDB(
+                                  id: DataBaseCubit.get(context).cart[index]['productId'],
+                                );
+                                setState(() {
+                                  RayanCartBody.finalPrice -= DataBaseCubit.get(context)
+                                      .cart[index]['productPrice'];
+                                });
+                              } else {
+                                setState(() {
+                                  DataBaseCubit.get(context).counter[
+                                  DataBaseCubit.get(context).cart[index]
+                                  ['productId']] =
+                                      int.parse(DataBaseCubit.get(context)
+                                          .cart[index]['productQty']
+                                          .toString()) -
+                                          1;
+                                  RayanCartBody.finalPrice -= DataBaseCubit.get(context)
+                                      .cart[index]['productPrice'];
+                                  if (RayanCartBody.finalPrice < 0 ||
+                                      DataBaseCubit.get(context).cart.isEmpty) {
+                                    RayanCartBody.finalPrice = 0;
+                                  }
+                                });
+                              }
+                              DataBaseCubit.get(context).updateDatabase(
+                                productId: DataBaseCubit.get(context).cart[index]
+                                ['productId'],
+                                productQty: DataBaseCubit.get(context).counter[
+                                DataBaseCubit.get(context).cart[index]['productId']]!,
+                              );
+                            },
+                            delete: (){
+                              DataBaseCubit.get(context).deletaFromDB(
+                                id: DataBaseCubit.get(context).cart[index]['productId'],
+                              );
+                              setState(() {
+                                RayanCartBody.finalPrice -= DataBaseCubit.get(context)
+                                    .cart[index]['productPrice'];
+                              });
+                            },
+                            increaseqty: InkWell(
+                              onTap: () async {
+                                CartCubit.get(context).checkProductQty(
+                                    context: context,
+                                    index: index,
+                                    productId: DataBaseCubit.get(context)
+                                        .cart[index]['productId']
+                                        .toString(),
+                                    productQty: DataBaseCubit.get(context)
+                                        .cart[index]['productQty']
+                                        .toString(),
+                                    sizeId: DataBaseCubit.get(context)
+                                        .cart[index]['sizeId']
+                                        .toString(),
+                                    colorId: DataBaseCubit.get(context)
+                                        .cart[index]['colorId']
+                                        .toString());
+                              },
+                              child: Icon(
+                                Icons.add,
+                                size: w * 0.06,
+                              ),
+                            )
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>  Padding(
+                        padding: EdgeInsets.symmetric(horizontal: w*0.06),
+                        child: Container(
+                          width: w*0.5,
+                          height: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.grey[350],
+                      height: 3,
+                    ),
+                    SizedBox(
+                      height: h * 0.01,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: w * 0.05, left: w * 0.05),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                translateString('By completing the purchase, you agree to all', 'بإتمام عملية الشراء، فانت توافق على كافة'),
+                                style: TextStyle(
+                                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black,
+                                    fontSize: w * 0.03),
+                              ),
+                              Text(
+                                translateString('terms and conditions and the privacy policy', 'الشروط والأحكام و سياسة الخصوصية'),
+                                style: TextStyle(
+                                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.blue,
+                                    fontSize: w * 0.03),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: h * 0.01,
+                    ),
+                    Divider(
+                      color: Colors.grey[350],
+                      height: 3,
+                    ),
+                    SizedBox(
+                      height: h * 0.03,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            LocalKeys.TOTAL_PRICE.tr(),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily:
+                                (lang == 'en') ? 'Nunito' : 'Almarai',
+                                fontWeight: FontWeight.normal,
+                                fontSize: w * 0.035),
+                          ),
+                          Text(
+                            getProductprice(
+                                currency: currency,
+                                productPrice:
+                                num.parse(widget.subTotal) + num.parse(
+                                  prefs
+                                      .getString(
+                                      "delivery_value")
+                                      .toString(),
+                                ) + (_counter == 3 ? num.parse(widget.tabbyAmount) : 0)),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: (lang == 'en')
+                                    ? 'Nunito'
+                                    : 'Almarai',
+                                fontWeight: FontWeight.normal,
+                                fontSize: w * 0.045),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: h * 0.03,
+                    ),
+                    BlocConsumer<DataBaseCubit, DatabaseStates>(
+                        builder: (context, state) =>
+                            BlocConsumer<OrderCubit, OrderState>(
+                              listener: (context, state) {
+                                if (state is CashOrdersSuccessState) {
+                                  LoadingScreen.pop(context);
+                                  DataBaseCubit.get(context)
+                                      .deleteTableContent();
+                                  Fluttertoast.showToast(
+                                      msg: (lang == "en")
+                                          ? "Order completed successfully"
+                                          : "لقد تمت عملية الطلب بنجاح ",
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                      gravity: ToastGravity.TOP,
+                                      toastLength: Toast.LENGTH_LONG);
+                                  if (islogin) {
                                     DataBaseCubit.get(context)
                                         .deleteTableContent();
-                                    Fluttertoast.showToast(
-                                        msg: (lang == "en")
-                                            ? "Order completed successfully"
-                                            : "لقد تمت عملية الطلب بنجاح ",
-                                        backgroundColor: Colors.green,
-                                        textColor: Colors.white,
-                                        gravity: ToastGravity.TOP,
-                                        toastLength: Toast.LENGTH_LONG);
-                                    if (islogin) {
-                                      DataBaseCubit.get(context)
-                                          .deleteTableContent();
-                                      DataBaseCubit.get(context).cart =
-                                          [];
-                                      OrderCubit.get(context)
-                                          .getAllorders();
-                                      // Navigator.pushAndRemoveUntil(
-                                      //     context,
-                                      //     MaterialPageRoute(builder: (context) => Orders()),
-                                      //     (route) => false);
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const FatorahScreen()),
-                                          (route) => false);
-                                    } else {
-                                      DataBaseCubit.get(context)
-                                          .deleteTableContent();
-                                      DataBaseCubit.get(context).cart =
-                                          [];
-                                      OrderCubit.get(context)
-                                          .getSingleOrder(
-                                              orderId: widget.orderId);
-                                      // Navigator.pushAndRemoveUntil(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) => HomeScreen(
-                                      //               index: 0,
-                                      //             )),
-                                      //     (route) => false);
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const FatorahScreen()),
-                                          (route) => false);
-                                    }
+                                    DataBaseCubit.get(context).cart =
+                                    [];
+                                    OrderCubit.get(context)
+                                        .getAllorders();
+                                    // Navigator.pushAndRemoveUntil(
+                                    //     context,
+                                    //     MaterialPageRoute(builder: (context) => Orders()),
+                                    //     (route) => false);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const FatorahScreen()),
+                                            (route) => false);
+                                  } else {
+                                    DataBaseCubit.get(context)
+                                        .deleteTableContent();
+                                    DataBaseCubit.get(context).cart =
+                                    [];
+                                    OrderCubit.get(context)
+                                        .getSingleOrder(
+                                        orderId: widget.orderId);
+                                    // Navigator.pushAndRemoveUntil(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => HomeScreen(
+                                    //               index: 0,
+                                    //             )),
+                                    //     (route) => false);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const FatorahScreen()),
+                                            (route) => false);
                                   }
-                                  if(state is CashOrdersLoadingState){
-                                    LoadingScreen.show(context);
-                                  }if(state is CashOrdersErrorState){
-                                    LoadingScreen.pop(context);
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return BlocConsumer<AppCubit,
-                                      AppCubitStates>(
-                                    listener: (context, state) {},
-                                    builder: (context, state) {
-                                      return InkWell(
-                                        onTap: () async {
-                                          // DataBaseCubit.get(context)
-                                          //     .deleteTableContent();
-                                          await OrderCubit.get(context)
-                                              .getSingleOrder(
-                                                  orderId:
-                                                      widget.orderId);
-                                          print(widget.orderId);
-                                          if (_counter == 1) {
-                                            DataBaseCubit.get(context).deleteTableContent();
-                                            OrderCubit.get(context)
-                                                .cashOrder(
-                                                    orderId:
-                                                        widget.orderId);
-                                            BlocProvider.of<AppCubit>(
-                                                    context)
-                                                .notifyCount();
-                                            prefs.setString('paymentMethod', 'cash' );
-                                          }
-                                          if (_counter == 2) {
-                                            prefs.setString('paymentMethod', 'online' );
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PaymentScreen(
-                                                  orderId: widget.orderId,
-                                                  totalPrice:
-                                                      widget.totalPrice,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          if (_counter == 3 && _status == 'created') {
-                                            prefs.setString('paymentMethod', 'tabby' );
-                                            Navigator.pushNamed(
-                                              context,
-                                              '/checkout',
-                                              arguments:
-                                                  TabbyCheckoutNavParams(
-                                                selectedProduct: session!
-                                                    .availableProducts
-                                                    .installments!,
-                                              ),
-                                            );
-                                            setState(() {
-                                              _counter = 2;
-                                            });
-                                          }
-                                        },
-                                        child: Container(
-                                          width: w * 0.35,
-                                          height: h * 0.07,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      w * 0.02),
-                                              border: Border.all(
-                                                  color: Colors.white)),
-                                          child: Center(
-                                            child: Text(
-                                              translateString(
-                                                  'Complete Order',
-                                                  'استكمال الطلب'),
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily:
-                                                      (lang == 'en')
-                                                          ? 'Nunito'
-                                                          : 'Almarai',
-                                                  fontWeight:
-                                                      FontWeight.bold,
-                                                  fontSize: w * 0.04),
+                                }
+                                if(state is CashOrdersLoadingState){
+                                  LoadingScreen.show(context);
+                                }if(state is CashOrdersErrorState){
+                                  LoadingScreen.pop(context);
+                                }
+                              },
+                              builder: (context, state) {
+                                return BlocConsumer<AppCubit,
+                                    AppCubitStates>(
+                                  listener: (context, state) {},
+                                  builder: (context, state) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        // DataBaseCubit.get(context)
+                                        //     .deleteTableContent();
+                                        await OrderCubit.get(context)
+                                            .getSingleOrder(
+                                            orderId:
+                                            widget.orderId);
+                                        print(widget.orderId);
+                                        if (_counter == 1) {
+                                          DataBaseCubit.get(context).deleteTableContent();
+                                          OrderCubit.get(context)
+                                              .cashOrder(
+                                              orderId:
+                                              widget.orderId);
+                                          BlocProvider.of<AppCubit>(
+                                              context)
+                                              .notifyCount();
+                                          prefs.setString('paymentMethod', 'cash' );
+                                        }
+                                        if (_counter == 2) {
+                                          prefs.setString('paymentMethod', 'online' );
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PaymentScreen(
+                                                    orderId: widget.orderId,
+                                                    totalPrice:
+                                                    widget.totalPrice,
+                                                  ),
                                             ),
+                                          );
+                                        }
+                                        if (_counter == 3 && _status == 'created') {
+                                          prefs.setString('paymentMethod', 'tabby' );
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/checkout',
+                                            arguments:
+                                            TabbyCheckoutNavParams(
+                                              selectedProduct: session!
+                                                  .availableProducts
+                                                  .installments!,
+                                            ),
+                                          );
+                                          setState(() {
+                                            _counter = 2;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        width: w * 0.75,
+                                        height: h * 0.06,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                w * 0.02),
+                                            color: mainColor),
+                                        child: Center(
+                                          child: Text(
+                                            translateString(
+                                                'Complete Order',
+                                                'استكمال الطلب'),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily:
+                                                (lang == 'en')
+                                                    ? 'Nunito'
+                                                    : 'Almarai',
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: w * 0.034),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                          listener: (context, state) {
-                            if (state is DeleteTablecontentDatabase) {
-                              DataBaseCubit.get(context).cart = [];
-                            }
-                          }),
-                    ],
-                  )
-                ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                        listener: (context, state) {
+                          if (state is DeleteTablecontentDatabase) {
+                            DataBaseCubit.get(context).cart = [];
+                          }
+                        }),
+                    SizedBox(
+                      height: h * 0.03,
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
                           ],
                         ),
           ),

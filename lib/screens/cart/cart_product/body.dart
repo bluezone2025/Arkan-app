@@ -152,7 +152,22 @@ class _RayanCartBodyState extends State<RayanCartBody> {
           width: w,
           height: h,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: h * 0.01,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: Text('${DataBaseCubit.get(context).cart.length} ${translateString('Products', 'المنتجات')}',style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: mainColor,
+                  fontSize: w * 0.035,
+                  fontFamily: (RayanCartBody.lang == 'en')
+                      ? 'Nunito'
+                      : 'Almarai',
+                ),),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -276,6 +291,9 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                           currency: currency == 'BHD' ? Currency.bhd : currency == 'QAR' ? Currency.qar : currency == 'AED' ? Currency.aed : currency == 'SAR' ? Currency.sar : Currency.kwd,
                           lang: lang == 'en' ? Lang.en :Lang.ar,
                         ),
+                      SizedBox(
+                        height: h * 0.01,
+                      ),
                       if(prefs.getInt('is_tabby_active') == 1)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -300,147 +318,302 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                         MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            translateString('add message', 'اضف رسالة'),
+                            translateString('A gift for your loved ones', 'إهداء لمن تحب'),
                             style: TextStyle(
                                 fontFamily: (lang == 'en')
                                     ? 'Nunito'
                                     : 'Almarai',
-                                fontSize: w * 0.045,
+                                fontSize: w * 0.03,
                                 fontWeight:
-                                FontWeight.bold,
-                                color: mainColor),
+                                FontWeight.normal,
+                                color: Colors.black),
                           ),
                         ],
                       ),
-                      Container(
-                        padding: EdgeInsets.only(
-                            left: w * 0.03,
-                            right: w * 0.03),
-                        decoration: BoxDecoration(
-                            color: const Color(0xffF8F8F8),
-                            borderRadius:
-                            BorderRadius.circular(25)),
-                        child: TextFormField(
-                          style: TextStyle(
-                              fontFamily:
-                              (lang == 'en')
-                                  ? 'Nunito'
-                                  : 'Almarai',
-                              color: Colors.black),
-                          textAlign: TextAlign.start,
-                          cursorColor: Colors.black,
-                          controller: editingController1,
-                          maxLines: 5,
-                          textInputAction:
-                          TextInputAction.next,
-                          validator: (value) {
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder:
-                            InputBorder.none,
-                            enabledBorder:
-                            InputBorder.none,
-                            errorBorder:
-                            InputBorder.none,
-                            focusedErrorBorder:
-                            InputBorder.none,
-                            errorStyle: TextStyle(
-                                fontFamily:
-                                (lang == 'en')
-                                    ? 'Nunito'
-                                    : 'Almarai',
-                                color: Colors.white),
-                            hintText: 'اكتب الرسالة التي تريدها هنا',
-                            hintStyle: TextStyle(
-                                fontFamily:
-                                (lang == 'en')
-                                    ? 'Nunito'
-                                    : 'Almarai',fontSize: w*0.03,
-                                color:
-                                Colors.black45),
-                            labelStyle: TextStyle(
-                                fontFamily:
-                                (lang == 'en')
-                                    ? 'Nunito'
-                                    : 'Almarai',
-                                color: Colors.black),
+                      SizedBox(
+                        height: h * 0.015,
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: w * 0.03,
+                                right: w * 0.03),
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF8F8F8),
+                                borderRadius:
+                                BorderRadius.circular(5)),
+                            child: TextFormField(
+                              style: TextStyle(
+                                  fontFamily:
+                                  (lang == 'en')
+                                      ? 'Nunito'
+                                      : 'Almarai',
+                                  color: Colors.black),
+                              textAlign: TextAlign.start,
+                              cursorColor: Colors.black,
+                              controller: editingController1,
+                              maxLines: 5,
+                              textInputAction:
+                              TextInputAction.next,
+                              validator: (value) {
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                focusedBorder:
+                                InputBorder.none,
+                                enabledBorder:
+                                InputBorder.none,
+                                errorBorder:
+                                InputBorder.none,
+                                focusedErrorBorder:
+                                InputBorder.none,
+                                errorStyle: TextStyle(
+                                    fontFamily:
+                                    (lang == 'en')
+                                        ? 'Nunito'
+                                        : 'Almarai',
+                                    color: Colors.white),
+                                hintText: translateString('Add your message here', 'أضف رسالتك هنا'),
+                                hintStyle: TextStyle(
+                                    fontFamily:
+                                    (lang == 'en')
+                                        ? 'Nunito'
+                                        : 'Almarai',fontSize: w*0.03,
+                                    color:
+                                    Colors.black45),
+                                labelStyle: TextStyle(
+                                    fontFamily:
+                                    (lang == 'en')
+                                        ? 'Nunito'
+                                        : 'Almarai',
+                                    color: Colors.black),
+                              ),
+                            ),
                           ),
-                        ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: h * 0.08,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true, // Enab// le full-screen resizing for the keyboard
+                                        backgroundColor: Colors.white,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(15.0),
+                                          ),
+                                        ),
+                                        builder: (context) => SizedBox(
+                                          width: w,
+                                          height: h*0.35,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: h*0.02),
+                                                Center(
+                                                  child: Container(
+                                                    color: Colors.black,
+                                                    height: h*0.005,
+                                                    width: w*0.2,
+                                                  ),
+                                                ),
+                                                SizedBox(height: h*0.04),
+                                                Text(translateString('Add a song or YouTube link', 'اضف لينك اغنية او يوتيوب')),
+                                                SizedBox(height: h*0.04),
+                                                Container(
+                                                  height:0.07*h,
+                                                  width: 0.98*w,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(15),
+                                                      border: Border.all(color: Colors.black45)
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                                    child: SizedBox(
+                                                      width: 0.45*w,
+                                                      //height: 7.h,
+                                                      child: TextFormField(
+                                                        keyboardType: TextInputType.text,
+                                                        controller: editingController2,
+                                                        textAlign: TextAlign.start,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                            (lang == 'en')
+                                                                ? 'Nunito'
+                                                                : 'Almarai',
+                                                            color: Colors.black),
+                                                        cursorColor: Colors.black,
+                                                        maxLines: 1,
+                                                        textInputAction:
+                                                        TextInputAction.next,
+                                                        validator: (value) {
+                                                          return null;
+                                                        },
+                                                        decoration: InputDecoration(
+                                                          focusedBorder:
+                                                          InputBorder.none,
+                                                          suffixIcon: InkWell(
+                                                            onTap: (){
+                                                              editingController2.clear();
+                                                            },
+                                                              child: const Icon(Icons.close,color: Color(0xffE2E2E2),)),
+                                                          enabledBorder:
+                                                          InputBorder.none,
+                                                          errorBorder:
+                                                          InputBorder.none,
+                                                          focusedErrorBorder:
+                                                          InputBorder.none,
+                                                          errorStyle: TextStyle(
+                                                              fontFamily:
+                                                              (lang == 'en')
+                                                                  ? 'Nunito'
+                                                                  : 'Almarai',
+                                                              color: Colors.white),
+                                                          hintText: translateString('Add link here', 'اضف لينك هنا'),
+                                                          hintStyle:TextStyle(color: Colors.black45,fontSize: w*0.03,fontWeight: FontWeight.w100,fontFamily: 'Almarai',),
+                                                          labelStyle: TextStyle(
+                                                              fontFamily:
+                                                              (lang == 'en')
+                                                                  ? 'Nunito'
+                                                                  : 'Almarai',fontSize: w*0.04,
+                                                              color: Colors.blue),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: h * 0.04,
+                                                ),
+                                                InkWell(
+                                                  onTap: (){
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Container(
+                                                    width: w*0.95,
+                                                    height: h*0.06,
+                                                    decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        borderRadius: BorderRadius.circular(5)),
+                                                    child: Center(
+                                                        child: Text(
+                                                          translateString('Apply', 'تطبيق'),
+                                                          style: TextStyle(
+                                                              fontSize: w * 0.04,
+                                                              fontFamily: (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white),
+                                                        )),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                      child: SvgPicture.asset('assets/icons/link.svg',)),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        height: h * 0.04,
+                        height: h * 0.05,
                       ),
-                      Container(
-                        height:0.05*h,
-                        width: 0.9*w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(color: Colors.black45)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                              child: SizedBox(
-                                width: 0.45*w,
-                                //height: 7.h,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  controller: editingController2,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontFamily:
-                                      (lang == 'en')
-                                          ? 'Nunito'
-                                          : 'Almarai',
-                                      color: Colors.black),
-                                  cursorColor: Colors.black,
-                                  maxLines: 1,
-                                  textInputAction:
-                                  TextInputAction.next,
-                                  validator: (value) {
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    focusedBorder:
-                                    InputBorder.none,
-                                    enabledBorder:
-                                    InputBorder.none,
-                                    errorBorder:
-                                    InputBorder.none,
-                                    focusedErrorBorder:
-                                    InputBorder.none,
-                                    errorStyle: TextStyle(
-                                        fontFamily:
-                                        (lang == 'en')
-                                            ? 'Nunito'
-                                            : 'Almarai',
-                                        color: Colors.white),
-                                    hintText: translateString('Add link here', 'اضف لينك هنا'),
-                                    hintStyle:TextStyle(color: Colors.black45,fontSize: w*0.04,fontWeight: FontWeight.w100,fontFamily: 'Almarai',),
-                                    labelStyle: TextStyle(
-                                        fontFamily:
-                                        (lang == 'en')
-                                            ? 'Nunito'
-                                            : 'Almarai',fontSize: w*0.04,
-                                        color: Colors.black),
-                                  ),
+                      InkWell(
+                        onTap: (){
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true, // Enab// le full-screen resizing for the keyboard
+                            backgroundColor: Colors.white,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(15.0),
+                              ),
+                            ),
+                            builder: (context) => SizedBox(
+                              width: w,
+                              height: h*0.35,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: h*0.02),
+                                    Center(
+                                      child: Container(
+                                        color: Colors.black,
+                                        height: h*0.005,
+                                        width: w*0.2,
+                                      ),
+                                    ),
+                                    SizedBox(height: h*0.04),
+                                    Text(translateString('Coupon code', 'رمز الكوبون')),
+                                    SizedBox(
+                                      height: h * 0.02,
+                                    ),
+                                    cobonButton(
+                                      context: context,
+                                    ),
+                                    SizedBox(
+                                      height: h * 0.04,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                            .getInstance();
+                                        prefs.setString(
+                                            'cobon', controller.text);
+                                        getCheckcobon(
+                                            cobon: controller.text,
+                                            context: context,
+                                            controller: btncontroller);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        width: w*0.95,
+                                        height: h*0.06,
+                                        decoration: BoxDecoration(
+                                            color: mainColor,
+                                            borderRadius: BorderRadius.circular(5)),
+                                        child: Center(
+                                            child: Text(
+                                              translateString('Apply', 'تطبيق'),
+                                              style: TextStyle(
+                                                  fontSize: w * 0.04,
+                                                  fontFamily: (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                            SvgPicture.asset('assets/icons/link.svg',)
-                          ],
+                          );
+                        },
+                        child: Container(
+                          color: const Color(0xffF8F8F8),
+                          height: h*0.06,
+                          width: w,
+                          child: Center(child: Text(translateString('Use the coupon', 'استخدم الكوبون'),style: TextStyle(color: mainColor),)),
                         ),
-                      ),
-                      SizedBox(
-                        height: h * 0.04,
-                      ),
-                      cobonButton(
-                        context: context,
                       ),
                       SizedBox(
                         height: h * 0.05,
@@ -453,7 +626,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                               color: Colors.black,
                               fontFamily:
                                   (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.normal,
                               fontSize: w * 0.04,
                             ),
                           ),
@@ -466,7 +639,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                               color: Colors.black,
                               fontFamily:
                                   (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.normal,
                               fontSize: w * 0.04,
                             ),
                           )
@@ -492,7 +665,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                                     fontFamily: (RayanCartBody.lang == 'en')
                                         ? 'Nunito'
                                         : 'Almarai',
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                     fontSize: w * 0.04,
                                   ),
                                 ),
@@ -506,7 +679,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                                           fontFamily: (RayanCartBody.lang == 'en')
                                               ? 'Nunito'
                                               : 'Almarai',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: w * 0.04,
                                         ),
                                       )
@@ -517,7 +690,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                                           fontFamily: (RayanCartBody.lang == 'en')
                                               ? 'Nunito'
                                               : 'Almarai',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: w * 0.04,
                                         ),
                                       )
@@ -574,7 +747,7 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                 ),
               ),
               Container(
-                height: h*0.1,
+                height: h*0.06,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -592,70 +765,35 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                   builder: (context, state) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: w*0.04),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          (isCopoun)
-                              ? Text(
-                            getProductprice(
-                                currency: RayanCartBody.currency,
-                                productPrice: (RayanCartBody.finalPrice -
-                                    (RayanCartBody.finalPrice *
-                                        copounModel!.data!.percentage!) /
-                                        100)),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: (RayanCartBody.lang == 'en')
-                                  ? 'Nunito'
-                                  : 'Almarai',
-                              fontWeight: FontWeight.bold,
-                              fontSize: w * 0.055,
-                            ),
-                          )
-                              : Text(
-                            getProductprice(
-                                currency: RayanCartBody.currency,
-                                productPrice: RayanCartBody.finalPrice),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: (RayanCartBody.lang == 'en')
-                                  ? 'Nunito'
-                                  : 'Almarai',
-                              fontWeight: FontWeight.bold,
-                              fontSize: w * 0.055,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              BlocProvider.of<AppCubit>(context).getAvailableTimes();
-                              SharedPreferences prefs =
-                              await SharedPreferences
-                                  .getInstance();
-                              prefs.setString('add_message', editingController1.text);
-                              prefs.setString('data_url', editingController2.text);
-                              print( prefs.getString('add_message'));
-                              await CountryCubit.get(context).getCity();
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => AddressInfo(cartLength: widget.cartLength,)));
-                            },
-                            child: Container(
-                              width: w*0.4,
-                              height: h*0.06,
-                              decoration: BoxDecoration(
-                                  color: mainColor,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Center(
-                                  child: Text(
-                                    LocalKeys.CHECKOUT.tr(),
-                                    style: TextStyle(
-                                        fontSize: w * 0.05,
-                                        fontFamily: (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )),
-                            ),
-                          ),
-                        ],
+                      child: InkWell(
+                        onTap: () async {
+                          BlocProvider.of<AppCubit>(context).getAvailableTimes();
+                          SharedPreferences prefs =
+                          await SharedPreferences
+                              .getInstance();
+                          prefs.setString('add_message', editingController1.text);
+                          prefs.setString('data_url', editingController2.text);
+                          print( prefs.getString('add_message'));
+                          await CountryCubit.get(context).getCity();
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => AddressInfo(cartLength: widget.cartLength,)));
+                        },
+                        child: Container(
+                          width: w*0.4,
+                          height: h*0.06,
+                          decoration: BoxDecoration(
+                              color: mainColor,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Center(
+                              child: Text(
+                                LocalKeys.CHECKOUT.tr(),
+                                style: TextStyle(
+                                    fontSize: w * 0.04,
+                                    fontFamily: (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )),
+                        ),
                       ),
                     );
                   },
@@ -688,15 +826,15 @@ class _RayanCartBodyState extends State<RayanCartBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: w*0.65,
+              width: w*0.95,
               decoration: BoxDecoration(
-                color: const Color(0xffEFEFEF),
+                border: Border.all(color: const Color(0xffEFEFEF),width: 2),
                 borderRadius: BorderRadius.circular(5)
               ),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 controller: controller,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
                 style: TextStyle(
                     fontFamily:
                     (lang == 'en')
@@ -725,12 +863,12 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                           ? 'Nunito'
                           : 'Almarai',
                       color: Colors.white),
-                  hintText: translateString(LocalKeys.ADD_COBON.tr(), 'اضف كوبون خصم'),
+                  hintText: translateString(LocalKeys.ADD_COBON.tr(), 'أدخل الرمز'),
                   hintStyle: TextStyle(
                       fontFamily:
                       (lang == 'en')
                           ? 'Nunito'
-                          : 'Almarai',fontSize: w*0.035,fontWeight: FontWeight.bold,
+                          : 'Almarai',fontSize: w*0.03,fontWeight: FontWeight.normal,
                       color:
                       Colors.black45),
                   labelStyle: TextStyle(
@@ -742,30 +880,6 @@ class _RayanCartBodyState extends State<RayanCartBody> {
                 ),
               ),
             ),
-            RoundedLoadingButton(
-                controller: btncontroller,
-                color: mainColor,
-                width: w*0.3,
-                successColor: Colors.green,
-                errorColor: Colors.red,
-                disabledColor: Colors.white,
-                onPressed: () async {
-                  SharedPreferences prefs =
-                  await SharedPreferences
-                      .getInstance();
-                  prefs.setString(
-                      'cobon', controller.text);
-                  getCheckcobon(
-                      cobon: controller.text,
-                      context: context,
-                      controller: btncontroller);
-                },
-                borderRadius: 5,
-                child: Text(
-                  translateString(LocalKeys.SEND.tr(), 'تطبيـق'),
-                  style: TextStyle(
-                      color: Colors.white,fontWeight: FontWeight.bold,fontSize: w*0.04),
-                )),
           ],
         ),
         listener: (context, state) async {});

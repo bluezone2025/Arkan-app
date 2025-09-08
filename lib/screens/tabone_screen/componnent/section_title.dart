@@ -36,7 +36,7 @@ class _SectionTitleState extends State<SectionTitle> {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.only( right: w * 0.03),
+      padding: EdgeInsets.symmetric( horizontal: w * 0.02),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,28 +45,20 @@ class _SectionTitleState extends State<SectionTitle> {
             widget.title,
             style: TextStyle(
                 fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                fontSize: w * 0.045,
-                fontWeight: FontWeight.bold,
+                fontSize: w * 0.04,
+                fontWeight: FontWeight.normal,
                 color: Colors.black),
           ),
           InkWell(
             onTap: widget.press,
-            child: Container(
-              height: w*0.08,
-              width: w*0.2,
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),topRight: Radius.circular(15))
-              ),
-              child: Center(
-                child: Text(
-                  translateString('view all', 'عرض الكل'),
-                  style: TextStyle(
-                      fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                      fontSize: w * 0.03,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black),
-                ),
+            child: Center(
+              child: Text(
+                translateString('more', 'المزيد'),
+                style: TextStyle(
+                    fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
+                    fontSize: w * 0.04,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black),
               ),
             ),
           )

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../componnent/constants.dart';
 import '../../../componnent/http_services.dart';
@@ -23,7 +24,7 @@ Widget buildCartIem(
   var w = MediaQuery.of(context).size.width;
   var h = MediaQuery.of(context).size.height;
 
-  return Container(
+  return SizedBox(
     width: w,
     height: h*0.22,
     //decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300)),
@@ -34,8 +35,8 @@ Widget buildCartIem(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(
             EndPoints.IMAGEURL2 + image,
-            width: w * 0.27,
-            height: h * 0.17,
+            width: w * 0.25,
+            height: h * 0.1,
             fit: BoxFit.cover,
           ),
         ),
@@ -44,30 +45,47 @@ Widget buildCartIem(
         ),
         SizedBox(
           width: w*0.64,
-          height: h * 0.29,
+          height: h * 0.25,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: w*0.4,
-                    child: Text(
-                      title,
-                      maxLines: 3,
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black,
-                        fontSize: w * 0.035,
-                        fontFamily: (RayanCartBody.lang == 'en')
-                            ? 'Nunito'
-                            : 'Almarai',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: w*0.4,
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: w * 0.035,
+                            fontFamily: (RayanCartBody.lang == 'en')
+                                ? 'Nunito'
+                                : 'Almarai',
+                          ),
+                        ),
                       ),
+                      IconButton(onPressed: delete, icon: SvgPicture.asset('assets/icons/delete.svg'))
+                    ],
+                  ),
+                  Text(
+                    description,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                      fontSize: w * 0.032,
+                      fontFamily: (RayanCartBody.lang == 'en')
+                          ? 'Nunito'
+                          : 'Almarai',
                     ),
                   ),
-                  IconButton(onPressed: delete, icon: Icon(Icons.delete_forever,color: mainColor,))
                 ],
               ),
               SizedBox(
@@ -88,7 +106,7 @@ Widget buildCartIem(
                   Text(getProductprice(
                       currency: RayanCartBody.currency,
                       productPrice: price),style: TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.normal,
                     color: Colors.black,
                     fontSize: w * 0.045,
                     fontFamily: (RayanCartBody.lang == 'en')
@@ -99,54 +117,55 @@ Widget buildCartIem(
                     height: h * 0.02,
                   ),
                   if(description != 'daza')
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Colors.black45)
-                    ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: w * 0.01,
-                        ),
-                        increaseqty,
-                        Container(
-                          width: 1,
-                          height: h*0.04,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          width: w * 0.025,
-                        ),
-                        Text(
-                          '$qty',
-                          style: TextStyle(
-                              fontFamily: (RayanCartBody.lang == 'en')
-                                  ? 'Nunito'
-                                  : 'Alamari',
-                              fontSize: w * 0.04,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: w * 0.025,
-                        ),
-                        Container(
-                          width: 1,
-                          height: h*0.04,
-                          color: Colors.grey,
-                        ),
-                        InkWell(
-                            onTap: decreaseqty,
-                            child: Icon(
-                              Icons.remove,
-                              size: w * 0.06,
-                            )),
-                        SizedBox(
-                          width: w * 0.01,
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: w * 0.01,
+                      ),
+                      InkWell(
+                          onTap: decreaseqty,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: const Color(0xffF3F3F3),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Icon(
+                                Icons.remove,
+                                size: w * 0.06,
+                              ),
+                            ),
+                          )),
+                      SizedBox(
+                        width: w * 0.025,
+                      ),
+                      Text(
+                        '$qty',
+                        style: TextStyle(
+                            fontFamily: (RayanCartBody.lang == 'en')
+                                ? 'Nunito'
+                                : 'Alamari',
+                            fontSize: w * 0.04,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: w * 0.025,
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: const Color(0xffF3F3F3),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: increaseqty,
+                          )),
+                      SizedBox(
+                        width: w * 0.01,
+                      ),
+                    ],
                   )
                 ],
               )

@@ -1,8 +1,13 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:arkan/screens/tabone_screen/cubit/home_cubit.dart';
+import 'package:arkan/screens/tabone_screen/model/home_model.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import '../componnent/constants.dart';
 import '../componnent/http_services.dart';
 import '../generated/local_keys.dart';
@@ -27,6 +32,10 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   String lang = '';
   String code = '';
   List products = [];
+  List<Sliders> sliders =[];
+  bool finish = false;
+  int _current = 0;
+  final CarouselSliderController _controller = CarouselSliderController();
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -42,6 +51,23 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           });
         }
       }
+    }
+    if(HomeCubit.get(context).homeitemsModel != null){
+      for(int i=0; i< HomeCubit.get(context).homeitemsModel!.data!.sliders!.length;i++){
+        print(i);
+        for(int x=0; x< HomeCubit.get(context).homeitemsModel!.data!.sliders![i].countries!.length;x++){
+          print(x);
+          print(code);
+          if(HomeCubit.get(context).homeitemsModel!.data!.sliders![i].countries![x].code == code){
+            setState(() {
+              sliders.add(HomeCubit.get(context).homeitemsModel!.data!.sliders![i]);
+            });
+          }
+        }
+      }
+      setState(() {
+        finish = true;
+      });
     }
   }
 
@@ -104,10 +130,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                     ),
               position: badges.BadgePosition.topStart(start: w * 0.007),
               child: IconButton(
-                icon: const Icon(
-                  Icons.shopping_bag_outlined,
-                  color: Colors.black,size: 30,
-                ),
+                icon: SvgPicture.asset('assets/icons/cart.svg',height: h*0.03,),
                 padding: EdgeInsets.zero,
                 focusColor: Colors.white,
                 onPressed: () {
@@ -122,13 +145,52 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffFBFBFB),
       body: SizedBox(
         width: w,
         height: h,
         child: SingleChildScrollView(
           child: Column(
             children: [
+              if(HomeCubit.get(context).homeitemsModel != null)
+                CarouselSlider.builder(
+                    carouselController: _controller,
+                    itemCount: sliders.length,
+                    itemBuilder: (context, index, realIndex) {
+                      return sliders[index].countries!.any((v) => v.code == code) ? InkWell(
+                        focusColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        // overlayColor: ,
+                        onTap: () async {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                              child: CachedNetworkImage(imageUrl: sliders[index].imgFullPath!,width: w,height: h*0.4,fit: BoxFit.fill,)),
+                        ),
+                      ): Container();
+                    },
+                    options: CarouselOptions(
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        },
+                        autoPlay: true,
+                        autoPlayAnimationDuration: const Duration(seconds: 1),
+                        autoPlayCurve: Curves.easeIn,
+                        //   enlargeCenterPage: true,
+                        aspectRatio: 3.0,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        initialPage: 0,
+
+                        //  pageSnapping: false,
+
+                        viewportFraction: 1,
+                        height: 0.3*h,
+                        autoPlayInterval: const Duration(seconds: 5)
+                    )),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: w*0.02),
                 child: GridView.builder(
@@ -138,7 +200,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                     SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisExtent: h*0.35,
+                      mainAxisExtent: h*0.25,
                       mainAxisSpacing: w * 0.03,
                       crossAxisSpacing: w*0.02,
                       crossAxisCount: 2,
@@ -157,7 +219,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                     ))),
                         child: SizedBox(
                             width: w,
-                            child: Column(
+                            child: Stack(
                               children: [
                                 SizedBox(
                                     width: w*0.49,
@@ -167,30 +229,32 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                             products[index].imageUrl,
                                         context: context,
                                         fit: BoxFit.cover)),
-                                SizedBox(
-                                  width: w*0.4,
-                                  height: h * 0.06,
-                                  child: Center(
-                                    child: (lang == 'en')
-                                        ? Text(
-                                            products[index].nameEn,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Nunito',
-                                                fontSize: w * 0.045,
-                                                fontWeight:
-                                                    FontWeight.w600),
-                                          )
-                                        : Text(
-                                      products[index].nameAr,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Almarai',
-                                                fontSize: w * 0.045,
-                                                fontWeight:
-                                                    FontWeight.w600),
-                                          ),
-                                  ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: (lang == 'en')
+                                          ? Text(
+                                        products[index].nameEn,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Nunito',
+                                            fontSize: w * 0.035,
+                                            fontWeight:
+                                            FontWeight.w600),textAlign: TextAlign.center,
+                                      )
+                                          : Text(
+                                        products[index].nameAr,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Almarai',
+                                            fontSize: w * 0.035,
+                                            fontWeight:
+                                            FontWeight.w600),textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             )),

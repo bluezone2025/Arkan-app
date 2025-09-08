@@ -21,12 +21,14 @@ class SimilarProduct extends StatefulWidget {
 class _SimilarProductState extends State<SimilarProduct> {
   String lang = '';
   String currency = '';
+  String code = '';
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       lang = preferences.getString('language').toString();
       currency = preferences.getString('currency').toString();
+      code = preferences.getString('country_code').toString();
     });
   }
 
@@ -45,44 +47,43 @@ class _SimilarProductState extends State<SimilarProduct> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.only(
-            bottom: 5, // Space between underline and text
-          ),
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(
-                color: mainColor,
-                width: 1.0, // Underline thickness
-              ))
-          ),
+        SizedBox(
+          height: h * 0.02,
+        ),
+        Center(
           child: Text(
-            translateString(LocalKeys.SIMILAR_PRODUCT.tr(), 'منتجات مشاهبه'),
+            translateString(LocalKeys.SIMILAR_PRODUCT.tr(), 'عناصر مماثلة'),
             style: TextStyle(
                 fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                fontSize: w * 0.04,
+                fontSize: w * 0.045,
                 fontWeight: FontWeight.bold,
                 color: Colors.black),
           ),
+        ),
+        SizedBox(
+          height: h * 0.02,
         ),
         GridView.builder(
           itemCount: widget.similar.length,
           primary: false,
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: 0.35*h,
+            mainAxisExtent: 0.38*h,
             mainAxisSpacing: w * 0.02,
             crossAxisSpacing: 5,
             crossAxisCount: 2,
           ),
-          itemBuilder: (context, index) => InkWell(
-            onTap: () {
-              HomeCubit.get(context).getProductdata(
-                  productId: widget.similar[index].id.toString());
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const ProductDetail()));
-            },
-            child: Card(
-              color: Colors.white,
+          itemBuilder: (context, index)  =>  Padding(
+            padding: EdgeInsets.symmetric(horizontal: w*0.005),
+            child: InkWell(
+              onTap: () {
+                HomeCubit.get(context).getProductdata(
+                    productId: widget.similar[index].id.toString());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductDetail()));
+              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,10 +91,10 @@ class _SimilarProductState extends State<SimilarProduct> {
                   Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(5),
                         child: Container(
-                          width: w * 0.45,
-                          height: h * 0.25,
+                          width: w * 0.5,
+                          height: h * 0.24,
                           color: Colors.white,
                           child: customCachedNetworkImage(
                               url: EndPoints.IMAGEURL2 +
@@ -102,60 +103,10 @@ class _SimilarProductState extends State<SimilarProduct> {
                               fit: BoxFit.fill),
                         ),
                       ),
-                      (widget.similar[index].hasOffer == 1)
-                          ? Positioned(
-                        //top: h*0.0,
-                        right: lang == 'en' ? w*0.02 :w*0.35,
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: mainColor,
-                                  shape: BoxShape.circle
-                              ),
-                              height: h*0.06,
-                              child: Center(
-                                child: Text(
-                                  " %${(((widget
-                                      .similar[index]
-                                      .beforePrice - widget
-                                      .similar[index].price) / widget
-                                      .similar[index]
-                                      .beforePrice ) * 100).toInt()} ",
-                                  textAlign:
-                                  TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily:
-                                      'Bahij',
-                                      fontSize: w * 0.028,
-                                      fontWeight:
-                                      FontWeight
-                                          .w500),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: h * 0.13,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle
-                              ),
-                              height: h*0.06,
-                              child:  Center(
-                                child: Icon(Icons.add,color: mainColor,),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                          : Container(),
                     ],
                   ),
                   SizedBox(
-                    width: w * 0.4,
+                    width: w * 0.45,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Column(
@@ -163,28 +114,48 @@ class _SimilarProductState extends State<SimilarProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            constraints: BoxConstraints(
-                                maxHeight: h * 0.07, maxWidth: w * 0.38),
-                            child: (lang == 'en')
-                                ? Text(widget.similar[index].titleEn,maxLines: 1,
+                              constraints: BoxConstraints(maxWidth: w * 0.4),
+                              child: Text(translateString(widget.similar[index].titleEn, widget.similar[index].titleAr),maxLines: 1,
                                 style: TextStyle(
-                                  fontSize: w * 0.03,
+                                  fontSize: w * 0.032,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Nunito',
-                                ),
-                                overflow: TextOverflow.fade)
-                                : Text(
-                              widget.similar[index].titleAr,maxLines: 1,
-                              style: TextStyle(
-                                fontSize: w * 0.03,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Almarai',
-                              ),
-                              overflow: TextOverflow.fade,
-                            ),
+                                ),)
                           ),
+                          SizedBox(
+                            height: h * 0.01,
+                          ),
+                          Container(
+                              constraints: BoxConstraints(maxWidth: w * 0.4),
+                              child: Text(translateString(widget.similar[index].descriptionEn, widget.similar[index].descriptionAr),maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: w * 0.03,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Nunito',
+                                ),)
+                          ),
+                          SizedBox(
+                            height: h * 0.01,
+                          ),
+                          if(widget.similar[index].hasOffer == 1)
+                            Text(
+                              getProductprice(
+                                  currency: currency,
+                                  productPrice: widget
+                                      .similar[index]
+                                      .beforePrice),
+                              style: TextStyle(
+                                  fontSize: w * 0.025,
+                                  fontFamily: (lang == 'en')
+                                      ? 'Nunito'
+                                      : 'Almarai',
+                                  decoration:
+                                  TextDecoration.lineThrough,
+                                  color: Colors.red,
+                                  decorationColor: Colors.black),
+                            ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
                             children: [
@@ -194,36 +165,43 @@ class _SimilarProductState extends State<SimilarProduct> {
                                     productPrice:
                                     widget.similar[index].price),
                                 style: TextStyle(
-                                    fontSize: w * 0.035,
-                                    fontFamily: (lang == 'en')
-                                        ? 'Nunito'
-                                        : 'Almarai',
-                                    color: mainColor,
-                                    fontWeight: FontWeight.bold
+                                  fontSize: w * 0.04,
+                                  fontFamily: (lang == 'en')
+                                      ? 'Nunito'
+                                      : 'Almarai',
+                                  color: Colors.black,
                                 ),
                               ),
-                              (widget.similar[index].hasOffer == 1)
-                                  ? Text(
-                                getProductprice(
-                                    currency: currency,
-                                    productPrice: widget.similar[index]
-                                        .beforePrice),
-                                style: TextStyle(
-                                    fontSize: w * 0.03,
-                                    fontFamily: (lang == 'en')
-                                        ? 'Nunito'
-                                        : 'Almarai',
-                                    decoration:
-                                    TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                    decorationColor: mainColor),
-                              )
-                                  : Container(),
+                              if(widget.similar[index].hasOffer == 1)
+                                Container(
+                                  color: mainColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
+                                    child: Text(
+                                      " %${(((widget
+                                          .similar[index]
+                                          .beforePrice - widget
+                                          .similar[index].price) / widget
+                                          .similar[index]
+                                          .beforePrice ) * 100).toInt()}",
+                                      textAlign:
+                                      TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily:
+                                          'Bahij',
+                                          fontSize: w * 0.025,
+                                          fontWeight:
+                                          FontWeight
+                                              .w500),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                           SizedBox(
                             height: h * 0.01,
-                          )
+                          ),
                         ],
                       ),
                     ),

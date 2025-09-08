@@ -41,77 +41,63 @@ class _CategorySectionState extends State<CategorySection> {
     var h = MediaQuery.of(context).size.height;
     return SizedBox(
       width: w,
-      height: h * 0.2,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(width: h*0.02,),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              itemCount: widget.catItem.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return widget.catItem[index].countries!.any((v) => v.code == code) ? InkWell(
-                  child: SizedBox(
-                    width: w*0.33,
-                    height: h * 0.35,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: h*0.01,),
-                        CircleAvatar(
-                          radius: 0.07*h, // Image radius
-                          backgroundImage: NetworkImage(EndPoints.IMAGEURL2 +
-                              widget.catItem[index].imageUrl!,),
-                        ),
-                        SizedBox(height: h*0.02,),
-                        (lang == 'en')
-                            ? Text(
-                          widget.catItem[index].nameEn!,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Nunito',
-                              color: Colors.black,
-                              fontSize: w * 0.033),
-                          overflow: TextOverflow.clip,textAlign: TextAlign.center,
-                        )
-                            : Text(
-                          widget.catItem[index].nameAr!,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Almarai',
-                              color: Colors.black,
-                              fontSize: w * 0.033),textAlign: TextAlign.center,
-                          overflow: TextOverflow.clip,
-                        ),
-                      ],
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CategoriesSection(
-                              mainCat: (lang == 'en') ? widget.catItem[index].nameEn! : widget.catItem[index].nameAr!,
-                              mainCatId:
-                              widget.catItem[index].id.toString(),
-                              subCategory:
-                              widget.catItem[index].categoriesSub!,
-                            )));
-                  },
-                ) : Container();
-              },
-              separatorBuilder: (context, index) => SizedBox(
-                width: w * 0.025,
-              ),
+      height: h * 0.54,
+      child: GridView.builder(
+        primary: false,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: widget.catItem.length < 4 ? widget.catItem.length : 4,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          return widget.catItem[index].countries!.any((v) => v.code == code) ? InkWell(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(EndPoints.IMAGEURL2 +
+                    widget.catItem[index].imageUrl!,height: 0.22*h,fit: BoxFit.fill,width: w*0.48,),
+                SizedBox(height: h*0.01,),
+                (lang == 'en')
+                    ? Text(
+                  widget.catItem[index].nameEn!,
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontFamily: 'Nunito',
+                      color: Colors.black,
+                      fontSize: w * 0.034),
+                  overflow: TextOverflow.clip,textAlign: TextAlign.center,
+                )
+                    : Text(
+                  widget.catItem[index].nameAr!,
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontFamily: 'Almarai',
+                      color: Colors.black,
+                      fontSize: w * 0.034),textAlign: TextAlign.center,
+                  overflow: TextOverflow.clip,
+                ),
+              ],
             ),
-          ],
-        ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CategoriesSection(
+                        mainCat: (lang == 'en') ? widget.catItem[index].nameEn! : widget.catItem[index].nameAr!,
+                        mainCatId:
+                        widget.catItem[index].id.toString(),
+                        subCategory:
+                        widget.catItem[index].categoriesSub!,
+                      )));
+            },
+          ) : Container();
+        },gridDelegate:
+      SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisExtent: 0.27*h,
+        mainAxisSpacing: 1,
+        crossAxisSpacing: 1,
+        crossAxisCount: 2,
+      ),
       ),
     );
   }
