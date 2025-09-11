@@ -59,6 +59,7 @@ class Brand {
   String? nameAr;
   String? nameEn;
   String? logo;
+  String? cover;
   String? arkanPercentage;
   String? brandPercentage;
   int? productsCount;
@@ -77,6 +78,7 @@ class Brand {
     this.nameAr,
     this.nameEn,
     this.logo,
+    this.cover,
     this.arkanPercentage,
     this.brandPercentage,
     this.productsCount,
@@ -96,6 +98,7 @@ class Brand {
     nameAr: json["name_ar"],
     nameEn: json["name_en"],
     logo: json["logo"],
+    cover: json["cover"],
     arkanPercentage: json["arkan_percentage"],
     brandPercentage: json["brand_percentage"],
     productsCount: json["products_count"],
@@ -115,6 +118,7 @@ class Brand {
     "name_ar": nameAr,
     "name_en": nameEn,
     "logo": logo,
+    "cover": cover,
     "arkan_percentage": arkanPercentage,
     "brand_percentage": brandPercentage,
     "products_count": productsCount,

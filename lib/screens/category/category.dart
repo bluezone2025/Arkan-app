@@ -118,23 +118,24 @@ class _CategoriesSectionState extends State<CategoriesSection>
           bottom: PreferredSize(
             preferredSize: Size(w, h * 0.06),
             child: Container(
-              height: h * 0.06 + 10,
+              height: h * 0.05,
               width: w,
               padding: const EdgeInsets.only(top: 10),
-              color: Colors.white,
+              color: Colors.grey[100],
               child: TabBar(
-                isScrollable: true,
+                isScrollable: widget.subCategory.length > 4 ? true : false,
                 controller: tabController,
-                indicatorColor: Colors.black,
+                indicatorColor: mainColor,
                 indicatorWeight: w * 0.003,
-                labelColor: Colors.black,
+                labelColor: mainColor,
                 unselectedLabelColor: Colors.black45,
+                padding: EdgeInsets.zero,
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
                 ),
                 unselectedLabelStyle: TextStyle(
-                  color: Colors.black45,
+                  color: Colors.black87,
                   fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
                 ),
                 tabs: List.generate(

@@ -31,6 +31,7 @@ import '../all_categories.dart';
 import '../allproducts/all_offers/all_offers.dart';
 import '../allproducts/new_product/new_product.dart';
 import '../auth/login.dart';
+import '../bottomnav/models/get_ads_model.dart';
 import '../cart/cart.dart';
 import '../category/category.dart';
 import '../country/cubit/country_cubit.dart';
@@ -60,6 +61,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
   String country = '';
   int deleteSlider = 0;
   List<Sliders> sliders =[];
+  List<Ad> ads =[];
 
   List<Daza> daza = [
     Daza(appearance: 0,availability: 2,basicCategoryId: 3,beforePrice: 15,bestSelling: 0,categoryId: 45,deliveryPeriod: 2,descriptionAr: 'دزات استقبال ستاندات', descriptionEn: 'دزات استقبال ستاندات',featured: 0,hasOffer: 0,id: 11,img: '',newarrive: 0,price: 50,sizeGuideId: 0,titleAr: 'دزات استقبال ستاندات',titleEn: 'دزات استقبال ستاندات',daza: 1),
@@ -105,6 +107,23 @@ class _TaboneScreenState extends State<TaboneScreen> {
           if(HomeCubit.get(context).homeitemsModel!.data!.sliders![i].countries![x].code == code){
             setState(() {
               sliders.add(HomeCubit.get(context).homeitemsModel!.data!.sliders![i]);
+            });
+          }
+        }
+      }
+      setState(() {
+        finish = true;
+      });
+    }
+    if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null){
+      for(int i=0; i< BlocProvider.of<AppCubit>(context).getAdsModel1!.ads!.length;i++){
+        print(i);
+        for(int x=0; x< BlocProvider.of<AppCubit>(context).getAdsModel1!.ads![i].countries!.length;x++){
+          print(x);
+          print(code);
+          if(BlocProvider.of<AppCubit>(context).getAdsModel1!.ads![i].countries![x].code == code){
+            setState(() {
+              ads.add(BlocProvider.of<AppCubit>(context).getAdsModel1!.ads![i]);
             });
           }
         }
@@ -594,15 +613,15 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                     height: h * 0.04,
                                   ),
                                   if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null)
+                                  if(BlocProvider.of<AppCubit>(context).getAdsModel1!.ads!.isNotEmpty)
                                     BlocConsumer<AppCubit, AppCubitStates>(
                                       listener: (context, state) {},
                                       builder: (context, state) {
-                                        var ads = BlocProvider.of<AppCubit>(context).getAdsModel1?.ads;
                                         return  CarouselSlider.builder(
                                             carouselController: _controller,
-                                            itemCount: ads!.length,
+                                            itemCount: ads.length,
                                             itemBuilder: (context, index, realIndex) {
-                                              return ads[index].countries!.any((v) => v.code == code) ? InkWell(
+                                              return InkWell(
                                                 focusColor: Colors.transparent,
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
@@ -634,7 +653,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                                   child: CachedNetworkImage(imageUrl: EndPoints.IMAGEURL2 +
                                                       ads[index].image!,width: w,height: h*0.5,fit: BoxFit.fill,),
                                                 ),
-                                              ): Container();
+                                              );
                                             },
                                             options: CarouselOptions(
                                                 onPageChanged: (index, reason) {

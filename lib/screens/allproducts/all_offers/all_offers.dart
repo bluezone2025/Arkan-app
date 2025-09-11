@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,7 +16,9 @@ import '../../../componnent/constants.dart';
 import '../../../componnent/http_services.dart';
 import '../../../generated/local_keys.dart';
 import '../../cart/cart.dart';
+import '../../cart/cart_product/body.dart';
 import '../../product_detail/product_detail.dart';
+import '../../searchScreen/search_screen.dart';
 import '../../tabone_screen/cubit/home_cubit.dart';
 import '../model/offers_model.dart';
 
@@ -35,6 +38,20 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
   String lang = '';
   String currency = '';
   String code = '';
+  String sort = '';
+
+  List<String> sortName = [
+    translateString('New arrival', 'وصل حديثا'),
+    translateString('The cheapest', 'الأقل سعرا'),
+    translateString('highest price', 'الأعلى سعرا'),
+  ];
+  List<String> sortKey = [
+    'new_arrive',
+    'lowest_price',
+    'highest_price',
+  ];
+
+  int sortIndex = 0;
 
   getLang() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -51,7 +68,7 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
     });
     try {
       var response =
-          await http.get(Uri.parse("${EndPoints.BASE_URL}offers?page=$page"));
+          await http.get(Uri.parse("${EndPoints.BASE_URL}offers?page=$page&sort=$sort"));
       var data = jsonDecode(response.body);
       if (data['status'] == 1) {
         OffersModel offersModel = OffersModel.fromJson(data);
@@ -86,7 +103,7 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
       List fetchedPosts = [];
       try {
         var response =
-            await http.get(Uri.parse(EndPoints.BASE_URL + "offers?page=$page"));
+            await http.get(Uri.parse("${EndPoints.BASE_URL}offers?page=$page&sort=$sort"));
         var data = jsonDecode(response.body);
         if (data['status'] == 1) {
           OffersModel offersModel = OffersModel.fromJson(data);
@@ -138,61 +155,60 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
         toolbarHeight: h*0.05,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          LocalKeys.HOME_OFFER.tr(),
+          translateString('Special offers', 'عروض مميزة'),
           style: TextStyle(
-              color: Colors.black, fontSize: w * 0.05, fontFamily: 'Nunito',fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: w * 0.035, fontFamily: 'Nunito',fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         actions: [
+          InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchScreen()));
+              },
+              child: SvgPicture.asset('assets/icons/search.svg')),
           Padding(
             padding: const EdgeInsets.all(5),
             child: BlocConsumer<DataBaseCubit, DatabaseStates>(
               builder: ((context, state) => badges.Badge(
-                    badgeStyle: badges.BadgeStyle(
-                      badgeColor: mainColor,
-                    ),
-                    badgeAnimation: const badges.BadgeAnimation.slide(
-                      animationDuration: Duration(
-                        seconds: 1,
-                      ),
-                    ),
-                    badgeContent: (DataBaseCubit.get(context).cart.isNotEmpty)
-                        ? Text(
-                            DataBaseCubit.get(context).cart.length.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: w * 0.03,
-                            ),
-                          )
-                        : Text(
-                            "0",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: w * 0.03,
-                            ),
-                          ),
-                    position: badges.BadgePosition.topStart(start: w * 0.007),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.shopping_bag_outlined,
-                        color: Colors.black,size: 30,
-                      ),
-                      padding: EdgeInsets.zero,
-                      focusColor: Colors.white,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Cart()));
-                      },
-                    ),
-                  )),
+                badgeStyle: badges.BadgeStyle(
+                  badgeColor: mainColor,
+                ),
+                badgeAnimation: const badges.BadgeAnimation.slide(
+                  animationDuration: Duration(
+                    seconds: 1,
+                  ),
+                ),
+                badgeContent: (DataBaseCubit.get(context).cart.isNotEmpty)
+                    ? Text(
+                  DataBaseCubit.get(context).cart.length.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: w * 0.03,
+                  ),
+                )
+                    : Text(
+                  "0",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: w * 0.03,
+                  ),
+                ),
+                position: badges.BadgePosition.topStart(start: w * 0.007),
+                child: IconButton(
+                  icon: SvgPicture.asset('assets/icons/cart.svg'),
+                  padding: EdgeInsets.zero,
+                  focusColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Cart()));
+                  },
+                ),
+              )),
               listener: (context, state) {},
             ),
-          ),
-          SizedBox(
-            width: w * 0.05,
           ),
         ],
       ),
@@ -206,6 +222,154 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
               padding: EdgeInsets.symmetric( horizontal: w * 0.03),
               child: Column(
                 children: [
+                  SizedBox(height: h*0.03,),
+                  InkWell(
+                    onTap: (){
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true, // Enab// le full-screen resizing for the keyboard
+                        backgroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(15.0),
+                          ),
+                        ),
+                        builder: (context) => StatefulBuilder(
+                          builder: (BuildContext context, StateSetter set) {
+                            return SizedBox(
+                              width: w,
+                              height: h*0.4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: h*0.005),
+                                    Center(
+                                      child: Container(
+                                        color: Colors.grey,
+                                        height: h*0.004,
+                                        width: w*0.1,
+                                      ),
+                                    ),
+                                    SizedBox(height: h*0.04),
+                                    Center(
+                                      child: Text(translateString('Sort by', 'رتب حسب'),style: TextStyle(
+                                          fontFamily: 'Almarai',
+                                          fontSize: w * 0.035,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),),
+                                    ),
+                                    SizedBox(height: h*0.04),
+                                    Column(
+                                      children: List.generate(3, (index)=> Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  sortIndex = index;
+                                                  sort = sortKey[index];
+                                                });
+                                                set(() {
+                                                  sortIndex = index;
+                                                  sort = sortKey[index];
+                                                });
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(sortName[index],style: TextStyle(
+                                                      fontFamily: 'Almarai',
+                                                      fontSize: w * 0.03,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.black),),
+                                                  Container(
+                                                    height: h*0.02,
+                                                    width: w*0.05,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: sortIndex == index ? mainColor : Colors.transparent,
+                                                        border: Border.all(color: Colors.grey,width: 0.5)
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: h*0.01),
+                                            Center(
+                                              child: Container(
+                                                color: Colors.grey[300],
+                                                height: h*0.001,
+                                                width: w*0.9,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                    ),
+                                    SizedBox(
+                                      height: h * 0.02,
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        products.clear();
+                                        firstLoad();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        width: w*0.95,
+                                        height: h*0.05,
+                                        decoration: BoxDecoration(
+                                            color: mainColor,
+                                            borderRadius: BorderRadius.circular(5)),
+                                        child: Center(
+                                            child: Text(
+                                              translateString('Show results', 'إظهار النتائج'),
+                                              style: TextStyle(
+                                                  fontSize: w * 0.035,
+                                                  fontFamily: (RayanCartBody.lang == 'en') ? 'Nunito' : 'Almarai',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: h*0.035,
+                      width: w*0.65,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey,width: 0.5),
+                          borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/filter.svg'),
+                          SizedBox(
+                            width: w * 0.03,
+                          ),
+                          Text(translateString('Sort by', 'رتب حسب'),style: TextStyle(
+                              fontFamily: 'Almarai',
+                              fontSize: w * 0.03,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: h * 0.04,
+                  ),
                   (products.isNotEmpty)
                       ? Expanded(
                           child: GridView.builder(
@@ -218,191 +382,161 @@ class _AllOffersScreenState extends State<AllOffersScreen> {
                                 crossAxisSpacing: 5,
                                 crossAxisCount: 2,
                               ),
-                              itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? InkWell(
-                                    onTap: () {
-                                      HomeCubit.get(context).getProductdata(
-                                          productId:
-                                              products[index].id.toString());
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProductDetail()));
-                                    },
-                                    child: Card(
-                                      color: Colors.white,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? Padding(
+                                padding: EdgeInsets.symmetric(horizontal: w*0.005),
+                                child: InkWell(
+                                  onTap: () {
+                                    HomeCubit.get(context).getProductdata(
+                                        productId: products[index].id.toString());
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProductDetail()));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Stack(
                                         children: [
-                                          Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(15),
-                                                child: Container(
-                                                  width: w * 0.45,
-                                                  height: h * 0.25,
-                                                  color: Colors.white,
-                                                  child: customCachedNetworkImage(
-                                                      url: EndPoints.IMAGEURL2 +
-                                                          products[index].img.toString(),
-                                                      context: context,
-                                                      fit: BoxFit.fill),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(5),
+                                            child: Container(
+                                              width: w * 0.5,
+                                              height: h * 0.24,
+                                              color: Colors.white,
+                                              child: customCachedNetworkImage(
+                                                  url: EndPoints.IMAGEURL2 +
+                                                      products[index].img.toString(),
+                                                  context: context,
+                                                  fit: BoxFit.fill),
+                                            ),
+                                          ),
+                                          if(products[index].availability == 0)
+                                            Positioned(
+                                              top: 0.08*h,
+                                              child: Container(
+                                                width: w * 0.42,
+                                                height: h * 0.05,
+                                                color: Colors.black38,
+                                                child: Center(
+                                                  child: Text(
+                                                    translateString('sold out', 'نفذت الكمية'),
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: w * 0.04,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: 'Almarai',color: Colors.white
+                                                    ),
+                                                    overflow: TextOverflow.fade,
+                                                  ),
                                                 ),
                                               ),
-                                              (products[index].hasOffer == 1)
-                                                  ? Positioned(
-                                                //top: h*0.0,
-                                                right: lang == 'en' ? w*0.02 :w*0.35,
-                                                child: Column(
-                                                  children: [
+                                            ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: w * 0.45,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                  constraints: BoxConstraints(maxWidth: w * 0.4),
+                                                  child: Text(translateString(products[index].titleEn, products[index].titleAr),maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.032,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontFamily: 'Nunito',
+                                                    ),)
+                                              ),
+                                              SizedBox(
+                                                height: h * 0.01,
+                                              ),
+                                              Container(
+                                                  constraints: BoxConstraints(maxWidth: w * 0.4),
+                                                  child: Text(translateString(products[index].descriptionEn, products[index].descriptionAr),maxLines: 1,
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.03,
+                                                      fontWeight: FontWeight.w400,
+                                                      fontFamily: 'Nunito',
+                                                    ),)
+                                              ),
+                                              SizedBox(
+                                                height: h * 0.01,
+                                              ),
+                                              if(products[index].hasOffer == 1)
+                                                Text(
+                                                  getProductprice(
+                                                      currency: currency,
+                                                      productPrice: products[index]
+                                                          .beforePrice),
+                                                  style: TextStyle(
+                                                      fontSize: w * 0.025,
+                                                      fontFamily: (lang == 'en')
+                                                          ? 'Nunito'
+                                                          : 'Almarai',
+                                                      decoration:
+                                                      TextDecoration.lineThrough,
+                                                      color: Colors.red,
+                                                      decorationColor: Colors.black),
+                                                ),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    getProductprice(
+                                                        currency: currency,
+                                                        productPrice:
+                                                        products[index].price),
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.04,
+                                                      fontFamily: (lang == 'en')
+                                                          ? 'Nunito'
+                                                          : 'Almarai',
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  if(products[index].hasOffer == 1)
                                                     Container(
-                                                      decoration: BoxDecoration(
-                                                          color: mainColor,
-                                                          shape: BoxShape.circle
-                                                      ),
-                                                      height: h*0.06,
-                                                      child: Center(
+                                                      color: mainColor,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
                                                         child: Text(
                                                           " %${(((products[index]
                                                               .beforePrice - products[index].price) / products[index]
-                                                              .beforePrice ) * 100).toInt()} ",
+                                                              .beforePrice ) * 100).toInt()}",
                                                           textAlign:
                                                           TextAlign.center,
                                                           style: TextStyle(
                                                               color: Colors.white,
                                                               fontFamily:
                                                               'Bahij',
-                                                              fontSize: w * 0.028,
+                                                              fontSize: w * 0.025,
                                                               fontWeight:
                                                               FontWeight
                                                                   .w500),
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height: h * 0.13,
-                                                    ),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.grey[300],
-                                                          shape: BoxShape.circle
-                                                      ),
-                                                      height: h*0.06,
-                                                      child:  Center(
-                                                        child: Icon(Icons.add,color: mainColor,),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                                  : Positioned(
-                                                bottom: 1,
-                                                right: lang == 'en' ? w*0.02 :w*0.35,
-                                                child: Container(
-                                                  decoration: const BoxDecoration(
-                                                      color: Colors.white,
-                                                      shape: BoxShape.circle),
-                                                  height: h * 0.06,
-                                                  child: Center(
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color: mainColor,
-                                                    ),
-                                                  ),
-                                                ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: h * 0.01,
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            width: w * 0.45,
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    constraints: BoxConstraints(
-                                                        maxHeight: h * 0.07, maxWidth: w * 0.38),
-                                                    child: (lang == 'en')
-                                                        ? Text(products[index].titleEn,maxLines: 1,
-                                                        style: TextStyle(
-                                                          fontSize: w * 0.035,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Nunito',
-                                                        ),
-                                                        overflow: TextOverflow.fade)
-                                                        : Text(
-                                                      products[index].titleAr,maxLines: 1,
-                                                      style: TextStyle(
-                                                        fontSize: w * 0.035,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Almarai',
-                                                      ),
-                                                      overflow: TextOverflow.fade,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      if(products[index].hasOffer == 1)
-                                                        Text(
-                                                          getProductprice(
-                                                              currency: currency,
-                                                              productPrice: products[index]
-                                                                  .beforePrice),
-                                                          style: TextStyle(
-                                                              fontSize: w * 0.035,
-                                                              fontFamily: (lang == 'en')
-                                                                  ? 'Nunito'
-                                                                  : 'Almarai',
-                                                              decoration:
-                                                              TextDecoration.lineThrough,
-                                                              color: Colors.black87,
-                                                              decorationColor: mainColor),
-                                                        ),
-                                                      Text(
-                                                        getProductprice(
-                                                            currency: currency,
-                                                            productPrice:
-                                                            products[index].price),
-                                                        style: TextStyle(
-                                                            fontSize: w * 0.04,
-                                                            fontFamily: (lang == 'en')
-                                                                ? 'Nunito'
-                                                                : 'Almarai',
-                                                            color: mainColor,
-                                                            fontWeight: FontWeight.bold
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  if(products[index].availability == 0)
-                                                    Center(
-                                                      child: Text(
-                                                        translateString('sold out', 'نفذت الكمية'),maxLines: 1,textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontSize: w * 0.03,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: 'Almarai',color: mainColor
-                                                        ),
-                                                        overflow: TextOverflow.fade,
-                                                      ),
-                                                    ),
-                                                  SizedBox(
-                                                    height: h * 0.01,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ) : Container()),
+                                    ],
+                                  ),
+                                ),
+                              ) : Container()),
                         )
                       : Padding(
                           padding: EdgeInsets.only(top: h * 0.3),

@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final Geolocator geolocator = Geolocator();
   late Position currentPosition;
   late String currentAddress;
-  int ios_version = 6;
+  int ios_version = 7;
   int android_version = 1;
 
   getCurrentLocation() async {

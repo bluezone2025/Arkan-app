@@ -70,7 +70,8 @@ class _NewProductsState extends State<NewProducts> {
             child: GridView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) =>  widget.newItem[index].countries!.any((v) => v.code == code) ?Padding(
+              itemBuilder: (context, index) =>  widget.newItem[index].countries!.any((v) => v.code == code) ?
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: w*0.005),
                 child: InkWell(
                   onTap: () {

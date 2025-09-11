@@ -133,15 +133,12 @@ class _ProductDetailState extends State<ProductDetail> {
                       child: SvgPicture.asset('assets/icons/share.svg'),
                     ),
                     SizedBox(width: w*0.02,),
+                    if(HomeCubit.get(context).singleProductModel != null)
                     favouriteButton(
                         context: context,
                         login: login,
                         productId:
-                        HomeCubit.get(context)
-                            .singleProductModel!
-                            .data!
-                            .id
-                            .toString()),
+                        HomeCubit.get(context).singleProductModel!.data!.id.toString()),
                     SizedBox(width: w*0.02,),
                   ],
                 ),
@@ -321,7 +318,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               .titleEn! :HomeCubit.get(context)
                                               .singleProductModel!
                                               .data!
-                                              .titleAr!,
+                                              .titleAr!,textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontFamily:
                                               (lang == 'en')
@@ -415,8 +412,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                         height: h * 0.01,
                                       ),
                                       Divider(
-                                        color: Colors.grey[350],
-                                        height: 3,
+                                        color: Colors.grey[100],
+                                        height: 1,
                                       ),
                                       SizedBox(
                                         height: h * 0.01,
@@ -624,8 +621,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                         ],
                                       ),
                                       Divider(
-                                        color: Colors.grey[350],
-                                        height: 3,
+                                        color: Colors.grey[100],
+                                        height: 1,
                                       ),
                                       SizedBox(
                                         height: h * 0.01,
@@ -736,32 +733,6 @@ class _ProductDetailState extends State<ProductDetail> {
                                       .data!
                                       .sizes!
                                       .isNotEmpty)
-                                  SizedBox(
-                                    height: h * 0.01,
-                                  ),
-                                  if(currency != 'OMR')
-                                    TabbyPresentationSnippet(
-                                      price: getProductPriceTabby(currency: currency, productPrice: HomeCubit.get(context)
-                                          .singleProductModel!
-                                          .data!
-                                          .price!),
-                                      currency: currency == 'BHD' ? Currency.bhd : currency == 'QAR' ? Currency.qar : currency == 'AED' ? Currency.aed : currency == 'SAR' ? Currency.sar : Currency.kwd,
-                                      lang: lang == 'en' ? Lang.en :Lang.ar,
-                                    ),
-                                  if(prefs.getInt('is_tabby_active') == 1)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                      child: Align(
-                                        alignment: lang == 'en' ? Alignment.centerLeft : Alignment.centerRight,
-                                        child: Text(
-                                          translateString('7% tax will be added', 'سيتم اضافة 7% ضريبة'),
-                                          style: TextStyle(
-                                            fontSize: w * 0.035,
-                                            fontFamily: (lang == 'en') ? 'Nunito' : 'Almarai',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   SizedBox(
                                     height: h * 0.01,
                                   ),
@@ -1100,7 +1071,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           ),
                                           child: Row(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.end,
                                             mainAxisAlignment:
                                             MainAxisAlignment
                                                 .spaceBetween,
@@ -1248,7 +1219,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                       listener: (context, state) {}),
                                   Container(
                                     width: w*0.65,
-                                    height: h*0.06,
+                                    height: h*0.05,
                                     decoration: BoxDecoration(
                                       color: const Color(0xffAE0000),
                                       borderRadius: BorderRadius.circular(25)
@@ -1275,11 +1246,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                             FontWeight
                                                 .bold,
                                             fontSize:
-                                            w * 0.045),
+                                            w * 0.04),
                                       )
                                           : Text(
-                                        translateString(LocalKeys.ADD_CART
-                                            .tr(), 'اضف للسلة'),
+                                        translateString('Buy Now', 'اشتر الآن'),
                                         style: TextStyle(
                                             color:
                                             Colors.white,
@@ -1291,7 +1261,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             FontWeight
                                                 .bold,
                                             fontSize:
-                                            w * 0.045),
+                                            w * 0.04),
                                       ),
                                     ),
                                   ),

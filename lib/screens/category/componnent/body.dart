@@ -153,197 +153,161 @@ class _CategoryProductsState extends State<CategoryProducts> {
                             crossAxisSpacing: 5,
                             crossAxisCount: 2,
                           ),
-                          itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? InkWell(
-                                onTap: () {
-                                  HomeCubit.get(context).getProductdata(
-                                      productId: products[index].id.toString());
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const ProductDetail()));
-                                },
-                                child: Card(
-                                  color: Colors.white,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          itemBuilder: (context, index) => products[index].countries!.any((v) => v.code == code) ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: w*0.005),
+                            child: InkWell(
+                              onTap: () {
+                                HomeCubit.get(context).getProductdata(
+                                    productId: products[index].id.toString());
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProductDetail()));
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Stack(
                                     children: [
-                                      Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(15),
-                                            child: Container(
-                                              width: w * 0.45,
-                                              height: h * 0.25,
-                                              color: Colors.white,
-                                              child: customCachedNetworkImage(
-                                                  url: EndPoints.IMAGEURL2 +
-                                                      products[index].img.toString(),
-                                                  context: context,
-                                                  fit: BoxFit.fill),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Container(
+                                          width: w * 0.5,
+                                          height: h * 0.24,
+                                          color: Colors.white,
+                                          child: customCachedNetworkImage(
+                                              url: EndPoints.IMAGEURL2 +
+                                                  products[index].img.toString(),
+                                              context: context,
+                                              fit: BoxFit.fill),
+                                        ),
+                                      ),
+                                      if(products[index].availability == 0)
+                                        Positioned(
+                                          top: 0.08*h,
+                                          child: Container(
+                                            width: w * 0.42,
+                                            height: h * 0.05,
+                                            color: Colors.black38,
+                                            child: Center(
+                                              child: Text(
+                                                translateString('sold out', 'نفذت الكمية'),
+                                                maxLines: 1,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: w * 0.04,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Almarai',color: Colors.white
+                                                ),
+                                                overflow: TextOverflow.fade,
+                                              ),
                                             ),
                                           ),
-                                          (products[index].hasOffer == 1)
-                                              ? Positioned(
-                                            //top: h*0.0,
-                                            right: lang == 'en' ? w*0.02 :w*0.35,
-                                            child: Column(
-                                              children: [
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: w * 0.45,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              constraints: BoxConstraints(maxWidth: w * 0.4),
+                                              child: Text(translateString(products[index].titleEn, products[index].titleAr),maxLines: 1,
+                                                style: TextStyle(
+                                                  fontSize: w * 0.032,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Nunito',
+                                                ),)
+                                          ),
+                                          SizedBox(
+                                            height: h * 0.01,
+                                          ),
+                                          Container(
+                                              constraints: BoxConstraints(maxWidth: w * 0.4),
+                                              child: Text(translateString(products[index].descriptionEn, products[index].descriptionAr),maxLines: 1,
+                                                style: TextStyle(
+                                                  fontSize: w * 0.03,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: 'Nunito',
+                                                ),)
+                                          ),
+                                          SizedBox(
+                                            height: h * 0.01,
+                                          ),
+                                          if(products[index].hasOffer == 1)
+                                            Text(
+                                              getProductprice(
+                                                  currency: currency,
+                                                  productPrice: products[index]
+                                                      .beforePrice),
+                                              style: TextStyle(
+                                                  fontSize: w * 0.025,
+                                                  fontFamily: (lang == 'en')
+                                                      ? 'Nunito'
+                                                      : 'Almarai',
+                                                  decoration:
+                                                  TextDecoration.lineThrough,
+                                                  color: Colors.red,
+                                                  decorationColor: Colors.black),
+                                            ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                getProductprice(
+                                                    currency: currency,
+                                                    productPrice:
+                                                    products[index].price),
+                                                style: TextStyle(
+                                                  fontSize: w * 0.04,
+                                                  fontFamily: (lang == 'en')
+                                                      ? 'Nunito'
+                                                      : 'Almarai',
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              if(products[index].hasOffer == 1)
                                                 Container(
-                                                  decoration: BoxDecoration(
-                                                      color: mainColor,
-                                                      shape: BoxShape.circle
-                                                  ),
-                                                  height: h*0.06,
-                                                  child: Center(
+                                                  color: mainColor,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
                                                     child: Text(
                                                       " %${(((products[index]
                                                           .beforePrice - products[index].price) / products[index]
-                                                          .beforePrice ) * 100).toInt()} ",
+                                                          .beforePrice ) * 100).toInt()}",
                                                       textAlign:
                                                       TextAlign.center,
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontFamily:
                                                           'Bahij',
-                                                          fontSize: w * 0.028,
+                                                          fontSize: w * 0.025,
                                                           fontWeight:
                                                           FontWeight
                                                               .w500),
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: h * 0.13,
-                                                ),
-                                                Container(
-                                                  decoration: const BoxDecoration(
-                                                      color: Colors.white,
-                                                      shape: BoxShape.circle
-                                                  ),
-                                                  height: h*0.06,
-                                                  child:  Center(
-                                                    child: Icon(Icons.add,color: mainColor,),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                              : Positioned(
-                                            bottom: 1,
-                                            right: lang == 'en' ? w*0.02 :w*0.35,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[300],
-                                                  shape: BoxShape.circle),
-                                              height: h * 0.06,
-                                              child: Center(
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: mainColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          if(products[index].availability == 0)
-                                            Positioned(
-                                              top: 0.1*h,
-                                              child: Container(
-                                                width: w * 0.42,
-                                                height: h * 0.05,
-                                                color: Colors.black38,
-                                                child: Center(
-                                                  child: Text(
-                                                    translateString('sold out', 'نفذت الكمية'),
-                                                    maxLines: 1,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: w * 0.04,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Almarai',color: Colors.white
-                                                    ),
-                                                    overflow: TextOverflow.fade,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: w * 0.45,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                constraints: BoxConstraints(
-                                                    maxHeight: h * 0.09, maxWidth: w * 0.38,),
-                                                child: (lang == 'en')
-                                                    ? Text(products[index].titleEn,maxLines: 1,
-                                                    style: TextStyle(
-                                                      fontSize: w * 0.035,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontFamily: 'Nunito',
-                                                    ),)
-                                                    : Text(
-                                                  products[index].titleAr,maxLines: 1,
-                                                  style: TextStyle(
-                                                    fontSize: w * 0.035,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Almarai',
-                                                  ),
-                                                ),
-                                              ),
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  if(products[index].hasOffer == 1)
-                                                    Text(
-                                                      getProductprice(
-                                                          currency: currency,
-                                                          productPrice: products[index]
-                                                              .beforePrice),
-                                                      style: TextStyle(
-                                                          fontSize: w * 0.035,
-                                                          fontFamily: (lang == 'en')
-                                                              ? 'Nunito'
-                                                              : 'Almarai',
-                                                          decoration:
-                                                          TextDecoration.lineThrough,
-                                                          color: Colors.black87,
-                                                          decorationColor: mainColor),
-                                                    ),
-                                                  Text(
-                                                    getProductprice(
-                                                        currency: currency,
-                                                        productPrice:
-                                                        products[index].price),
-                                                    style: TextStyle(
-                                                        fontSize: w * 0.04,
-                                                        fontFamily: (lang == 'en')
-                                                            ? 'Nunito'
-                                                            : 'Almarai',
-                                                        color: mainColor,
-                                                        fontWeight: FontWeight.bold
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: h * 0.01,
-                                              ),
                                             ],
                                           ),
-                                        ),
+                                          SizedBox(
+                                            height: h * 0.01,
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ) : Container()),
+                                ],
+                              ),
+                            ),
+                          ) : Container()),
                     ),
                   )
                 : Padding(

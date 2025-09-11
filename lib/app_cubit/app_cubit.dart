@@ -151,6 +151,23 @@ class AppCubit extends Cubit<AppCubitStates> {
       emit(GetBrandProductsError(e.toString()));
     });
   }
+  void getBrandProductsSort(String id,String sort,){
+    emit(GetBrandProductsLoading());
+    DioHelper.getData(url: 'get-products-in-brand/$id?sort=$sort').then((value) {
+      final result = value.data;
+      print(result);
+      if (result['status'] == 1) {
+        getBrandProductsModel = GetBrandProductsModel.fromJson(result);
+        emit(GetBrandProductsSuccess());
+      } else {
+        print(2);
+        emit(GetBrandProductsError(result['message']));
+      }
+    }).catchError((e){
+      print(e.toString());
+      emit(GetBrandProductsError(e.toString()));
+    });
+  }
   GetBrandProductsModel? getDiscountBrandProductsModel;
 
   void getDiscountBrandProducts(String id){
