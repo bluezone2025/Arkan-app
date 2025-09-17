@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final Geolocator geolocator = Geolocator();
   late Position currentPosition;
   late String currentAddress;
-  int ios_version = 7;
+  int ios_version = 8;
   int android_version = 1;
 
   getCurrentLocation() async {
@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
       pres.setString('late', position.altitude.toString());
       pres.setString('lang', position.longitude.toString());
     }).catchError((e) {
-      print("location errrrrrrrrrrrrrrrrrrrrrrrr : " + e.toString());
+      print("location errrrrrrrrrrrrrrrrrrrrrrrr : $e");
     });
   }
 
@@ -116,8 +116,6 @@ class _SplashScreenState extends State<SplashScreen> {
     getScreen();
     deleteUserAccount(appversion: version);
     getCurrentLocation();
-    HomeCubit.get(context).getHomeitems();
-    CountryCubit.get(context).getCountry();
     UserprofileCubit.get(context).getAllinfo();
     BlocProvider.of<AppCubit>(context).notifyCount();
     BlocProvider.of<AppCubit>(context).getBrands();
@@ -145,7 +143,7 @@ class _SplashScreenState extends State<SplashScreen> {
               context, MaterialPageRoute(builder: (context) => OnBoarding()));*/
           } else {
             Timer(
-                const Duration(seconds: 1),
+                const Duration(seconds: 0),
                     () => Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) => screen)));
           }
@@ -159,7 +157,7 @@ class _SplashScreenState extends State<SplashScreen> {
             print("ios") ;
             if (mounted) {
               Timer(
-                  const Duration(seconds: 1),
+                  const Duration(seconds: 0),
                       () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) => screen)));
             }
@@ -168,16 +166,16 @@ class _SplashScreenState extends State<SplashScreen> {
       }else{
         if (mounted) {
           Timer(
-              const Duration(seconds: 1),
+              const Duration(seconds: 0),
                   () => Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) => screen)));
         }
       }
     }).catchError((e){
-      print('seetttiiinggg'+e.toString());
+      print('seetttiiinggg$e');
     });
     Timer(
-        const Duration(seconds: 2),
+        const Duration(seconds: 0),
         () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) => screen)));
     WidgetsBinding.instance.addPostFrameCallback((_) async {

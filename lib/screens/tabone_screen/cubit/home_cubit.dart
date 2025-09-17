@@ -36,6 +36,7 @@ class HomeCubit extends Cubit<AppCubitStates> {
       print(response.body);
       if (data['status'] == 1) {
         homeitemsModel = HomeitemsModel.fromJson(data);
+        print("home model =================================${response.body}");
       }
       emit(HomeitemsSuccessState());
       return homeitemsModel;

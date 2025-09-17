@@ -111,9 +111,6 @@ class _TaboneScreenState extends State<TaboneScreen> {
           }
         }
       }
-      setState(() {
-        finish = true;
-      });
     }
     if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null){
       for(int i=0; i< BlocProvider.of<AppCubit>(context).getAdsModel1!.ads!.length;i++){
@@ -128,50 +125,20 @@ class _TaboneScreenState extends State<TaboneScreen> {
           }
         }
       }
+    }
+    if(sliders.isNotEmpty && ads.isNotEmpty){
       setState(() {
         finish = true;
       });
     }
   }
 
-  final Geolocator geolocator = Geolocator();
   int _current = 0;
   final CarouselSliderController _controller = CarouselSliderController();
-  late Position currentPosition;
-  late String currentAddress;
-  getCurrentLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location Not Available');
-      }
-    } else {}
-
-    Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    ).then((Position position) async {
-      setState(() {
-        currentPosition = position;
-      });
-      SharedPreferences pres = await SharedPreferences.getInstance();
-      pres.setString('late', position.altitude.toString());
-      pres.setString('lang', position.longitude.toString());
-      print("lattitude ................. : " + position.altitude.toString());
-      print("longtitude ................. : " + position.longitude.toString());
-    }).catchError((e) {
-      print("location errrrrrrrrrrrrrrrrrrrrrrrr : " + e.toString());
-    });
-  }
 
   @override
   void initState() {
     getLang();
-    getCurrentLocation();
-    DataBaseCubit.get(context).cart.length;
-    BlocProvider.of<AppCubit>(context).notifyCount();
-
     super.initState();
   }
 
@@ -182,7 +149,11 @@ class _TaboneScreenState extends State<TaboneScreen> {
     if(!finish){
       getLang();
     }
+    return BlocConsumer<HomeCubit, AppCubitStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
     if(HomeCubit.get(context).homeitemsModel == null){
+      getLang();
       return _buildShimmer();
     }
     return Scaffold(
@@ -194,7 +165,10 @@ class _TaboneScreenState extends State<TaboneScreen> {
         // ),
         appBar: AppBar(
           backgroundColor: const Color(0xffFCF7F7),
-          title: InkWell(
+          title: BlocConsumer<CountryCubit, CountryState>(
+  listener: (context, state) {},
+  builder: (context, state) {
+    return InkWell(
             onTap: (){
               showModalBottomSheet(
                 context: context,
@@ -439,7 +413,9 @@ class _TaboneScreenState extends State<TaboneScreen> {
                 const Icon(Icons.arrow_drop_down,color: Color(0xffAE0000),size: 25,)
               ],
             ),
-          ),
+          );
+  },
+),
           centerTitle: true,
           leadingWidth: w * 0.25,
           leading: SizedBox(
@@ -512,11 +488,13 @@ class _TaboneScreenState extends State<TaboneScreen> {
                   height: h * 0.01,
                 ),
                 if(HomeCubit.get(context).homeitemsModel != null)
+                  if(sliders.isNotEmpty)
                 CarouselSlider.builder(
                     carouselController: _controller,
                     itemCount: sliders.length,
                     itemBuilder: (context, index, realIndex) {
-                      return sliders[index].countries!.any((v) => v.code == code) ? InkWell(
+                      return sliders[index].countries!.any((v) => v.code == code) ?
+                      InkWell(
                         focusColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
@@ -538,9 +516,6 @@ class _TaboneScreenState extends State<TaboneScreen> {
                         aspectRatio: 3.0,
                         enlargeStrategy: CenterPageEnlargeStrategy.height,
                         initialPage: 0,
-
-                        //  pageSnapping: false,
-
                         viewportFraction: 1,
                         height: 0.3*h,
                         autoPlayInterval: const Duration(seconds: 5)
@@ -613,7 +588,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                     height: h * 0.04,
                                   ),
                                   if(BlocProvider.of<AppCubit>(context).getAdsModel1 != null)
-                                  if(BlocProvider.of<AppCubit>(context).getAdsModel1!.ads!.isNotEmpty)
+                                  if(ads.isNotEmpty)
                                     BlocConsumer<AppCubit, AppCubitStates>(
                                       listener: (context, state) {},
                                       builder: (context, state) {
@@ -680,8 +655,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
                                   SizedBox(
                                     height: h * 0.04,
                                   ),
-                                  if(HomeCubit.get(context)
-                                      .homeitemsModel != null)
+                                  if(HomeCubit.get(context).homeitemsModel != null)
                                     NewProducts(
                                       newItem: HomeCubit.get(context)
                                           .homeitemsModel!
@@ -1006,5 +980,7 @@ class _TaboneScreenState extends State<TaboneScreen> {
             ),
           ),
         ));
+  },
+);
   }
 }

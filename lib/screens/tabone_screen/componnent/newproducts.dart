@@ -31,12 +31,14 @@ class _NewProductsState extends State<NewProducts> {
       currency = preferences.getString('currency').toString();
       code = preferences.getString('country_code').toString();
     });
-    for(int i=0; i< widget.newItem.length;i++){
-      for(int x=0; x< widget.newItem[i].countries!.length;x++){
-        if(widget.newItem[i].countries![x].code == code){
-          setState(() {
-            products.add(HomeCubit.get(context).homeitemsModel!.data!.sliders![i]);
-          });
+    if(HomeCubit.get(context).homeitemsModel != null){
+      for(int i=0; i< widget.newItem.length;i++){
+        for(int x=0; x< widget.newItem[i].countries!.length;x++){
+          if(widget.newItem[i].countries![x].code == code){
+            setState(() {
+              products.add(widget.newItem[i]);
+            });
+          }
         }
       }
     }

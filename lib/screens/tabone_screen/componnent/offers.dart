@@ -39,12 +39,14 @@ class _OffersState extends State<Offers> {
       currency = preferences.getString('currency').toString();
       code = preferences.getString('country_code').toString();
     });
-    for(int i=0; i< widget.offersItem.length;i++){
-      for(int x=0; x< widget.offersItem[i].countries!.length;x++){
-        if(widget.offersItem[i].countries![x].code == code){
-          setState(() {
-            products.add(HomeCubit.get(context).homeitemsModel!.data!.sliders![i]);
-          });
+    if(HomeCubit.get(context).homeitemsModel != null){
+      for(int i=0; i< widget.offersItem.length;i++){
+        for(int x=0; x< widget.offersItem[i].countries!.length;x++){
+          if(widget.offersItem[i].countries![x].code == code){
+            setState(() {
+              products.add(widget.offersItem[i]);
+            });
+          }
         }
       }
     }
