@@ -97,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
       } else if (countrySelected == true) {
         CountryCubit().getCity();
         setState(() {
-          screen = const Login();
+          screen = HomeScreen(index: 0);
         });
       } else {
         setState(() {
